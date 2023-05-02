@@ -4,3 +4,4 @@ obj
 .vscode
 *.dSYM
 cub3D
+/include/libft/*.o
