@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 16:31:12 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 13:33:20 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:16:24 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,22 +225,23 @@ void compare_textures(t_tex_list *tex, t_var *var)
 	}
 }
 
-void print_wrong_textures(t_tex_list *tex, t_var *var, int flag)
+void print_wrong_textures(t_tex_list *tex, t_var *var, t_error error)
 {
-	if(flag == 1)
+	if( error == ERROR_EAST)
 		print_error("There is no east texture");
-	if(flag == 2)
+	if(error == ERROR_NORTH)
 		print_error("There is no north texture");
-	if(flag == 3)
+	if(error == ERROR_SOUTH)
 		print_error("There is no south texture");
-	if(flag == 4)
+	if(error == ERROR_WEST)
 		print_error("There is no west texture");
-	if(flag == 5)
+	if(error == ERROR_FLOOR)
 		print_error("There is no floor color");
-	if(flag == 6)
+	if(error == ERROR_CEILING)
 		print_error("There is no ceiling color");
-	free_textures(&tex);
-	free_var(var);
+	var = NULL;
+	// free_textures(&tex);
+	// free_var(var);
 	tex = NULL;
 	exit (1);
 }
@@ -248,24 +249,25 @@ void print_wrong_textures(t_tex_list *tex, t_var *var, int flag)
 void	check_textures(t_tex_list *tex, t_var *var)
 {
 	int	flag;
+	t_error error;
 
+	error = ERROR_NO;
 	flag = 0;
 	if (var->path_east == NULL)
-		flag = 1;
+		error = ERROR_WEST;
 	if (var->path_north == NULL)
-		flag = 2;
+		error = ERROR_NORTH;
 	if (var->path_south == NULL)
-		flag = 3;
+		error = ERROR_SOUTH;
 	if (var->path_west == NULL)
-		flag = 4;
+		error = ERROR_WEST;
 	if (var->floor_color == NULL)
-		flag = 5;
+		error = ERROR_FLOOR;
 	if (var->ceiling_color == NULL)
-		flag = 6;
-	if (flag != 0)
-		print_wrong_textures(tex, var, flag);
+		error = ERROR_CEILING;
+	if (error != ERROR_NO)
+		print_wrong_textures(tex, var, error);
 }
-
 
 void compare_and_check_textures(t_tex_list *tex, t_var *var)
 {
@@ -274,7 +276,6 @@ void compare_and_check_textures(t_tex_list *tex, t_var *var)
 	// trim_textures(tex);
 
 }
-
 
 void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex)
 {

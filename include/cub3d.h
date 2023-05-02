@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 13:32:35 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:21:47 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,18 @@ enum e_walls
 	WALL,
 };
 
+typedef enum e_error
+{
+	ERROR_NORTH,
+	ERROR_WEST,
+	ERROR_SOUTH,
+	ERROR_EAST,
+	ERROR_FLOOR,
+	ERROR_CEILING,
+	ERROR_NO,
+	
+} t_error;
+
 typedef struct s_map_list
 {
 	char				*content;
@@ -53,14 +65,13 @@ typedef struct s_map
 	enum e_walls	walls;
 	double			height;
 	double			width;
-
 	char			**map;
 	
 }	t_map;
 
 typedef struct s_var
 {
-	t_map	map;
+	t_map			map;
 	mlx_texture_t	*textures[6];
 	char			*path_north;
 	char			*path_south;
