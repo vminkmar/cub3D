@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 16:05:40 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:20:46 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "libft/libft.h"
+# include "Libft/libft.h"
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <string.h> 

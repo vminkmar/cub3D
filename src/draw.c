@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:26:17 by mgraefen          #+#    #+#             */
-/*   Updated: 2023/05/02 15:50:38 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:22:18 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void draw_map(mlx_image_t *img, int map[][4])
 	}
 }
 
-int32_t	draw_it(void)
+int32_t	main(void)
 {
 	int map[4][4] =
 	{ 	{0, 0, 0, 1},

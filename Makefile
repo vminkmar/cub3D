@@ -10,7 +10,7 @@ CFLAGS			:=	-g -Wall -Wextra -Werror
 
 VPATH			:=	src/
 
-SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c draw.c
+SRC_FILES		:=	draw.c #main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c 
 
 HEADER			:=	-I./include/
 
@@ -26,9 +26,9 @@ OBJS			:=	$(SRC_FILES:%.c=$(ODIR)/%.o)
 
 # BONUS_OBJS		:=	$(BONUS_FILES:%.c=$(ODIR)/%.o)
 
-LIBFT			:=	include/libft
+LIBFT			:=	include/Libft
 
-LFT				:=	include/libft/libft.a
+LFT				:=	include/Libft/libft.a
 
 LIBDIR			:= lib
 
@@ -39,7 +39,9 @@ LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/homebrew/opt/glfw/lib/"
 all: $(LFT) $(LMLX) $(NAME) #$(NAME_BONUS)
 
 $(LFT):	$(LIBFT)
-	$(MAKE) -C $(LIBFT) --silent
+	@git submodule init Libft
+	@git submodule update Libft
+	@cd include/Libft && make && make clean
 
 $(LMLX): $(LIBMLX)
 	@git submodule init MLX42
