@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 16:31:12 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 13:02:08 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:33:20 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,11 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex)
 	int		begin_of_map = 0;
 	
 	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+	{
+		print_error("There is no map with that name");
+		exit (1);
+	}
 	while(1)
 	{
 		line = get_next_line(fd);
@@ -220,7 +225,7 @@ void compare_textures(t_tex_list *tex, t_var *var)
 	}
 }
 
-void print_wrong_textures(t_tex_list *tex, int flag)
+void print_wrong_textures(t_tex_list *tex, t_var *var, int flag)
 {
 	if(flag == 1)
 		print_error("There is no east texture");
@@ -235,7 +240,7 @@ void print_wrong_textures(t_tex_list *tex, int flag)
 	if(flag == 6)
 		print_error("There is no ceiling color");
 	free_textures(&tex);
-	//free_var(var);
+	free_var(var);
 	tex = NULL;
 	exit (1);
 }
@@ -258,7 +263,7 @@ void	check_textures(t_tex_list *tex, t_var *var)
 	if (var->ceiling_color == NULL)
 		flag = 6;
 	if (flag != 0)
-		print_wrong_textures(tex, flag);
+		print_wrong_textures(tex, var, flag);
 }
 
 

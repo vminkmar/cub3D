@@ -45,7 +45,7 @@ $(LMLX): $(LIBMLX)
 	$(MAKE) -C $(LIBMLX) --silent
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@
 
 # $(NAME_BONUS): $(BONUS_OBJS) $(LMLX) c $(LFT) 
 # 	$(CC) $(CFLAGS) $(BONUS_OBJS) $(LFLAGS) -o $@

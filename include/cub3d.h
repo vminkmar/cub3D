@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 11:27:24 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:32:35 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ void print_error(char *message);
 
 //free_stuff
 void free_textures(t_tex_list **tex);
+void free_var(t_var *var);
 
 #endif
