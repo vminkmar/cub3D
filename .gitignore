@@ -1,0 +1,6 @@
+LeakSanitizer
+/include/MLX42
+obj
+.vscode
+*.dSYM
+cub3D
