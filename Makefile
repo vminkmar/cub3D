@@ -10,13 +10,13 @@ CFLAGS			:=	-g -Wall -Wextra -Werror
 
 VPATH			:=	src/
 
-SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c
+SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c draw.c
 
 HEADER			:=	-I./include/
 
 LIBMLX			:=	include/MLX42
 
-LMLX			:=	include/MLX42/libmlx42.a
+LMLX			:=	include/MLX42/build/libmlx42.a
 
 ODIR			:=	obj/
 
@@ -34,7 +34,7 @@ LIBDIR			:= lib
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "/Users/vminkmar/.brew/opt/glfw/lib/"
+LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/homebrew/opt/glfw/lib/"
 
 all: $(LFT) $(LMLX) $(NAME) #$(NAME_BONUS)
 
@@ -42,7 +42,9 @@ $(LFT):	$(LIBFT)
 	$(MAKE) -C $(LIBFT) --silent
 
 $(LMLX): $(LIBMLX)
-	$(MAKE) -C $(LIBMLX) --silent
+	@git submodule init MLX42
+	@git submodule update MLX42
+	@cd MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@
