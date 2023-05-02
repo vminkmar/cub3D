@@ -10,15 +10,15 @@ CFLAGS			:=	-g -Wall -Wextra -Werror
 
 VPATH			:=	src/
 
-SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c
+SRC_FILES		:=	draw.c #main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c 
 
 HEADER			:=	-I./include/
 
 LIBMLX			:=	include/MLX42
 
-LMLX			:=	include/MLX42/libmlx42.a
+LMLX			:=	include/MLX42/build/libmlx42.a
 
-ODIR			:=	obj/
+ODIR			:=	obj
 
 LINK_FLAGS		:=
 
@@ -26,23 +26,27 @@ OBJS			:=	$(SRC_FILES:%.c=$(ODIR)/%.o)
 
 # BONUS_OBJS		:=	$(BONUS_FILES:%.c=$(ODIR)/%.o)
 
-LIBFT			:=	include/libft
+LIBFT			:=	include/Libft
 
-LFT				:=	include/libft/libft.a
+LFT				:=	include/Libft/libft.a
 
 LIBDIR			:= lib
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "/Users/vminkmar/.brew/opt/glfw/lib/"
+LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/homebrew/opt/glfw/lib/"
 
 all: $(LFT) $(LMLX) $(NAME) #$(NAME_BONUS)
 
 $(LFT):	$(LIBFT)
-	$(MAKE) -C $(LIBFT) --silent
+	@git submodule init Libft
+	@git submodule update Libft
+	@cd include/Libft && make && make clean
 
 $(LMLX): $(LIBMLX)
-	$(MAKE) -C $(LIBMLX) --silent
+	@git submodule init MLX42
+	@git submodule update MLX42
+	@cd include/MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@
@@ -53,23 +57,27 @@ $(NAME): $(LMLX) $(OBJS) $(LFT)
 $(ODIR)/%.o: %.c | $(ODIR)
 	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
 
+$(ODIR):
+	mkdir $(ODIR)
+
 test: $(TEST_FILES)
 	@ar -rcs lib/libtest.a $(OBJS) include/libft/*.o
 	@cd tests && $(MAKE) run
+
+test2:
+	@echo $(OBJS)
 
 norm:
 	norminette src/ include/
 
 clean:
 	$(MAKE) -C $(LIBFT) clean
-	$(MAKE) -C $(LIBMLX) clean
-	$(MAKE) -C $(LIBMLX) clean
 	$(RM) $(OBJS) $(BONUS_OBJS) $(LIB) lib/libtest.a
 	@cd tests && $(MAKE) clean
 
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_BONUS) $(LMLX)
+	$(RM) $(NAME) $(NAME_BONUS)
 
 re: fclean all
 

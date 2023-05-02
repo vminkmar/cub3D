@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 15:21:47 by vminkmar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -17,9 +6,10 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "libft/libft.h"
+# include "Libft/libft.h"
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
+# include <string.h> 
 # define MAX_WIDTH 5120
 # define MAX_HEIGHT 2880
 # ifndef BUFFER_SIZE
@@ -81,6 +71,25 @@ typedef struct s_var
 	char			*ceiling_color;
 }	t_var;
 
+//draw
+
+# define WIDTH 500
+# define HEIGHT 500
+
+typedef struct s_player
+{
+	double 	x;
+	double	y;
+	mlx_image_t *img;
+	mlx_t *mlx;
+} 	t_player;
+
+typedef struct s_coord
+{
+	double 	x;
+	double	y;
+} 	t_coord;
+
 
 //parser
 void parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex);
@@ -104,5 +113,8 @@ void print_error(char *message);
 //free_stuff
 void free_textures(t_tex_list **tex);
 void free_var(t_var *var);
+
+//draw
+int32_t	draw_it(void);
 
 #endif
