@@ -18,7 +18,7 @@ LIBMLX			:=	include/MLX42
 
 LMLX			:=	include/MLX42/build/libmlx42.a
 
-ODIR			:=	obj/
+ODIR			:=	obj
 
 LINK_FLAGS		:=
 
@@ -44,7 +44,7 @@ $(LFT):	$(LIBFT)
 $(LMLX): $(LIBMLX)
 	@git submodule init MLX42
 	@git submodule update MLX42
-	@cd MLX42 && cmake -B build && cmake --build build -j4
+	@cd include/MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@
@@ -55,23 +55,27 @@ $(NAME): $(LMLX) $(OBJS) $(LFT)
 $(ODIR)/%.o: %.c | $(ODIR)
 	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
 
+$(ODIR):
+	mkdir $(ODIR)
+
 test: $(TEST_FILES)
 	@ar -rcs lib/libtest.a $(OBJS) include/libft/*.o
 	@cd tests && $(MAKE) run
+
+test2:
+	@echo $(OBJS)
 
 norm:
 	norminette src/ include/
 
 clean:
 	$(MAKE) -C $(LIBFT) clean
-	$(MAKE) -C $(LIBMLX) clean
-	$(MAKE) -C $(LIBMLX) clean
 	$(RM) $(OBJS) $(BONUS_OBJS) $(LIB) lib/libtest.a
 	@cd tests && $(MAKE) clean
 
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_BONUS) $(LMLX)
+	$(RM) $(NAME) $(NAME_BONUS)
 
 re: fclean all
 
