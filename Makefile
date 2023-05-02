@@ -34,7 +34,7 @@ LIBDIR			:= lib
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/homebrew/opt/glfw/lib/"
+LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
 
 all: $(LFT) $(LMLX) $(NAME) #$(NAME_BONUS)
 
