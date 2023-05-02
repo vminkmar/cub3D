@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:26:17 by mgraefen          #+#    #+#             */
-/*   Updated: 2023/05/02 16:22:18 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:11:49 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 // Bytes Per Pixel. Since each pixel is represented as an integer, it will be four bytes for four channels.
 #define BPP sizeof(int32_t)
+
+void draw_map(mlx_image_t *img, int map[][4]);
 
 void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
 {
@@ -38,6 +40,12 @@ void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
 	}
 }
 
+void	draw_pixel(mlx_image_t *img, int x, int y, uint32_t color)
+{
+	if (x < WIDTH && x > 0 && y < HEIGHT && y > 0)
+		mlx_put_pixel(img, x, y, color);
+}
+
 void	draw_line(mlx_image_t *img, double x, double y, uint32_t color)
 {
 	double	dx;
@@ -47,7 +55,7 @@ void	draw_line(mlx_image_t *img, double x, double y, uint32_t color)
 	int		put_pix;
 
 	dx = 0;
-	dy = y + 10 - y;
+	dy = (y - 100) - y;
 	put_pix = sqrt((dx * dx) + (dy * dy));
 	dx /= put_pix;
 	dy /= put_pix;
@@ -55,7 +63,7 @@ void	draw_line(mlx_image_t *img, double x, double y, uint32_t color)
 	pix_y = y;
 	while (put_pix)
 	{
-		mlx_put_pixel(img, x, y, color);
+		draw_pixel(img, pix_x, pix_y, color);
 		pix_x = pix_x + dx;
 		pix_y = pix_y + dy;
 		put_pix--;
@@ -88,6 +96,7 @@ void my_loop_hook(void *param)
 	t_player *player;
 	
 	player = (t_player *)param;
+	draw_map(player->img, player->map);
 	if(mlx_is_key_down(player->mlx, MLX_KEY_RIGHT))
 	{
 		thickenize_pixel(player->img, player->x, player->y, 0xFFFFFFFF);
@@ -128,7 +137,10 @@ void draw_map(mlx_image_t *img, int map[][4])
 		while(j < 4)
 		{
 			if(map[i][j])
-				draw_square(img, x, y, 0xFF000000);
+				draw_square(img, x, y, 0x000000FF);
+			else
+				draw_square(img, x, y, 0xFFFFFFFF);
+
 			j++;
 			x += WIDTH / 4;
 		}
@@ -139,6 +151,12 @@ void draw_map(mlx_image_t *img, int map[][4])
 
 int32_t	main(void)
 {
+	
+	t_player *player;
+	
+	player = malloc(sizeof(t_player));
+	player->x = WIDTH / 2;
+	player->y = HEIGHT / 2;
 	int map[4][4] =
 	{ 	{0, 0, 0, 1},
 		{1, 1, 0, 1},
@@ -146,12 +164,7 @@ int32_t	main(void)
 		{1, 0, 1, 0}
 	};
 	
-	t_player *player;
-	
-	player = malloc(sizeof(t_player));
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
-	
+	ft_memcpy(player->map, map, sizeof(map));
 	
     // Init mlx with a canvas size of 256x256 and the ability to resize the window.
     mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
@@ -168,7 +181,7 @@ int32_t	main(void)
 
     // Draw the image at coordinate (0, 0).
 	mlx_image_to_window(mlx, img, 0, 0);	
-	draw_map(img, map);
+	draw_map(img, player->map);
 	mlx_loop_hook(mlx, &my_loop_hook, player);
     // Run the main loop and terminate on quit.  
     mlx_loop(mlx);

@@ -10,7 +10,8 @@ CFLAGS			:=	-g -Wall -Wextra -Werror
 
 VPATH			:=	src/
 
-SRC_FILES		:=	draw.c #main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c 
+#SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c 
+SRC_FILES		:=	draw.c
 
 HEADER			:=	-I./include/
 

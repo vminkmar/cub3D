@@ -4,3 +4,8 @@ obj
 *.dSYM
 cub3D
 /include/libft/*.o
+*.o
+*.a
+.vscode/
+a.out
+.DS_Store
