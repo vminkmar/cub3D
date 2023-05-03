@@ -105,6 +105,36 @@ typedef struct s_coord
 	double	y;
 } 	t_coord;
 
+//linked_list_to_array
+char	**transfer_map_to_array(t_map_list *map);
+
+//color_utils
+int	check_for_commas(char *str);
+int	number_counter(char *str);
+int	check_for_alpha(char *str);
+
+
+//color
+uint32_t	rgb_to_uint(int red, int green, int blue);
+void	check_numbers(int red, int green, int blue);
+void	get_color_floor(t_var *var);
+void	get_color_ceiling(t_var *var);
+void check_colors(t_var *var);
+
+//textures
+char *trim_spaces_string(char *str);
+void trim_spaces_textures(t_tex_list *tex);
+char *get_string_path(char *str);
+
+//get_textures_and_map
+void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
+			t_var *var);
+
+// get_textures_and_map_utils
+int	is_wall_or_field(char type);
+void	check_for_empty_line(char *line, t_map_list *map);
+int	is_begin_of_map(char *line);
+
 //check_map
 int	ft_whitespaces(char c);
 int ft_charcmp(char c, char *str);

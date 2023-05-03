@@ -11,7 +11,8 @@ CFLAGS			:=	-g -Wall -Wextra -Werror
 VPATH			:=	src/ src/parser
 
 SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free_stuff.c print_errors.c\
-					linked_list.c check_map.c #draw.c
+					linked_list.c check_map.c get_textures_and_map.c get_textures_and_map_utils.c textures.c color.c\
+					color_utils.c linked_list_to_array.c#draw.c
 
 HEADER			:=	-I./include/
 
