@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 17:04:55 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:23:02 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,26 @@ typedef struct s_var
 # define WIDTH 500
 # define HEIGHT 500
 
+# define CEILING	0xFF0000FF
+# define WALL		0x00FF00FF
+# define FLOOR		0xFF00FF00 
+
 typedef struct s_player
 {
 	double 	x;
 	double	y;
-	mlx_image_t *img;
-	mlx_t *mlx;
+	double	angle;
+	double	fov;
 	int	map[4][4];
+	mlx_t *mlx;
+	mlx_image_t *img;
 } 	t_player;
 
-typedef struct s_coord
+typedef enum e_coords
 {
-	double 	x;
-	double	y;
-} 	t_coord;
+	x_dim,
+	y_dim,
+} t_coords;
 
 
 //parser
