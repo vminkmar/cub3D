@@ -16,6 +16,7 @@
 #  define BUFFER_SIZE 10000
 # endif
 #define WHITESPACES " \t\r\f\v\n"
+#define WHITESPACES_WITHOUT_SPACES "\t\r\f\v\n"
 
 enum e_walls
 {
@@ -67,8 +68,10 @@ typedef struct s_var
 	char			*path_south;
 	char			*path_east;
 	char			*path_west;
-	char			*floor_color;
 	char			*ceiling_color;
+	char			*floor_color;
+	uint32_t		color_floor;
+	uint32_t		color_ceiling;
 }	t_var;
 
 //draw
@@ -100,10 +103,11 @@ void print_wrong_texures(t_tex_list *tex, int flag);
 void create_linked_list_for_textures(t_tex_list **tex);
 void create_linked_list_for_map(t_map_list **map);
 int ft_strcmp(char *first, char *second);
+void check_numbers(uint32_t red, uint32_t green, uint32_t blue);
 
 
 // utils
-int check_input(int argc, char **argv);
+int		check_input(int argc, char **argv);
 char	*sl_strjoin(char *s1, char *s2);
 
 //error_management
@@ -111,8 +115,10 @@ void print_error(char *message);
 
 
 //free_stuff
-void free_textures(t_tex_list **tex);
+void free_list_textures(t_tex_list **tex);
 void free_var(t_var *var);
+void free_list_map(t_map_list **map);
+void free_numbers(char **numbers);
 
 //draw
 int32_t	draw_it(void);

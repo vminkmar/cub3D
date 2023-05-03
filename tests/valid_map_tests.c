@@ -15,7 +15,7 @@ Test(check_input_tests, correct_input, .init = redir)
 {
     char *argv[2];
 	argv[0] = "cub3D";
-	argv[1] = "maps/";
+	argv[1] = "maps/map_correct_multiple_spaces";
 	int argc = 2;
 	cr_assert_eq(check_input(argc, argv), 0, "Expected 0 when no argument is provided");
 }

@@ -10,7 +10,9 @@ CFLAGS			:=	-g -Wall -Wextra -Werror
 
 VPATH			:=	src/
 
-SRC_FILES		:=	draw.c #main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c 
+SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c #draw.c
+
+SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c #draw.c
 
 HEADER			:=	-I./include/
 
@@ -36,12 +38,14 @@ LIB				:= $(LIBDIR)/cub3D.a
 
 LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
 
-all: $(LFT) $(LMLX) $(NAME) #$(NAME_BONUS)
+all: libft $(LMLX) $(NAME) #$(NAME_BONUS)
 
-$(LFT):	$(LIBFT)
-	@git submodule init Libft
-	@git submodule update Libft
-	@cd include/Libft && make && make clean
+libft: $(LFT)
+
+$(LFT):
+	@git submodule init
+	@git submodule update
+	@make -C ./include/Libft
 
 $(LMLX): $(LIBMLX)
 	@git submodule init MLX42
@@ -61,14 +65,11 @@ $(ODIR):
 	mkdir $(ODIR)
 
 test: $(TEST_FILES)
-	@ar -rcs lib/libtest.a $(OBJS) include/libft/*.o
+	@ar -rcs lib/libtest.a $(OBJS) include/Libft/*.o
 	@cd tests && $(MAKE) run
 
-test2:
-	@echo $(OBJS)
-
 norm:
-	norminette src/ include/
+	norminette src/ include/cub3D.h
 
 clean:
 	$(MAKE) -C $(LIBFT) clean
@@ -77,11 +78,11 @@ clean:
 
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_BONUS)
+	$(RM) $(NAME) $(NAME_BONUS) $(LFT)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus libft
 
 
 LSAN			=	LeakSanitizer
