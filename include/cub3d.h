@@ -103,7 +103,7 @@ void print_wrong_texures(t_tex_list *tex, int flag);
 void create_linked_list_for_textures(t_tex_list **tex);
 void create_linked_list_for_map(t_map_list **map);
 int ft_strcmp(char *first, char *second);
-void check_numbers(uint32_t red, uint32_t green, uint32_t blue);
+void check_numbers(int red, int green, int blue);
 
 
 // utils

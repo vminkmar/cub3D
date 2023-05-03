@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 16:31:12 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/03 17:49:41 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:59:49 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,32 +337,7 @@ void	check_textures(t_tex_list *tex, t_var *var)
 		print_wrong_textures(tex, var, error);
 }
 
-u_int8_t ft_atoui(char *str)
-{
-	uint8_t	sign;
-	uint8_t	result;
-
-	sign = 1;
-	result = 0;
-	while (*str == 32 || (*str >= 9 && *str <= 13))
-	{
-		str++;
-	}
-	if (*str == '-' || *str == '+')
-	{		
-		if (*str == '-')
-			sign *= -1;
-		str++;
-	}
-	while (*str >= '0' && *str <= '9' && *str != '\0')
-	{
-		result = result * 10 + *str - '0';
-		str++;
-	}
-	return (result * sign);
-}
-
-uint32_t rgb_to_uint(u_int8_t red, u_int8_t green, u_int8_t blue)
+uint32_t rgb_to_uint(int red, int green, int blue)
 {
 	uint32_t result;
 
@@ -374,7 +349,7 @@ uint32_t rgb_to_uint(u_int8_t red, u_int8_t green, u_int8_t blue)
 	return (result);
 }
 
-void check_numbers(uint32_t red, uint32_t green, uint32_t blue)
+void check_numbers(int red, int green, int blue)
 {
 	if(red > 256 || red < 0 || blue > 256 || blue < 0 || green > 256
 		|| green < 0)
@@ -389,20 +364,20 @@ void get_color_floor(t_var *var)
 {
 	char	**numbers_floor;
 	int		i;
-	uint8_t	red;
-	uint8_t	green;
-	uint8_t	blue;
-	
+	int		red;
+	int		green;
+	int		blue;
+
 	i = 0;
 	numbers_floor = ft_split((const char *)var->floor_color, ',');
 	while(numbers_floor[i] != NULL)
 	{
 		if (i == 0)
-			red = ft_atoui(numbers_floor[i]);
+			red = ft_atoi(numbers_floor[i]);
 		if (i == 1)
-			green = ft_atoui(numbers_floor[i]);
+			green = ft_atoi(numbers_floor[i]);
 		if (i == 2)
-			blue = ft_atoui(numbers_floor[i]);
+			blue = ft_atoi(numbers_floor[i]);
 		i ++;
 	}
 	check_numbers(red, green, blue);
@@ -415,20 +390,20 @@ void get_color_ceiling(t_var *var)
 {
 	char	**numbers_ceiling;
 	int		i;
-	uint8_t	red;
-	uint8_t	green;
-	uint8_t	blue;
-	
+	int		red;
+	int		green;
+	int		blue;
+
 	i = 0;
 	numbers_ceiling = ft_split((const char *)var->ceiling_color, ',');
 	while(numbers_ceiling[i] != NULL)
 	{
 		if (i == 0)
-			red = ft_atoui(numbers_ceiling[i]);
+			red = ft_atoi(numbers_ceiling[i]);
 		if (i == 1)
-			green = ft_atoui(numbers_ceiling[i]);
+			green = ft_atoi(numbers_ceiling[i]);
 		if (i == 2)
-			blue = ft_atoui(numbers_ceiling[i]);
+			blue = ft_atoi(numbers_ceiling[i]);
 		i ++;
 	}
 	check_numbers(red, green, blue);
