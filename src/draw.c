@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/28 10:26:17 by mgraefen          #+#    #+#             */
-/*   Updated: 2023/05/02 16:22:18 by mgraefen         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/cub3d.h"
 
 // Bytes Per Pixel. Since each pixel is represented as an integer, it will be four bytes for four channels.

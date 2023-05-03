@@ -105,25 +105,39 @@ typedef struct s_coord
 	double	y;
 } 	t_coord;
 
+//check_map
+int	ft_whitespaces(char c);
+int ft_charcmp(char c, char *str);
+void check_around_zero(char **map, int line, int character, t_var *var);
+void	check_map(char **map, t_var *var);
+
+//init
+void	init_variables(t_var *var, t_map_list *map, t_tex_list *tex);
 
 //parser
-void parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex);
-void print_wrong_texures(t_tex_list *tex, int flag);
+void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex);
+void 	check_numbers(int red, int green, int blue);
 
+//print_errors
+void	print_wrong_textures(t_tex_list *tex, t_var *var, t_error error);
+void	print_wrong_color(t_error_color error);
+void	print_error(char *message);
 
-//parser_utils
-void create_linked_list_for_textures(t_tex_list **tex);
-void create_linked_list_for_map(t_map_list **map);
-int ft_strcmp(char *first, char *second);
-void check_numbers(int red, int green, int blue);
+//parser_linked_list_utils
+void	ft_lstadd_back_tex(t_tex_list **lst, t_tex_list *new);
+void	ft_lstadd_back_map(t_map_list **lst, t_map_list *new);
+
+//parser_linked_list
+void	create_linked_list_for_textures(t_tex_list **tex);
+void	create_linked_list_for_map(t_map_list **map);
+void	add_node_to_map(char *line, t_map_list **map);
+void	add_node_to_tex(char *line, t_tex_list **tex);
 
 
 // utils
 int		check_input(int argc, char **argv);
 char	*sl_strjoin(char *s1, char *s2);
-
-//error_management
-void print_error(char *message);
+int		ft_strcmp(char *first, char *second);
 
 
 //free_stuff

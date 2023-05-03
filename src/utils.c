@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 16:40:25 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/04/27 16:40:36 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:38:59 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,24 @@ char	*sl_strjoin(char *s1, char *s2)
 	a[i] = '\0';
 	free(s1);
 	return (a);
+}
+
+int	ft_strcmp(char *first, char *second)
+{
+	int	counter_first;
+	int	counter_second;
+
+	counter_first = 0;
+	while(first[counter_first] != '\0')
+	{
+		counter_second = 0;
+		while(second[counter_second] != '\0')
+		{	
+			if(first[counter_first] != second[counter_second])
+				return (1);
+			counter_second++;
+		}
+		counter_first ++;
+	}
+	return (0);
 }

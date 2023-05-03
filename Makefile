@@ -8,11 +8,10 @@ RM				:=	rm -f
 
 CFLAGS			:=	-g -Wall -Wextra -Werror
 
-VPATH			:=	src/
+VPATH			:=	src/ src/parser
 
-SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c #draw.c
-
-SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c #draw.c
+SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free_stuff.c print_errors.c\
+					linked_list.c check_map.c #draw.c
 
 HEADER			:=	-I./include/
 
