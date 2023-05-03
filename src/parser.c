@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 16:31:12 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/03 17:59:49 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:25:41 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void init_variables(t_var *var, t_map_list *map, t_tex_list *tex)
 	var->floor_color = NULL;
 	var->ceiling_color = NULL;
 	var->color_ceiling = 0;
+	var->map.height = 0;
 	var->color_floor = 0;
 	map->empty_line = 0;
 	tex->counter = 0;
@@ -176,7 +177,7 @@ void	get_map(char *line, t_map_list *map)
 	add_node_to_map(line, &map);
 }
 
-void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex)
+void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex, t_var *var)
 {
 	int		fd;
 	char	*line;
@@ -199,6 +200,7 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex)
 		{
 			begin_of_map = 1;
 			get_map(line, map);
+			var->map.height++;
 		}
 	}
 	close (fd);
@@ -297,17 +299,16 @@ void	print_wrong_textures(t_tex_list *tex, t_var *var, t_error error)
 {
 	if (error == ERROR_EAST)
 		print_error("There is no east texture or you choose the wrong one");
-	if (error == ERROR_NORTH)
+	else if (error == ERROR_NORTH)
 		print_error("There is no north texture or you choose the wrong one");
-	if (error == ERROR_SOUTH)
+	else if (error == ERROR_SOUTH)
 		print_error("There is no south texture or you choose the wrong one");
-	if (error == ERROR_WEST)
+	else if (error == ERROR_WEST)
 		print_error("There is no west texture or you choose the wrong one");
-	if (error == ERROR_FLOOR)
+	else if (error == ERROR_FLOOR)
 		print_error("There is no floor color or you choose the wrong one");
-	if (error == ERROR_CEILING)
+	else if (error == ERROR_CEILING)
 		print_error("There is no ceiling color or you choose the wrong one");
-	var = NULL;
 	free_list_textures(&tex);
 	free_var(var);
 	tex = NULL;
@@ -323,17 +324,17 @@ void	check_textures(t_tex_list *tex, t_var *var)
 	flag = 0;
 	if (var->path_east == NULL)
 		error = ERROR_EAST;
-	if (var->path_north == NULL)
+	else if (var->path_north == NULL)
 		error = ERROR_NORTH;
-	if (var->path_south == NULL)
+	else if (var->path_south == NULL)
 		error = ERROR_SOUTH;
-	if (var->path_west == NULL)
+	else if (var->path_west == NULL)
 		error = ERROR_WEST;
-	if (var->floor_color == NULL)
+	else if (var->floor_color == NULL)
 		error = ERROR_FLOOR;
-	if (var->ceiling_color == NULL)
+	else if (var->ceiling_color == NULL)
 		error = ERROR_CEILING;
-	if (error != ERROR_NO)
+	else if (error != ERROR_NO)
 		print_wrong_textures(tex, var, error);
 }
 
@@ -411,11 +412,106 @@ void get_color_ceiling(t_var *var)
 	var->color_ceiling = rgb_to_uint(red, green, blue);
 }
 
+int check_for_commas(char *str)
+{
+	int i;
+	int comma_counter;
+
+	i = 0;
+	comma_counter = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == ',')
+			comma_counter++;
+		if (str[i] == ',' && str[i + 1] == ',')
+			return (1);
+		if (comma_counter > 2)
+			return (1);
+		i ++;
+	}
+	return (0);
+}
+
+int number_counter(char *str)
+{
+	int i;
+	int counter;
+
+	counter = 1;
+	i = 0;
+	while(str[i] != '\0')
+	{
+		if(str[i] == ',' && str[i + 1] != '\0' && ft_isdigit(str[i + 1]) == 1)
+			counter ++;
+		i ++;
+	}
+	if(counter != 3)
+		return (1);
+	return (0);
+}
+
+void print_wrong_color(int error)
+{
+	if (error == ERROR_COMMA_CEILING)
+		print_error("Check the number of commas in ceiling color");
+	if (error == ERROR_COMMA_FLOOR)
+		print_error("Check the number of commas in floor color");
+	if (error == ERROR_NUMBER_FLOOR)
+		print_error("Check the amount of numbers in floor color");
+	if (error == ERROR_NUMBER_CEILING)
+		print_error("Check the amount of numbers in ceiling color");
+	if (error == ERROR_ALPHA_FLOOR)
+		print_error("Check the for Letters in floor color");
+	if (error == ERROR_ALPHA_CEILING)
+		print_error("Check for Letters in floor ceiling");
+	// free
+	exit (1);
+
+}
+
+int check_for_alpha(char *str)
+{
+	int i;
+	
+	i = 0;
+	while(str[i] != '\0')
+	{
+		if(str[i] == ',')
+			i ++;
+		if(ft_isalpha(str[i]) == 1)
+			return (1);
+		i ++;
+	}
+	return (0);
+}
+
+void check_colors(t_var *var)
+{
+	t_error_color error;
+	
+	error = NO_ERROR;
+	if (check_for_commas(var->floor_color) == 1)
+		error = ERROR_COMMA_FLOOR;
+	else if (check_for_commas(var->ceiling_color) == 1)
+		error = ERROR_COMMA_CEILING;
+	else if (number_counter(var->ceiling_color) == 1)
+		error = ERROR_NUMBER_CEILING;
+	else if (number_counter(var->floor_color) == 1)
+		error = ERROR_NUMBER_FLOOR;
+	else if (check_for_alpha(var->ceiling_color) == 1)
+		error = ERROR_ALPHA_CEILING;
+	else if (check_for_alpha(var->floor_color) == 1)
+		error = ERROR_ALPHA_FLOOR;
+	if (error != NO_ERROR)
+		print_wrong_color(error);
+}
+
 void compare_and_check_textures(t_tex_list *tex, t_var *var)
 {
 	trim_textures(tex);
 	compare_textures(tex, var);
 	check_textures(tex, var);
+	check_colors(var);
 	get_color_floor(var);
 	get_color_ceiling(var);
 
@@ -455,15 +551,88 @@ char **transfer_map_to_array(t_map_list *map)
 	return (map_data);
 }
 
+int ft_whitespaces(char c)
+{
+	if(c == '\t' || c == '\r' || c == '\f' || c == '\v' || c == '\n')
+		return (1);
+	return (0);
+}
+
+int ft_charcmp(char c, char *str)
+{
+	int i;
+	
+	i = 0;
+	while(str[i] != '\0')
+	{
+		if(str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+
+void check_around_zero(char **map, int line, int character, t_var *var)
+{
+	t_error error;
+
+	error = ERROR_NO;
+	if (map[0][character] == '0' || map[line][0] == '0'
+		|| map[var->map.height - 1][character] == '0'
+		|| map[line][ft_strlen(map[line]) - 1] == '0')
+		error = ERROR_INVALID;
+	else if (ft_charcmp(map[line][character - 1], WHITESPACES) == 1)
+		error = ERROR_INVALID;
+	else if (ft_charcmp(map[line][character + 1], WHITESPACES) == 1)
+		error = ERROR_INVALID;
+	else if (ft_charcmp(map[line - 1][character], WHITESPACES) == 1)
+		error = ERROR_INVALID;
+	else if (ft_charcmp(map[line + 1][character], WHITESPACES) == 1)
+		error = ERROR_INVALID;
+	if (error == ERROR_INVALID)
+	{
+		print_error("Invalid map");
+		// free;
+		exit (1);
+	}
+}
+
+void	check_map(char **map, t_var *var)
+{
+	int	line;
+	int	character;
+
+	line = 0;
+	while(map[line] != NULL)
+	{
+		character = 0;
+		while(map[line][character] != '\n' && map[line][character] != '\0')
+		{	
+			if(map[line][character] == '0')
+				check_around_zero(map, line, character, var);
+			if (ft_whitespaces(map[line][character]) == 1)
+			{
+				print_error("There is a not allowed whitespace in the map");
+				// free
+				exit (1);
+			}
+			character ++;
+		}
+		line ++;
+	}
+}
+
 
 void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex)
 {
 	create_linked_list_for_textures(&tex);
 	create_linked_list_for_map(&map);
 	init_variables(var, map, tex);
-	get_textures_and_map(argv, map, tex);
+	get_textures_and_map(argv, map, tex, var);
 	compare_and_check_textures(tex, var);
 	var->map.map = transfer_map_to_array(map);
+	check_map(var->map.map, var);
 	free_list_textures(&tex);
 	free_list_map(&map);
 }

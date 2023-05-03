@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 12:02:44 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 10:51:35 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/03 19:54:11 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,20 @@
 
 int ft_strcmp(char *first, char *second)
 {
-	int i;
+	int counter_first;
+	int counter_second;
 
-	i = 0;
-	while(first[i] != '\0' && second[i] != '\0')
+	counter_first = 0;
+	while(first[counter_first] != '\0')
 	{
-		if(first[i] != second[i])
-			return (1);
-		i ++;
+		counter_second = 0;
+		while(second[counter_second] != '\0')
+		{	
+			if(first[counter_first] != second[counter_second])
+				return (1);
+			counter_second++;
+		}
+		counter_first ++;
 	}
 	return (0);
 }

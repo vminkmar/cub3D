@@ -18,11 +18,11 @@
 #define WHITESPACES " \t\r\f\v\n"
 #define WHITESPACES_WITHOUT_SPACES "\t\r\f\v\n"
 
-enum e_walls
+typedef enum e_type
 {
-	FLOOR,
+	WALKABLE,
 	WALL,
-};
+} t_type;
 
 typedef enum e_error
 {
@@ -33,8 +33,21 @@ typedef enum e_error
 	ERROR_FLOOR,
 	ERROR_CEILING,
 	ERROR_NO,
+	ERROR_INVALID,
 	
 } t_error;
+
+typedef enum e_error_color
+{
+	ERROR_COMMA_CEILING,
+	ERROR_COMMA_FLOOR,
+	ERROR_NUMBER_CEILING,
+	ERROR_NUMBER_FLOOR,
+	ERROR_ALPHA_FLOOR,
+	ERROR_ALPHA_CEILING,
+	NO_ERROR,
+} t_error_color;
+
 
 typedef struct s_map_list
 {
@@ -53,10 +66,9 @@ typedef struct s_tex_list
 
 typedef struct s_map
 {
-	enum e_walls	walls;
-	double			height;
-	double			width;
-	char			**map;
+	int		height;
+	int		width;
+	char	**map;
 	
 }	t_map;
 
