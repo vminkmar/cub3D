@@ -64,5 +64,4 @@ void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex)
 	check_map(var->map.map, var);
 	free_list_textures(&tex);
 	free_list_map(&map);
-	printf("%s", var->floor_color);
 }
