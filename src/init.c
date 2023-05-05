@@ -8,6 +8,10 @@ void	init_variables(t_var *var, t_map_list *map, t_tex_list *tex)
 	var->path_north = NULL;
 	var->floor_color = NULL;
 	var->ceiling_color = NULL;
+	var->map.player.start_points = 0;
+	var->map.player.start.x = 0;
+	var->map.player.start.y = 0;
+	var->color_ceiling = 0;
 	var->color_ceiling = 0;
 	var->map.height = 0;
 	var->color_floor = 0;

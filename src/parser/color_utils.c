@@ -53,3 +53,36 @@ int	check_for_alpha(char *str)
 	}
 	return (0);
 }
+
+int	compare_strings(char *first, char *second)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while(first[i] != '\0')
+	{
+		j = 0;
+		while(second[j] != '\0')
+		{
+			if (first[i] == second[j])
+				return (1);
+			j ++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+void	check_for_spaces(char *str, int flag)
+{
+	if(compare_strings(str, WHITESPACES_LESS) == 1)
+	{
+		if (flag == 1)
+			print_error("There are whitespaces in the floor color");
+		if (flag == 2)
+			print_error("There are whitespaces in the ceiling color");
+		// free
+		exit (1);
+	}
+}

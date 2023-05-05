@@ -34,6 +34,7 @@ void	get_color_floor(t_var *var)
 	numbers_floor = ft_split((const char *)var->floor_color, ',');
 	while (numbers_floor[i] != NULL)
 	{
+		check_for_spaces(numbers_floor[i], 1);
 		if (i == 0)
 			red = ft_atoi(numbers_floor[i]);
 		if (i == 1)
@@ -59,6 +60,7 @@ void	get_color_ceiling(t_var *var)
 	numbers_ceiling = ft_split((const char *)var->ceiling_color, ',');
 	while (numbers_ceiling[i] != NULL)
 	{
+		check_for_spaces(numbers_ceiling[i], 2);
 		if (i == 0)
 			red = ft_atoi(numbers_ceiling[i]);
 		if (i == 1)

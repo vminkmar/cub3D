@@ -26,9 +26,9 @@ void	check_around_zero(char **map, int line, int character, t_var *var)
 	t_error	error;
 
 	error = ERROR_NO;
-	if (map[0][character] == '0' || map[line][0] == '0'
-		|| map[var->map.height - 1][character] == '0'
-		|| map[line][ft_strlen(map[line]) - 1] == '0')
+	if (map[0][character] == WALKABLE || map[line][0] == WALKABLE
+		|| map[var->map.height - 1][character] == WALKABLE
+		|| map[line][ft_strlen(map[line]) - 1] == WALKABLE)
 		error = ERROR_INVALID;
 	else if (ft_charcmp(map[line][character - 1], WHITESPACES) == 1)
 		error = ERROR_INVALID;

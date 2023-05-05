@@ -16,12 +16,13 @@
 #  define BUFFER_SIZE 10000
 # endif
 #define WHITESPACES " \t\r\f\v\n"
-#define WHITESPACES_WITHOUT_SPACES "\t\r\f\v\n"
+#define WHITESPACES_LESS "\t\r\f\v"
 
 typedef enum e_type
 {
 	WALKABLE,
 	WALL,
+	
 } t_type;
 
 typedef enum e_error
@@ -45,9 +46,30 @@ typedef enum e_error_color
 	ERROR_NUMBER_FLOOR,
 	ERROR_ALPHA_FLOOR,
 	ERROR_ALPHA_CEILING,
+	ERROR_SPACES_FLOOR,
+	ERROR_SPACES_CEILING,
 	NO_ERROR,
 } t_error_color;
 
+
+//draw
+
+# define WIDTH 500
+# define HEIGHT 500
+
+typedef struct s_coord
+{
+	double	x;
+	double	y;
+} 	t_coord;
+
+typedef struct s_player
+{
+	int			start_points;
+	t_coord		start;
+	mlx_image_t	*img;
+	mlx_t		*mlx;
+} 	t_player;
 
 typedef struct s_map_list
 {
@@ -63,12 +85,13 @@ typedef struct s_tex_list
 	struct s_tex_list	*next;
 }	t_tex_list;
 
-
 typedef struct s_map
 {
-	int		height;
-	int		width;
-	char	**map;
+	int			height;
+	char		**start_point;
+	int			width;
+	t_player	player;
+	char		**map;
 	
 }	t_map;
 
@@ -86,32 +109,23 @@ typedef struct s_var
 	uint32_t		color_ceiling;
 }	t_var;
 
-//draw
 
-# define WIDTH 500
-# define HEIGHT 500
 
-typedef struct s_player
-{
-	double 	x;
-	double	y;
-	mlx_image_t *img;
-	mlx_t *mlx;
-} 	t_player;
 
-typedef struct s_coord
-{
-	double 	x;
-	double	y;
-} 	t_coord;
+
+
+
+
+
 
 //linked_list_to_array
-char	**transfer_map_to_array(t_map_list *map);
+char	**transfer_map_to_array(t_map_list *map, t_var *var);
 
 //color_utils
 int	check_for_commas(char *str);
 int	number_counter(char *str);
 int	check_for_alpha(char *str);
+void check_for_spaces(char *str, int flag);	
 
 
 //color
