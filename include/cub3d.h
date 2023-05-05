@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/03 16:23:02 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:56:52 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_player
 	double	y;
 	double	angle;
 	double	fov;
-	int	map[4][4];
+	int	map[6][6];
 	mlx_t *mlx;
 	mlx_image_t *img;
 } 	t_player;

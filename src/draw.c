@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:26:17 by mgraefen          #+#    #+#             */
-/*   Updated: 2023/05/03 16:40:36 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/05 09:48:40 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 // Bytes Per Pixel. Since each pixel is represented as an integer, it will be four bytes for four channels.
 #define BPP sizeof(int32_t)
 
-void draw_map(mlx_image_t *img, int map[][4]);
+void draw_map(mlx_image_t *img, int map[][6]);
+void	draw_one_stripe(t_player *player, double distance, int x);
 
 void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
 {
@@ -25,11 +26,11 @@ void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
 	int count_y;
 
 	count_y = 0;
-	while(count_y < HEIGHT / 4)
+	while(count_y < HEIGHT / 6)
 	{
 		new_x = x;
 		count_x = 0;
-		while(count_x < WIDTH / 4)
+		while(count_x < WIDTH / 6)
 		{
 			mlx_put_pixel(img, new_x, new_y, color);
 			new_x++;
@@ -71,23 +72,33 @@ int stop_line_drawing(t_player *player, double pix_y, double pix_x)
 	int i;
     int j;
 	
-	i = (int)pix_y / (HEIGHT / 4);
-    j = (int)pix_x / (WIDTH / 4);
-
+	i = (int)pix_y / (HEIGHT / 6);
+    j = (int)pix_x / (WIDTH / 6);
+	if(i > 5 || j > 5)
+		return(0);
 	if (player->map[i][j] == 1)
         return (1);
 	return (0);
 }
 
-void distance_to_wall(int put_pix, int origin_put_pix)
+double distance_to_plain(double distance, double angle, double player_angle)
 {
-	int distance_to_wall;
-
-	distance_to_wall = origin_put_pix - put_pix;
-	printf("Distance to Wall: %i\n", distance_to_wall);
+    double diff_angle = angle - player_angle;
+    double perp_distance = distance * cos(diff_angle);
+    return fabs(perp_distance);
 }
 
-void	draw_line(t_player *player, uint32_t color, double angle)
+double distance_to_wall(int put_pix, int origin_put_pix, double angle, double player_angle)
+{
+	double distance;
+
+	distance = (double)origin_put_pix - (double)put_pix;
+	//printf("Distance to Wall: %i\n", distance_to_wall);
+	distance = distance_to_plain(distance, angle, player_angle);
+	return (fabs(distance));
+}
+
+void	cast_ray(t_player *player, double angle)
 {
 	double	dx;
 	double	dy;
@@ -95,10 +106,12 @@ void	draw_line(t_player *player, uint32_t color, double angle)
 	double	pix_y;
 	int		put_pix;
 	int		origin_put_pix;
+	uint32_t color;
 
 	dx = WIDTH;
 	dy = HEIGHT;
 	double radians = angle * (M_PI / 180.0);
+	//double radians_player = player->angle * (M_PI / 180.0);
 	dx = angle_update_delta(x_dim, player, dx, dy, radians);
 	dy = angle_update_delta(y_dim, player, dx, dy, radians);
 	put_pix = sqrt((dx * dx) + (dy * dy));
@@ -107,6 +120,7 @@ void	draw_line(t_player *player, uint32_t color, double angle)
 	dy /= put_pix;
 	pix_x = player->x;
 	pix_y = player->y;
+	color = 0xFF00FF;
 	while (put_pix)
 	{
         if (stop_line_drawing(player, pix_y, pix_x))
@@ -116,47 +130,108 @@ void	draw_line(t_player *player, uint32_t color, double angle)
 		pix_y = pix_y + dy;
 		put_pix--;
 	}
-	//distance_to_wall(put_pix, origin_put_pix);
+	//draw_one_stripe(player, distance_to_wall(put_pix, origin_put_pix, radians, radians_player));
 }
 
-void	draw_stripe(t_player *player)
+void cast_dda_ray(t_player *player, double angle)
 {
-	int	height_c;
-	int	height_w;
-	int	height_f;
+	double	ray_dir_y;
+	double	ray_dir_x;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	perp_wall_dist;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
 
-	int x;
-	int y;
-
-	x = 0;
-	y = 0;
-	height_c = 0;
-	height_w = 0 + HEIGHT / 3;
-	height_f = height_w + HEIGHT / 3;
-	while(x < WIDTH)
-	{
-		y = 0;
-		while(y < HEIGHT)
-		{
-			while(y < height_w)
-			{
-				draw_pixel(player->img, x, y, CEILING);
-				y++;
-			}
-			while(y < height_f)
-			{
-				draw_pixel(player->img, x, y, WALL);
-				y++;
-			}
-			while(y < HEIGHT)
-			{
-				draw_pixel(player->img, x, y, FLOOR);
-				y++;
-			}
-		}
-		x++;
-	}
+	map_x = (int)player->x;
+	map_y = (int)player->y;
+	ray_dir_x = cos(angle);
+	ray_dir_y = sin(angle);
+	angle = angle * (M_PI / 180.0);
+	delta_dist_x = fabs(1 / ray_dir_x);
+	delta_dist_y = fabs(1 / ray_dir_y);
+	hit = 0;
 	
+	if(ray_dir_x < 0)
+	{
+		step_x = -1;
+		side_dist_x = (player->x - map_x) * delta_dist_x;
+	}
+	else
+	{
+		step_x = 1;
+		side_dist_x = (map_x + 1.0 - player->x) * delta_dist_x;
+	}
+	if(ray_dir_y < 0)
+	{
+		step_y = -1;
+		side_dist_y = (player->y - map_y) * delta_dist_y;
+	}
+	else
+	{
+		step_y = 1;
+		side_dist_y = (map_y + 1.0 - player->y) * delta_dist_y;
+	}
+	while(!hit)
+	{
+		if (side_dist_x < side_dist_y)
+		{
+			side_dist_x += delta_dist_x;
+			map_x += step_x;
+			side = 0;
+		}
+		else
+		{
+			side_dist_y += delta_dist_y;
+			map_y += step_y;
+			side = 1;
+		}
+		if (map_x < 0 || map_x >= 6 || map_y < 0 || map_y >= 6)
+			break;
+		draw_pixel(player->img, map_x, map_y, 0xFF0000FF);
+		if(player->map[map_y][map_x] > 0)
+			hit = 1;
+	}
+	if(!side)
+		perp_wall_dist = (map_x - player->x + (1 - step_x) / 2) / ray_dir_x;
+	else
+		perp_wall_dist = (map_y - player->y + (1 - step_y) / 2) / ray_dir_y;
+	//draw_one_stripe(player, perp_wall_dist, i);
+}
+
+void	draw_one_stripe(t_player *player, double distance, int x)
+{
+	int y;
+	int wall_start;
+	int	wall_end;
+	int proj_wall_height;
+	uint32_t color;
+
+	y = 0;
+	if(distance <= 0)
+		return ;
+	proj_wall_height = (HEIGHT / distance);
+    wall_start = (HEIGHT - proj_wall_height) / 2;
+    wall_end = wall_start + proj_wall_height;
+
+    while (y < HEIGHT)
+    {
+        if (y < wall_start)
+            color = CEILING;
+        else if (y < wall_end)
+            color = WALL;
+        else
+            color = FLOOR;
+		if(x > 0 && x < WIDTH && (y > 0 && y < HEIGHT))
+        	mlx_put_pixel(player->img, x, y, color);
+		y++;
+    }
 }
 
 void	draw_fov(t_player *player)
@@ -164,14 +239,17 @@ void	draw_fov(t_player *player)
 	double	current_angle;
 	double	end_angle;
 	double	step;
+	int		i;
 	
+	i = 0;
 	current_angle = player->angle - (player->fov / 2);
 	end_angle = player->angle + (player->fov / 2);
 	step = player->fov / (double)WIDTH;
 	while (current_angle < end_angle)
 	{
-		draw_line(player, 0xFF0000FF, current_angle);
+		cast_dda_ray(player, current_angle);
 		current_angle += step;
+		i++;
 	} 
 }
 
@@ -202,8 +280,11 @@ void thickenize_pixel(t_player *player, double x, double y, uint32_t color)
         }
         i++;
     }
-	draw_fov(player);
-	draw_line(player, 0xFFFF00FF, player->angle);
+/* 	(void)x;
+	(void)y;
+	(void)color; */
+	//draw_fov(player);
+	cast_ray(player, player->angle);
 }
 
 void my_loop_hook(void *param)
@@ -249,7 +330,7 @@ void my_loop_hook(void *param)
 	thickenize_pixel(player, player->x, player->y, 0x00FF0000);
 }
 
-void draw_map(mlx_image_t *img, int map[][4])
+void draw_map(mlx_image_t *img, int map[][6])
 {
 	int x = 0;
 	int y = 0;
@@ -285,15 +366,23 @@ int32_t	main(void)
 	player->x = WIDTH / 2;
 	player->y = HEIGHT / 2;
 	player->angle = 0;
-	player->fov = 60;
-	int map[4][4] =
-	{ 	{1, 0, 0, 1},
-		{1, 0, 0, 1},
-		{1, 0, 0, 0},
-		{1, 0, 1, 0}
+	player->fov = 45;
+	int map[6][6] =
+	{ 	{1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1, 1},
+		{1, 1, 1, 1, 1, 1}
 	};
 	
-	ft_memcpy(player->map, map, sizeof(map));
+	/* ft_memcpy(player->map, map, sizeof(map)); */
+	for (int i = 0; i < 6; i++) {
+    for (int j = 0; j < 6; j++) {
+        player->map[i][j] = map[i][j];
+    }
+}
+
 	
     // Init mlx with a canvas size of 256x256 and the ability to resize the window.
     mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
@@ -310,9 +399,9 @@ int32_t	main(void)
 
     // Draw the image at coordinate (0, 0).
 	mlx_image_to_window(mlx, img, 0, 0);
-	draw_stripe(player);
+	//draw_stripe(player);
 	//draw_map(img, player->map);
-	//mlx_loop_hook(mlx, &my_loop_hook, player);
+	mlx_loop_hook(mlx, &my_loop_hook, player);
     // Run the main loop and terminate on quit.  
     mlx_loop(mlx);
     mlx_terminate(mlx);
