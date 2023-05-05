@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/03 16:23:02 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/05 15:33:38 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,39 @@ typedef struct s_var
 # define WALL		0x00FF00FF
 # define FLOOR		0xFF00FF00 
 
+typedef struct s_fvector
+{
+	double x;
+	double y;
+}	t_fvector;
+
+typedef struct s_ivector
+{
+	int x;
+	int y;
+}	t_ivector;
+
+typedef struct s_ray
+{
+	t_fvector	start;
+    t_fvector	dir;
+	t_fvector	step_size;
+	t_ivector	map_check;
+	t_fvector	length;
+	t_ivector	step;
+	t_fvector	interception;
+} t_ray;
+
 typedef struct s_player
 {
-	double 	x;
-	double	y;
-	double	angle;
-	double	fov;
-	int	map[4][4];
-	mlx_t *mlx;
+	double		angle;
+	t_fvector	p_start;
+	double		fov;
+	int			map[4][4];
+	mlx_t		*mlx;
 	mlx_image_t *img;
 } 	t_player;
+
 
 typedef enum e_coords
 {
