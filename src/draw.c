@@ -1,21 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/28 10:26:17 by mgraefen          #+#    #+#             */
-/*   Updated: 2023/05/05 16:41:11 by mgraefen         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/cub3d.h"
 
 // Bytes Per Pixel. Since each pixel is represented as an integer, it will be four bytes for four channels.
 #define BPP sizeof(int32_t)
 
-void draw_map(mlx_image_t *img, int map[][4]);
+void draw_map(mlx_image_t *img, int map[][6]);
 
 void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
 {
@@ -25,11 +13,11 @@ void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
 	int count_y;
 
 	count_y = 0;
-	while(count_y < HEIGHT / 4)
+	while(count_y < HEIGHT / GRID_HEIGHT)
 	{
 		new_x = x;
 		count_x = 0;
-		while(count_x < WIDTH / 4)
+		while(count_x < WIDTH / GRID_WIDTH)
 		{
 			mlx_put_pixel(img, new_x, new_y, color);
 			new_x++;
@@ -46,79 +34,34 @@ void	draw_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 		mlx_put_pixel(img, x, y, color);
 }
 
-/* double angle_update_delta(t_coords dim, t_player *player, double dx, double dy, double angle)
+void get_steps(t_ray *ray)
 {
-	double	radius;
-	double	new_delta;
-	double	new_dim;
-	
-	radius = sqrt((dx * dx) + (dy * dy));
-	if (dim == x_dim)
-	{
-		new_dim = player->p_start.x + radius * cos(angle);
-		new_delta = new_dim - player->p_start.x;
-	}
-	if (dim == y_dim)
-	{
-		new_dim = player->p_start.y + radius * sin(angle);
-		new_delta = new_dim - player->p_start.y;
-	}
-	return (new_delta);
-} */
-
-int stop_line_drawing(t_player *player, double pix_y, double pix_x)
-{
-	int i;
-    int j;
-	
-	i = (int)pix_y / (HEIGHT / 4);
-    j = (int)pix_x / (WIDTH / 4);
-
-	if (player->map[i][j] == 1)
-        return (1);
-	return (0);
-}
-
-void	get_steps(t_ray *ray)
-{
-	if(ray->dir.x < 0)
-	{
-		ray->step.x = -1;
-		ray->length.x = (ray->start.x - (float)ray->map_check.x) * ray->step_size.x;
-	}
-	else
-	{
-		ray->step.x = 1;
-		ray->length.x = ((float)ray->map_check.x + 1) - (float)ray->start.x * ray->step_size.x;
-	}
-	if(ray->dir.y < 0)
-	{
-		ray->step.y = -1;
-		ray->length.y = (ray->start.y - (float)ray->map_check.y) * ray->step_size.y;
-	}
-	else
-	{
-		ray->step.y = 1;
-		ray->length.y = ((float)ray->map_check.y + 1) - (float)ray->start.y * ray->step_size.y;
-	}
-}
-
-t_fvector	angle_to_vector(double angle)
-{
-	t_fvector vector;
-	
-	double radians;
-	
-	radians = angle * (M_PI / 180.0);
-    vector.x = cos(radians);
-    vector.y = sin(radians);
-	return(vector);
+    if(ray->dir.x < 0)
+    {
+        ray->step.x = -1;
+        ray->length.x = fabs((ray->start.x - (float)ray->map_check.x) * ray->step_size.x);
+    }
+    else
+    {
+        ray->step.x = 1;
+        ray->length.x = fabs(((float)ray->map_check.x + 1 - ray->start.x) * ray->step_size.x);
+    }
+    if(ray->dir.y < 0)
+    {
+        ray->step.y = -1;
+        ray->length.y = fabs((ray->start.y - (float)ray->map_check.y) * ray->step_size.y);
+    }
+    else
+    {
+        ray->step.y = 1;
+        ray->length.y = fabs(((float)ray->map_check.y + 1 - ray->start.y) * ray->step_size.y);
+    }
 }
 
 void get_stepsize(t_ray *ray)
 {
-	ray->step_size.x = sqrt(1 + (ray->dir.y / ray->dir.x) * (ray->dir.y / ray->dir.x));
-	ray->step_size.y = sqrt(1 + (ray->dir.x / ray->dir.y) * (ray->dir.x / ray->dir.y));
+	ray->step_size.x = fabs(1 / ray->dir.x + EPSILON);
+    ray->step_size.y = fabs(1 / ray->dir.y + EPSILON);
 }
 
 void wall_hit(t_player *player, t_ray *ray, float *distance, int *hit)
@@ -135,8 +78,8 @@ void wall_hit(t_player *player, t_ray *ray, float *distance, int *hit)
 		*distance = ray->length.y;
 		ray->length.y += ray->step_size.y;
 	}
-	printf("map_check: (%d, %d)\n", ray->map_check.x, ray->map_check.y);
-	if((ray->map_check.x > 0 && ray->map_check.x < 6) && (ray->map_check.y > 0 && ray->map_check.y < 6))
+	//printf("map_check: (%d, %d)\n", ray->map_check.x, ray->map_check.y);
+	if((ray->map_check.x >= 0 && ray->map_check.x < GRID_WIDTH) && (ray->map_check.y >= 0 && ray->map_check.y < GRID_HEIGHT))
 	{
 		if(player->map[ray->map_check.y][ray->map_check.x] == 1)
 			*hit = 1;
@@ -144,15 +87,43 @@ void wall_hit(t_player *player, t_ray *ray, float *distance, int *hit)
 }
 
 void draw_line_to_interception(t_player *player, uint32_t color, t_fvector start, t_fvector interception) {
-    int total_steps = 100;
-    for (int current_step = 0; current_step <= total_steps; current_step++) {
-        double t = (double)current_step / (double)total_steps;
-        t_fvector point;
-        point.x = start.x + (interception.x - start.x) * t;
-        point.y = start.y + (interception.y - start.y) * t;
+    int start_pixel_x = grid_to_pixel(start.x, GRID_WIDTH, WIDTH);
+    int start_pixel_y = grid_to_pixel(start.y, GRID_HEIGHT, HEIGHT);
+    int end_pixel_x = grid_to_pixel(interception.x, GRID_WIDTH, WIDTH);
+    int end_pixel_y = grid_to_pixel(interception.y, GRID_HEIGHT, HEIGHT);
+    
+    int dx = abs(end_pixel_x - start_pixel_x);
+    int dy = abs(end_pixel_y - start_pixel_y);
+    int sx = (start_pixel_x < end_pixel_x) ? 1 : -1;
+    int sy = (start_pixel_y < end_pixel_y) ? 1 : -1;
+    int err = dx - dy;
+    
+    while (start_pixel_x != end_pixel_x || start_pixel_y != end_pixel_y) {
+        int pixel_x = start_pixel_x;
+        int pixel_y = start_pixel_y;
+        draw_pixel(player->img, pixel_x, pixel_y, color);
         
-        draw_pixel(player->img, (int)point.x, (int)point.y, color);
+        int err2 = 2 * err;
+        if (err2 > -dy) {
+            err -= dy;
+            start_pixel_x += sx;
+        }
+        if (err2 < dx) {
+            err += dx;
+            start_pixel_y += sy;
+        }
     }
+}
+
+void init_ray(t_player *player, t_ray *ray, double angle)
+{
+	ray->length.x = 0;
+	ray->length.y = 0;
+	ray->start.x = player->p_start.x;
+	ray->start.y = player->p_start.y;
+	ray->map_check.x = (int)ray->start.x;
+	ray->map_check.y = (int)ray->start.y;
+	ray->dir = angle_to_vector(angle);
 }
 
 void cast_ray(t_player *player, uint32_t color, double angle)
@@ -162,103 +133,29 @@ void cast_ray(t_player *player, uint32_t color, double angle)
 	float	distance;
 	float	max_distance;
 	
-	max_distance = WIDTH;
+	max_distance = 50;
 	distance = 0;
 	hit = 0;
-	ray = NULL;
 	ray = malloc(sizeof(t_ray));
-	ray->start.x = player->p_start.x;
-	ray->start.y = player->p_start.y;
-	ray->dir = angle_to_vector(angle);
+	init_ray(player, ray, angle);
 	get_stepsize(ray);
-	ray->map_check.x = (int)ray->start.x;
-	ray->map_check.y = (int)ray->start.y;
 	get_steps(ray);
-	while(!hit && distance < max_distance)
+	while(!hit && distance + EPSILON < max_distance)
 	{
 		wall_hit(player, ray, &distance, &hit);
-		printf("distance: %f, hit: %d, map_check: (%d, %d)\n", distance, hit, ray->map_check.x, ray->map_check.y);
+		//printf("distance: %f, hit: %d, map_check: (%d, %d)\n", distance, hit, ray->map_check.x, ray->map_check.y);
 	}
-	printf("Exited loop: distance: %f, hit: %d\n", distance, hit);
 	if(hit)
 	{
-		printf("hi\n");
 		ray->interception.x = ray->start.x + ray->dir.x * distance;
 		ray->interception.y = ray->start.y + ray->dir.y * distance;
 		draw_line_to_interception(player, color, ray->start, ray->interception);
-		//draw_pixel(player->img, (int)ray->interception.x, (int)ray->interception.y, color);
 	}
-}
-
-/* void	draw_line(t_player *player, uint32_t color, double angle)
-{
-	double	dx;
-	double	dy;
-	double	pix_x;
-	double	pix_y;
-	int		put_pix;
-	int		origin_put_pix;
-
-	dx = WIDTH;
-	dy = HEIGHT;
-	double radians = angle * (M_PI / 180.0);
-	dx = angle_update_delta(x_dim, player, dx, dy, radians);
-	dy = angle_update_delta(y_dim, player, dx, dy, radians);
-	put_pix = sqrt((dx * dx) + (dy * dy));
-	origin_put_pix = put_pix;
-	dx /= put_pix;
-	dy /= put_pix;
-	pix_x = player->p_start.x;
-	pix_y = player->p_start.y;
-	while (put_pix)
-	{
-        if (stop_line_drawing(player, pix_y, pix_x))
-            break;
-		draw_pixel(player->img, pix_x, pix_y, color);
-		pix_x = pix_x + dx;
-		pix_y = pix_y + dy;
-		put_pix--;
-	}
-	distance_to_wall(put_pix, origin_put_pix);
-} */
-
-void	draw_stripe(t_player *player)
-{
-	int	height_c;
-	int	height_w;
-	int	height_f;
-
-	int x;
-	int y;
-
-	x = 0;
-	y = 0;
-	height_c = 0;
-	height_w = 0 + HEIGHT / 3;
-	height_f = height_w + HEIGHT / 3;
-	while(x < WIDTH)
-	{
-		y = 0;
-		while(y < HEIGHT)
-		{
-			while(y < height_w)
-			{
-				draw_pixel(player->img, x, y, CEILING);
-				y++;
-			}
-			while(y < height_f)
-			{
-				draw_pixel(player->img, x, y, WALL);
-				y++;
-			}
-			while(y < HEIGHT)
-			{
-				draw_pixel(player->img, x, y, FLOOR);
-				y++;
-			}
-		}
-		x++;
-	}
+	if(!hit)
+    {
+        printf("No hit for angle: %f, distance: %f, start: (%f, %f), dir: (%f, %f), step_size: (%f, %f), length: (%f, %f)\n", 
+                angle, distance, ray->start.x, ray->start.y, ray->dir.x, ray->dir.y, ray->step_size.x, ray->step_size.y, ray->length.x, ray->length.y);
+    }
 }
 
 void	draw_fov(t_player *player)
@@ -269,7 +166,7 @@ void	draw_fov(t_player *player)
 	
 	current_angle = player->angle - (player->fov / 2);
 	end_angle = player->angle + (player->fov / 2);
-	step = player->fov / (double)WIDTH;
+	step = player->fov / WIDTH;
 	while (current_angle < end_angle)
 	{
 		cast_ray(player, 0xFF0000FF, current_angle);
@@ -281,7 +178,12 @@ void thickenize_pixel(t_player *player, double x, double y, uint32_t color)
 {
     double i;
 	double j;
-	
+
+	int	px_x;
+	int	px_y;
+	px_x = grid_to_pixel(x, GRID_WIDTH, WIDTH);
+	px_y = grid_to_pixel(y, GRID_HEIGHT, HEIGHT);
+
     i = -3;
     while (i <= 3)
     {
@@ -291,13 +193,13 @@ void thickenize_pixel(t_player *player, double x, double y, uint32_t color)
             if (i == 0 && j == 0)
 			{
 				if (y + j) 
-                	draw_pixel(player->img, x + i, y + j, color);
+                	draw_pixel(player->img, px_x + i, px_y + j, color);
 			}
             else
 			{
 				if(y + j)
 				{
-                	draw_pixel(player->img, x + i, y + j, color);
+                	draw_pixel(player->img, px_x + i, px_y + j, color);
 				}
 			}
             j++;
@@ -305,7 +207,6 @@ void thickenize_pixel(t_player *player, double x, double y, uint32_t color)
         i++;
     }
 	draw_fov(player);
-	cast_ray(player, 0xFFFF00FF, player->angle);
 }
 
 void my_loop_hook(void *param)
@@ -317,41 +218,51 @@ void my_loop_hook(void *param)
 	if(mlx_is_key_down(player->mlx, MLX_KEY_RIGHT))
 	{
 		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.x += 5;
+		player->p_start.x += PLAYER_SPEED;
+		if(player->p_start.x > GRID_WIDTH)
+			player->p_start.x = GRID_WIDTH - 0.001;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_LEFT))
 	{
 		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.x -= 5;
+		player->p_start.x -= PLAYER_SPEED;
+		if(player->p_start.x < 0)
+			player->p_start.x = 0;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_DOWN))
 	{
 		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.y += 5;
+		player->p_start.y += PLAYER_SPEED;
+		if(player->p_start.y > HEIGHT)
+			player->p_start.y = GRID_HEIGHT - 0.001;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_UP))
 	{
 		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.y -= 5;
-		if(player->p_start.y <= 0)
-			player->p_start.y = 1;
+		player->p_start.y -= PLAYER_SPEED;
+		if(player->p_start.y < 0)
+			player->p_start.y = 0;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_D))
 	{
 		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->angle += 1;
+		player->angle += ROTATION_SPEED;
+		if(player->angle > 360.0)
+			player->angle = 0;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_A))
 	{
 		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->angle -= 1;
+		player->angle -= ROTATION_SPEED;
+		if(player->angle < 0)
+			player->angle = 360;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(player->mlx);
 	thickenize_pixel(player, player->p_start.x, player->p_start.y, 0x00FF0000);
 }
 
-void draw_map(mlx_image_t *img, int map[][4])
+void draw_map(mlx_image_t *img, int map[][6])
 {
 	int x = 0;
 	int y = 0;
@@ -359,40 +270,40 @@ void draw_map(mlx_image_t *img, int map[][4])
 	int	j;
 	j = 0;
 	i = 0;
-	while(i < 4)
+	while(i < GRID_HEIGHT)
 	{
 		j = 0;
 		x = 0;
-		while(j < 4)
+		while(j < GRID_WIDTH)
 		{
 			if(map[i][j])
 				draw_square(img, x, y, 0x000000FF);
 			else
 				draw_square(img, x, y, 0xFFFFFFFF);
-
 			j++;
-			x += WIDTH / 4;
+			x += WIDTH / GRID_WIDTH;
 		}
-		y += HEIGHT / 4;
+		y += HEIGHT / GRID_HEIGHT;
 		i++;
 	}
 }
 
 int32_t	main(void)
 {
-	
 	t_player *player;
 	
 	player = malloc(sizeof(t_player));
-	player->p_start.x = WIDTH / 2;
-	player->p_start.y = HEIGHT / 2;
-	player->angle = 0;
+	player->p_start.x = GRID_WIDTH / 2;
+	player->p_start.y = GRID_HEIGHT / 2;
+	player->angle = 90;
 	player->fov = 60;
-	int map[4][4] =
-	{ 	{1, 0, 0, 1},
-		{1, 0, 0, 1},
-		{1, 0, 0, 0},
-		{1, 0, 1, 0}
+	int map[6][6] =
+	{ 	{1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1, 1},
 	};
 	
 	ft_memcpy(player->map, map, sizeof(map));

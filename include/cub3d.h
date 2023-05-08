@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/05 15:33:38 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:16:46 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,15 @@ typedef struct s_var
 
 # define WIDTH 500
 # define HEIGHT 500
+# define GRID_WIDTH 6
+# define GRID_HEIGHT 6
+# define PLAYER_SPEED 0.11
+# define ROTATION_SPEED 1.5
+# define EPSILON 1e-6
 
 # define CEILING	0xFF0000FF
 # define WALL		0x00FF00FF
-# define FLOOR		0xFF00FF00 
+# define FLOOR		0xFF00FF00
 
 typedef struct s_fvector
 {
@@ -108,7 +113,7 @@ typedef struct s_player
 	double		angle;
 	t_fvector	p_start;
 	double		fov;
-	int			map[4][4];
+	int			map[GRID_WIDTH][GRID_HEIGHT];
 	mlx_t		*mlx;
 	mlx_image_t *img;
 } 	t_player;
@@ -146,5 +151,10 @@ void free_var(t_var *var);
 
 //draw
 int32_t	draw_it(void);
+
+//draw_utils
+int	grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
+double	pixel_to_grid(int pixel_coordinate, int tile_size);
+t_fvector	angle_to_vector(double angle);
 
 #endif
