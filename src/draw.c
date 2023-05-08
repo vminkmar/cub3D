@@ -115,6 +115,37 @@ void draw_line_to_interception(t_player *player, uint32_t color, t_fvector start
     }
 }
 
+void	draw_one_stripe(t_player *player, double distance, int x)
+{
+	int y;
+	int wall_start;
+	int	wall_end;
+	double proj_wall_height;
+	uint32_t color;
+
+	y = 0;
+	printf("DISTANCE: %f\n", distance);
+	if(distance <= 0.0)
+		return ;
+	proj_wall_height = ((double)HEIGHT / distance);
+	printf("proj_wall: %f\n", proj_wall_height);
+    wall_start = (HEIGHT - proj_wall_height) / 2;
+    wall_end = wall_start + proj_wall_height;
+
+    while (y < HEIGHT)
+    {
+        if (y < wall_start)
+            color = CEILING;
+        else if (y < wall_end)
+            color = WALL;
+        else
+            color = FLOOR;
+		if(x > 0 && x < WIDTH && (y > 0 && y < HEIGHT))
+        	mlx_put_pixel(player->img, x, y, color);
+		y++;
+    }
+}
+
 void init_ray(t_player *player, t_ray *ray, double angle)
 {
 	ray->length.x = 0;
@@ -126,7 +157,15 @@ void init_ray(t_player *player, t_ray *ray, double angle)
 	ray->dir = angle_to_vector(angle);
 }
 
-void cast_ray(t_player *player, uint32_t color, double angle)
+
+double distance_to_plane(double distance, double angle, double player_angle)
+{
+    double diff_angle = (angle * (M_PI / 180.0)) - (player_angle * (M_PI / 180.0));
+    double perp_distance = distance * cos(diff_angle);
+    return fabs(perp_distance);
+}
+
+void cast_ray(t_player *player, uint32_t color, double angle, int x)
 {	
 	t_ray	*ray;
 	int		hit;
@@ -140,6 +179,7 @@ void cast_ray(t_player *player, uint32_t color, double angle)
 	init_ray(player, ray, angle);
 	get_stepsize(ray);
 	get_steps(ray);
+	(void) color;
 	while(!hit && distance + EPSILON < max_distance)
 	{
 		wall_hit(player, ray, &distance, &hit);
@@ -149,13 +189,10 @@ void cast_ray(t_player *player, uint32_t color, double angle)
 	{
 		ray->interception.x = ray->start.x + ray->dir.x * distance;
 		ray->interception.y = ray->start.y + ray->dir.y * distance;
-		draw_line_to_interception(player, color, ray->start, ray->interception);
+		distance = distance_to_plane(distance, angle, player->angle);
+		draw_one_stripe(player, distance, x);
+		//draw_line_to_interception(player, color, ray->start, ray->interception);
 	}
-	if(!hit)
-    {
-        printf("No hit for angle: %f, distance: %f, start: (%f, %f), dir: (%f, %f), step_size: (%f, %f), length: (%f, %f)\n", 
-                angle, distance, ray->start.x, ray->start.y, ray->dir.x, ray->dir.y, ray->step_size.x, ray->step_size.y, ray->length.x, ray->length.y);
-    }
 }
 
 void	draw_fov(t_player *player)
@@ -163,13 +200,16 @@ void	draw_fov(t_player *player)
 	double	current_angle;
 	double	end_angle;
 	double	step;
+	int		x;
 	
 	current_angle = player->angle - (player->fov / 2);
 	end_angle = player->angle + (player->fov / 2);
 	step = player->fov / WIDTH;
+	x = 0;
 	while (current_angle < end_angle)
 	{
-		cast_ray(player, 0xFF0000FF, current_angle);
+		cast_ray(player, 0xFF0000FF, current_angle, x);
+		x++;
 		current_angle += step;
 	} 
 }
@@ -206,7 +246,7 @@ void thickenize_pixel(t_player *player, double x, double y, uint32_t color)
         }
         i++;
     }
-	draw_fov(player);
+	//draw_fov(player);
 }
 
 void my_loop_hook(void *param)
@@ -217,49 +257,56 @@ void my_loop_hook(void *param)
 	draw_map(player->img, player->map);
 	if(mlx_is_key_down(player->mlx, MLX_KEY_RIGHT))
 	{
-		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
+		draw_fov(player);
+		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
 		player->p_start.x += PLAYER_SPEED;
 		if(player->p_start.x > GRID_WIDTH)
 			player->p_start.x = GRID_WIDTH - 0.001;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_LEFT))
 	{
-		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
+		draw_fov(player);
+		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
 		player->p_start.x -= PLAYER_SPEED;
 		if(player->p_start.x < 0)
 			player->p_start.x = 0;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_DOWN))
 	{
-		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
+		draw_fov(player);
+		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
 		player->p_start.y += PLAYER_SPEED;
 		if(player->p_start.y > HEIGHT)
 			player->p_start.y = GRID_HEIGHT - 0.001;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_UP))
 	{
-		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
+		draw_fov(player);
+		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
 		player->p_start.y -= PLAYER_SPEED;
 		if(player->p_start.y < 0)
 			player->p_start.y = 0;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_D))
 	{
-		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
+		draw_fov(player);
+		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
 		player->angle += ROTATION_SPEED;
 		if(player->angle > 360.0)
 			player->angle = 0;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_A))
 	{
-		thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
+		draw_fov(player);
+		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
 		player->angle -= ROTATION_SPEED;
 		if(player->angle < 0)
 			player->angle = 360;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(player->mlx);
-	thickenize_pixel(player, player->p_start.x, player->p_start.y, 0x00FF0000);
+	draw_fov(player);
+	//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0x00FF0000);
 }
 
 void draw_map(mlx_image_t *img, int map[][6])
@@ -324,7 +371,7 @@ int32_t	main(void)
     // Draw the image at coordinate (0, 0).
 	mlx_image_to_window(mlx, img, 0, 0);
 	//draw_stripe(player);
-	draw_map(img, player->map);
+	//draw_map(img, player->map);
 	mlx_loop_hook(mlx, &my_loop_hook, player);
     // Run the main loop and terminate on quit.  
     mlx_loop(mlx);
