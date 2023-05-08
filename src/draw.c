@@ -160,8 +160,11 @@ void init_ray(t_player *player, t_ray *ray, double angle)
 
 double distance_to_plane(double distance, double angle, double player_angle)
 {
-    double diff_angle = (angle * (M_PI / 180.0)) - (player_angle * (M_PI / 180.0));
-    double perp_distance = distance * cos(diff_angle);
+    double diff_angle;
+	double perp_distance;
+
+	diff_angle = (angle * (M_PI / 180.0)) - (player_angle * (M_PI / 180.0));
+	perp_distance = distance * cos(diff_angle);
     return fabs(perp_distance);
 }
 
@@ -172,7 +175,7 @@ void cast_ray(t_player *player, uint32_t color, double angle, int x)
 	float	distance;
 	float	max_distance;
 	
-	max_distance = 50;
+	max_distance = sqrt(GRID_HEIGHT * GRID_HEIGHT) + (GRID_WIDTH * GRID_WIDTH);
 	distance = 0;
 	hit = 0;
 	ray = malloc(sizeof(t_ray));
@@ -181,10 +184,7 @@ void cast_ray(t_player *player, uint32_t color, double angle, int x)
 	get_steps(ray);
 	(void) color;
 	while(!hit && distance + EPSILON < max_distance)
-	{
 		wall_hit(player, ray, &distance, &hit);
-		//printf("distance: %f, hit: %d, map_check: (%d, %d)\n", distance, hit, ray->map_check.x, ray->map_check.y);
-	}
 	if(hit)
 	{
 		ray->interception.x = ray->start.x + ray->dir.x * distance;
