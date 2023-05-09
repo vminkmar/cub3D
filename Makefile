@@ -11,7 +11,7 @@ CFLAGS			:=	-g -Wall -Wextra -Werror -fsanitize=address
 VPATH			:=	src/
 
 #SRC_FILES		:=	main.c check_input.c parser.c utils.c parser_utils.c free_stuff.c 
-SRC_FILES		:=	draw.c draw_utils.c
+SRC_FILES		:=	draw.c draw_utils.c movement.c
 
 HEADER			:=	-I./include/
 

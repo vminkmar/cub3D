@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/08 13:16:46 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/09 10:37:38 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef struct s_var
 
 //draw
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 1200	
+# define HEIGHT 680
 # define GRID_WIDTH 6
 # define GRID_HEIGHT 6
 # define PLAYER_SPEED 0.11
@@ -127,34 +127,42 @@ typedef enum e_coords
 
 
 //parser
-void parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex);
-void print_wrong_texures(t_tex_list *tex, int flag);
+void		parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex);
+void		print_wrong_texures(t_tex_list *tex, int flag);
 
 
 //parser_utils
-void create_linked_list_for_textures(t_tex_list **tex);
-void create_linked_list_for_map(t_map_list **map);
-int ft_strcmp(char *first, char *second);
+void		create_linked_list_for_textures(t_tex_list **tex);
+void		create_linked_list_for_map(t_map_list **map);
+int			ft_strcmp(char *first, char *second);
 
 
 // utils
-int check_input(int argc, char **argv);
-char	*sl_strjoin(char *s1, char *s2);
+int			check_input(int argc, char **argv);
+char		*sl_strjoin(char *s1, char *s2);
 
 //error_management
-void print_error(char *message);
+void		print_error(char *message);
 
 
 //free_stuff
-void free_textures(t_tex_list **tex);
-void free_var(t_var *var);
+void		free_textures(t_tex_list **tex);
+void		free_var(t_var *var);
 
 //draw
-int32_t	draw_it(void);
+int32_t		draw_it(void);
+void draw_map(mlx_image_t *img, int map[][6]);
+void draw_square(mlx_image_t *img, int x, int y, uint32_t color);
+void	draw_fov(t_player *player);
+
 
 //draw_utils
-int	grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
-double	pixel_to_grid(int pixel_coordinate, int tile_size);
+int			grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
+double		pixel_to_grid(int pixel_coordinate, int tile_size);
 t_fvector	angle_to_vector(double angle);
+
+//movement
+void		my_loop_hook(void *param);
+
 
 #endif

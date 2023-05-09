@@ -124,11 +124,9 @@ void	draw_one_stripe(t_player *player, double distance, int x)
 	uint32_t color;
 
 	y = 0;
-	printf("DISTANCE: %f\n", distance);
 	if(distance <= 0.0)
 		return ;
 	proj_wall_height = ((double)HEIGHT / distance);
-	printf("proj_wall: %f\n", proj_wall_height);
     wall_start = (HEIGHT - proj_wall_height) / 2;
     wall_end = wall_start + proj_wall_height;
 
@@ -247,66 +245,6 @@ void thickenize_pixel(t_player *player, double x, double y, uint32_t color)
         i++;
     }
 	//draw_fov(player);
-}
-
-void my_loop_hook(void *param)
-{
-	t_player *player;
-	
-	player = (t_player *)param;
-	draw_map(player->img, player->map);
-	if(mlx_is_key_down(player->mlx, MLX_KEY_RIGHT))
-	{
-		draw_fov(player);
-		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.x += PLAYER_SPEED;
-		if(player->p_start.x > GRID_WIDTH)
-			player->p_start.x = GRID_WIDTH - 0.001;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_LEFT))
-	{
-		draw_fov(player);
-		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.x -= PLAYER_SPEED;
-		if(player->p_start.x < 0)
-			player->p_start.x = 0;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_DOWN))
-	{
-		draw_fov(player);
-		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.y += PLAYER_SPEED;
-		if(player->p_start.y > HEIGHT)
-			player->p_start.y = GRID_HEIGHT - 0.001;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_UP))
-	{
-		draw_fov(player);
-		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->p_start.y -= PLAYER_SPEED;
-		if(player->p_start.y < 0)
-			player->p_start.y = 0;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_D))
-	{
-		draw_fov(player);
-		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->angle += ROTATION_SPEED;
-		if(player->angle > 360.0)
-			player->angle = 0;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_A))
-	{
-		draw_fov(player);
-		//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0xFFFFFFFF);
-		player->angle -= ROTATION_SPEED;
-		if(player->angle < 0)
-			player->angle = 360;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(player->mlx);
-	draw_fov(player);
-	//thickenize_pixel(player, player->p_start.x, player->p_start.y, 0x00FF0000);
 }
 
 void draw_map(mlx_image_t *img, int map[][6])
