@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/09 10:37:38 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/09 13:49:36 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef struct s_var
 
 //draw
 
-# define WIDTH 1200	
-# define HEIGHT 680
+# define WIDTH 900	
+# define HEIGHT 600
 # define GRID_WIDTH 6
 # define GRID_HEIGHT 6
 # define PLAYER_SPEED 0.11
@@ -117,6 +117,14 @@ typedef struct s_player
 	mlx_t		*mlx;
 	mlx_image_t *img;
 } 	t_player;
+
+typedef enum e_wall_orientation
+{
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST,
+} t_wall_orientation;
 
 
 typedef enum e_coords
@@ -163,6 +171,10 @@ t_fvector	angle_to_vector(double angle);
 
 //movement
 void		my_loop_hook(void *param);
+
+//textures
+uint32_t	get_wall_color(t_ray *ray);
+
 
 
 #endif

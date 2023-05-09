@@ -3,8 +3,6 @@
 // Bytes Per Pixel. Since each pixel is represented as an integer, it will be four bytes for four channels.
 #define BPP sizeof(int32_t)
 
-void draw_map(mlx_image_t *img, int map[][6]);
-
 void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
 {
 	int new_x = x;
@@ -115,7 +113,7 @@ void draw_line_to_interception(t_player *player, uint32_t color, t_fvector start
     }
 }
 
-void	draw_one_stripe(t_player *player, double distance, int x)
+void	draw_one_stripe(t_player *player, double distance, int x, uint32_t wall_color)
 {
 	int y;
 	int wall_start;
@@ -135,7 +133,7 @@ void	draw_one_stripe(t_player *player, double distance, int x)
         if (y < wall_start)
             color = CEILING;
         else if (y < wall_end)
-            color = WALL;
+            color = wall_color;
         else
             color = FLOOR;
 		if(x > 0 && x < WIDTH && (y > 0 && y < HEIGHT))
@@ -166,12 +164,13 @@ double distance_to_plane(double distance, double angle, double player_angle)
     return fabs(perp_distance);
 }
 
-void cast_ray(t_player *player, uint32_t color, double angle, int x)
+void cast_ray(t_player *player, double angle, int x)
 {	
-	t_ray	*ray;
-	int		hit;
-	float	distance;
-	float	max_distance;
+	t_ray		*ray;
+	int			hit;
+	float		distance;
+	float		max_distance;
+	uint32_t	wall_color;
 	
 	max_distance = sqrt(GRID_HEIGHT * GRID_HEIGHT) + (GRID_WIDTH * GRID_WIDTH);
 	distance = 0;
@@ -180,7 +179,6 @@ void cast_ray(t_player *player, uint32_t color, double angle, int x)
 	init_ray(player, ray, angle);
 	get_stepsize(ray);
 	get_steps(ray);
-	(void) color;
 	while(!hit && distance + EPSILON < max_distance)
 		wall_hit(player, ray, &distance, &hit);
 	if(hit)
@@ -188,7 +186,8 @@ void cast_ray(t_player *player, uint32_t color, double angle, int x)
 		ray->interception.x = ray->start.x + ray->dir.x * distance;
 		ray->interception.y = ray->start.y + ray->dir.y * distance;
 		distance = distance_to_plane(distance, angle, player->angle);
-		draw_one_stripe(player, distance, x);
+		wall_color = get_wall_color(player, ray);
+		draw_one_stripe(player, distance, x, wall_color);
 		//draw_line_to_interception(player, color, ray->start, ray->interception);
 	}
 }
@@ -206,7 +205,7 @@ void	draw_fov(t_player *player)
 	x = 0;
 	while (current_angle < end_angle)
 	{
-		cast_ray(player, 0xFF0000FF, current_angle, x);
+		cast_ray(player, current_angle, x);
 		x++;
 		current_angle += step;
 	} 
