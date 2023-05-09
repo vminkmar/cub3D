@@ -2,10 +2,10 @@
 
 int	wall_collision(t_player *player, double x, double y)
 {
-	if(player->map[(int)(x + 0.2)][(int)(y + 0.2)] == 0
-		&& player->map[(int)(x - 0.2)][(int)(y - 0.2)] == 0
-		&& player->map[(int)(x - 0.2)][(int)(y + 0.2)] == 0
-		&& player->map[(int)(x + 0.2)][(int)(y - 0.2)] == 0)
+	if(player->map[(int)(y + 0.2)][(int)(x + 0.2)] == 0
+		&& player->map[(int)(y - 0.2)][(int)(x - 0.2)] == 0
+		&& player->map[(int)(y - 0.2)][(int)(x + 0.2)] == 0
+		&& player->map[(int)(y + 0.2)][(int)(x - 0.2)] == 0)
 		return (0);
 	else
 		return (1);
