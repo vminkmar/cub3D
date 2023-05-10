@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/09 13:49:36 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/10 10:15:41 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct s_ray
 	t_fvector	length;
 	t_ivector	step;
 	t_fvector	interception;
+	int			wall_side;
 } t_ray;
 
 typedef struct s_player
@@ -173,7 +174,7 @@ t_fvector	angle_to_vector(double angle);
 void		my_loop_hook(void *param);
 
 //textures
-uint32_t	get_wall_color(t_ray *ray);
+uint32_t	get_wall_color(t_player *player, t_ray *ray);
 
 
 

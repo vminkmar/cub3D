@@ -66,12 +66,14 @@ void wall_hit(t_player *player, t_ray *ray, float *distance, int *hit)
 {
 	if(ray->length.x < ray->length.y)
 	{
+		ray->wall_side = 0;
 		ray->map_check.x += ray->step.x;
 		*distance = ray->length.x;
 		ray->length.x += ray->step_size.x;
 	}
 	else
 	{
+		ray->wall_side = 1;
 		ray->map_check.y += ray->step.y;
 		*distance = ray->length.y;
 		ray->length.y += ray->step_size.y;
