@@ -188,11 +188,15 @@ void cast_ray(t_player *player, double angle, int x)
 		ray->interception.x = ray->start.x + ray->dir.x * ray->distance;
 		ray->interception.y = ray->start.y + ray->dir.y * ray->distance;
 		ray->distance = distance_to_plane(ray->distance, angle, player->angle);
-		if(ray->distance <= 0.0)
-			return ;
+		/* if(ray->distance <= 0.0)
+			return ; */
 		ray->proj_wall_height = ((double)HEIGHT / ray->distance);
     	ray->wall_start = (HEIGHT - ray->proj_wall_height) / 2;
+		if(ray->wall_start < 0)
+			ray->wall_start = 0;
     	ray->wall_end = ray->wall_start + ray->proj_wall_height;
+		if(ray->wall_end >= HEIGHT)
+			ray->wall_end = HEIGHT - 1;
 		paint_background(player, ray, x);
 		paint_texture(player, ray, player->tex, x);
 		//wall_color = get_wall_color(player, ray);

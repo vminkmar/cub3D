@@ -53,15 +53,9 @@ void paint_texture(t_player *player, t_ray *ray, mlx_texture_t *tex, int x)
 	i = ray->wall_start;
 	while(i < ray->wall_end)
 	{
-		if(i >= 0)
-		{
-			vtex.y = (int)tex_pos % tex->height;
-			//printf("i: %d, x: %d, vtex.y: %d, vtex.x: %d\n", i, x, vtex.y, vtex.x);
-			/* if(player->img->pixels[(WIDTH * i + x) * 4] && tex->pixels[(tex->width * vtex.y + vtex.x) * 4]) */
-			
-				ft_memcpy(&player->img->pixels[(WIDTH * i + x) * 4], &tex->pixels[(tex->width * vtex.y + vtex.x) * 4], 4);
-			tex_pos += tex_step;
-		}
+		vtex.y = (int)tex_pos % tex->height;
+		ft_memcpy(&player->img->pixels[(WIDTH * i + x) * 4], &tex->pixels[(tex->width * vtex.y + vtex.x) * 4], 4);
+		tex_pos += tex_step;
 		i++;
 	}
 }
