@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/10 10:15:41 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:35:25 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,22 @@ typedef struct s_ray
 	t_fvector	length;
 	t_ivector	step;
 	t_fvector	interception;
+	double		distance;
+	double		proj_wall_height;
+	int			wall_start;
+	int			wall_end;
 	int			wall_side;
 } t_ray;
 
 typedef struct s_player
 {
-	double		angle;
-	t_fvector	p_start;
-	double		fov;
-	int			map[GRID_WIDTH][GRID_HEIGHT];
-	mlx_t		*mlx;
-	mlx_image_t *img;
+	double			angle;
+	t_fvector		p_start;
+	double			fov;
+	int				map[GRID_WIDTH][GRID_HEIGHT];
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	mlx_texture_t	*tex;
 } 	t_player;
 
 typedef enum e_wall_orientation
@@ -160,9 +165,10 @@ void		free_var(t_var *var);
 
 //draw
 int32_t		draw_it(void);
-void draw_map(mlx_image_t *img, int map[][6]);
-void draw_square(mlx_image_t *img, int x, int y, uint32_t color);
-void	draw_fov(t_player *player);
+void		draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
+void		draw_map(mlx_image_t *img, int map[][6]);
+void		draw_square(mlx_image_t *img, int x, int y, uint32_t color);
+void		draw_fov(t_player *player);
 
 
 //draw_utils
@@ -175,6 +181,10 @@ void		my_loop_hook(void *param);
 
 //textures
 uint32_t	get_wall_color(t_player *player, t_ray *ray);
+void		paint_background(t_player *player, t_ray *ray, int x);
+void		paint_texture(t_player *player, t_ray *ray, mlx_texture_t *tex, int x);
+int			get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
+
 
 
 

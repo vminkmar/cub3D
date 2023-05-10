@@ -62,7 +62,7 @@ void get_stepsize(t_ray *ray)
     ray->step_size.y = fabs(1 / ray->dir.y + EPSILON);
 }
 
-void wall_hit(t_player *player, t_ray *ray, float *distance, int *hit)
+void wall_hit(t_player *player, t_ray *ray, double *distance, int *hit)
 {
 	if(ray->length.x < ray->length.y)
 	{
@@ -115,26 +115,23 @@ void draw_line_to_interception(t_player *player, uint32_t color, t_fvector start
     }
 }
 
-void	draw_one_stripe(t_player *player, double distance, int x, uint32_t wall_color)
+void	draw_one_stripe(t_player *player, t_ray *ray, int x, uint32_t wall_color)
 {
 	int y;
-	int wall_start;
-	int	wall_end;
-	double proj_wall_height;
 	uint32_t color;
 
 	y = 0;
-	if(distance <= 0.0)
+	if(ray->distance <= 0.0)
 		return ;
-	proj_wall_height = ((double)HEIGHT / distance);
-    wall_start = (HEIGHT - proj_wall_height) / 2;
-    wall_end = wall_start + proj_wall_height;
+	ray->proj_wall_height = ((double)HEIGHT / ray->distance);
+    ray->wall_start = (HEIGHT - ray->proj_wall_height) / 2;
+    ray->wall_end = ray->wall_start + ray->proj_wall_height;
 
     while (y < HEIGHT)
     {
-        if (y < wall_start)
+        if (y < ray->wall_start)
             color = CEILING;
-        else if (y < wall_end)
+        else if (y < ray->wall_end)
             color = wall_color;
         else
             color = FLOOR;
@@ -153,6 +150,11 @@ void init_ray(t_player *player, t_ray *ray, double angle)
 	ray->map_check.x = (int)ray->start.x;
 	ray->map_check.y = (int)ray->start.y;
 	ray->dir = angle_to_vector(angle);
+	ray->distance = 0;
+	ray->proj_wall_height = 0;
+	ray->wall_start = 0;
+	ray->wall_end = 0;
+	ray->wall_side = 0;
 }
 
 
@@ -170,28 +172,34 @@ void cast_ray(t_player *player, double angle, int x)
 {	
 	t_ray		*ray;
 	int			hit;
-	float		distance;
 	float		max_distance;
-	uint32_t	wall_color;
+	//uint32_t	wall_color;
 	
 	max_distance = sqrt(GRID_HEIGHT * GRID_HEIGHT) + (GRID_WIDTH * GRID_WIDTH);
-	distance = 0;
 	hit = 0;
 	ray = malloc(sizeof(t_ray));
 	init_ray(player, ray, angle);
 	get_stepsize(ray);
 	get_steps(ray);
-	while(!hit && distance + EPSILON < max_distance)
-		wall_hit(player, ray, &distance, &hit);
+	while(!hit && ray->distance + EPSILON < max_distance)
+		wall_hit(player, ray, &ray->distance, &hit);
 	if(hit)
 	{
-		ray->interception.x = ray->start.x + ray->dir.x * distance;
-		ray->interception.y = ray->start.y + ray->dir.y * distance;
-		distance = distance_to_plane(distance, angle, player->angle);
-		wall_color = get_wall_color(player, ray);
-		draw_one_stripe(player, distance, x, wall_color);
+		ray->interception.x = ray->start.x + ray->dir.x * ray->distance;
+		ray->interception.y = ray->start.y + ray->dir.y * ray->distance;
+		ray->distance = distance_to_plane(ray->distance, angle, player->angle);
+		if(ray->distance <= 0.0)
+			return ;
+		ray->proj_wall_height = ((double)HEIGHT / ray->distance);
+    	ray->wall_start = (HEIGHT - ray->proj_wall_height) / 2;
+    	ray->wall_end = ray->wall_start + ray->proj_wall_height;
+		paint_background(player, ray, x);
+		paint_texture(player, ray, player->tex, x);
+		//wall_color = get_wall_color(player, ray);
+		//draw_one_stripe(player, ray, x, wall_color);
 		//draw_line_to_interception(player, color, ray->start, ray->interception);
 	}
+	free(ray);
 }
 
 void	draw_fov(t_player *player)
@@ -305,14 +313,12 @@ int32_t	main(void)
 	player ->img = img;
 
     // Set the channels of each pixel in our image to the maximum byte value of 255. 
-    memset(img->pixels, 255, img->width * img->height * BPP);
+	memset(img->pixels, 255, img->width * img->height * BPP);
 
-    // Draw the image at coordinate (0, 0).
+	player->tex = mlx_load_png("./textures/greystone.png");
 	mlx_image_to_window(mlx, img, 0, 0);
-	//draw_stripe(player);
 	//draw_map(img, player->map);
 	mlx_loop_hook(mlx, &my_loop_hook, player);
-    // Run the main loop and terminate on quit.  
     mlx_loop(mlx);
     mlx_terminate(mlx);
 
