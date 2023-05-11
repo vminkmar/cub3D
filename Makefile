@@ -6,7 +6,7 @@ CC				:=	cc
 
 RM				:=	rm -f
 
-CFLAGS			:=	-g -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS			:=	-g -Wall -Wextra -Werror -fsanitize=address
 
 VPATH			:=	src/
 

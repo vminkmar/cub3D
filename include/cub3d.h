@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/10 14:35:25 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/11 08:49:25 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ typedef struct s_player
 	int				map[GRID_WIDTH][GRID_HEIGHT];
 	mlx_t			*mlx;
 	mlx_image_t		*img;
-	mlx_texture_t	*tex;
+	mlx_texture_t	*tex_north;
+	mlx_texture_t	*tex_south;
+	mlx_texture_t	*tex_west;
+	mlx_texture_t	*tex_east;
 } 	t_player;
 
 typedef enum e_wall_orientation
@@ -180,10 +183,11 @@ t_fvector	angle_to_vector(double angle);
 void		my_loop_hook(void *param);
 
 //textures
-uint32_t	get_wall_color(t_player *player, t_ray *ray);
-void		paint_background(t_player *player, t_ray *ray, int x);
-void		paint_texture(t_player *player, t_ray *ray, mlx_texture_t *tex, int x);
-int			get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
+mlx_texture_t	*get_tex(t_ray *ray, t_player *player);
+uint32_t		get_wall_color(t_player *player, t_ray *ray);
+void			paint_background(t_player *player, t_ray *ray, int x);
+void			paint_texture(t_player *player, t_ray *ray, int x);
+int				get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
 
 
 

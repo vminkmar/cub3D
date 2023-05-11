@@ -135,14 +135,14 @@ void my_loop_hook(void *param)
 		//draw_fov(player);
 		player->angle += ROTATION_SPEED;
 		if(player->angle > 360.0)
-			player->angle = 0;
+			player->angle -= 360;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_A))
 	{
 		//draw_fov(player);
 		player->angle -= ROTATION_SPEED;
 		if(player->angle < 0)
-			player->angle = 360;
+			player->angle += 360;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(player->mlx);
