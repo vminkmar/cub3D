@@ -1,11 +1,11 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 void	print_error(char *message)
 {
 	ft_putendl_fd(message, 2);
 }
 
-void	print_wrong_textures(t_tex_list *tex, t_var *var, t_error error)
+void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error)
 {
 	if (error == ERROR_EAST)
 		print_error("There is no east texture or you choose the wrong one");
@@ -20,7 +20,7 @@ void	print_wrong_textures(t_tex_list *tex, t_var *var, t_error error)
 	else if (error == ERROR_CEILING)
 		print_error("There is no ceiling color or you choose the wrong one");
 	free_list_textures(&tex);
-	free_var(var);
+	free_data(data);
 	tex = NULL;
 	exit (1);
 }

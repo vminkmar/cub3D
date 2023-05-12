@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 uint32_t	rgb_to_uint(int red, int green, int blue)
 {
@@ -22,7 +22,7 @@ void	check_numbers(int red, int green, int blue)
 	}
 }
 
-void	get_color_floor(t_var *var)
+void	get_color_floor(t_data *data)
 {
 	char	**numbers_floor;
 	int		i;
@@ -31,7 +31,7 @@ void	get_color_floor(t_var *var)
 	int		blue;
 
 	i = 0;
-	numbers_floor = ft_split((const char *)var->floor_color, ',');
+	numbers_floor = ft_split((const char *)data->map->floor_color, ',');
 	while (numbers_floor[i] != NULL)
 	{
 		check_for_spaces(numbers_floor[i], 1);
@@ -45,10 +45,10 @@ void	get_color_floor(t_var *var)
 	}
 	check_numbers(red, green, blue);
 	free_numbers(numbers_floor);
-	var->color_floor = rgb_to_uint(red, green, blue);
+	data->map->color_floor = rgb_to_uint(red, green, blue);
 }
 
-void	get_color_ceiling(t_var *var)
+void	get_color_ceiling(t_data *data)
 {
 	char	**numbers_ceiling;
 	int		i;
@@ -57,7 +57,7 @@ void	get_color_ceiling(t_var *var)
 	int		blue;
 
 	i = 0;
-	numbers_ceiling = ft_split((const char *)var->ceiling_color, ',');
+	numbers_ceiling = ft_split((const char *)data->map->ceiling_color, ',');
 	while (numbers_ceiling[i] != NULL)
 	{
 		check_for_spaces(numbers_ceiling[i], 2);
@@ -71,25 +71,25 @@ void	get_color_ceiling(t_var *var)
 	}
 	check_numbers(red, green, blue);
 	free_numbers(numbers_ceiling);
-	var->color_ceiling = rgb_to_uint(red, green, blue);
+	data->map->color_ceiling = rgb_to_uint(red, green, blue);
 }
 
-void	check_colors(t_var *var)
+void	check_colors(t_data *data)
 {
 	t_error_color	error;
 
 	error = NO_ERROR;
-	if (check_for_commas(var->floor_color) == 1)
+	if (check_for_commas(data->map->floor_color) == 1)
 		error = ERROR_COMMA_FLOOR;
-	else if (check_for_commas(var->ceiling_color) == 1)
+	else if (check_for_commas(data->map->ceiling_color) == 1)
 		error = ERROR_COMMA_CEILING;
-	else if (number_counter(var->ceiling_color) == 1)
+	else if (number_counter(data->map->ceiling_color) == 1)
 		error = ERROR_NUMBER_CEILING;
-	else if (number_counter(var->floor_color) == 1)
+	else if (number_counter(data->map->floor_color) == 1)
 		error = ERROR_NUMBER_FLOOR;
-	else if (check_for_alpha(var->ceiling_color) == 1)
+	else if (check_for_alpha(data->map->ceiling_color) == 1)
 		error = ERROR_ALPHA_CEILING;
-	else if (check_for_alpha(var->floor_color) == 1)
+	else if (check_for_alpha(data->map->floor_color) == 1)
 		error = ERROR_ALPHA_FLOOR;
 	if (error != NO_ERROR)
 		print_wrong_color(error);

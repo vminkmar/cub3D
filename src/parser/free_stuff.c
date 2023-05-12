@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 void	free_list_textures(t_tex_list **tex)
 {
@@ -34,24 +34,24 @@ void	free_list_map(t_map_list **map)
 	}
 }
 
-void	free_var(t_var *var)
+void	free_data(t_data *data)
 {
-	if (var != NULL)
+	if (data != NULL)
 	{
-		if (var->ceiling_color != NULL)
-			free(var->ceiling_color);
-		if (var->floor_color != NULL)
-			free(var->floor_color);
-		if (var->path_east != NULL)
-			free(var->path_east);
-		if (var->path_north != NULL)
-			free(var->path_north);
-		if (var->path_west != NULL)
-			free(var->path_west);
-		if (var->path_south != NULL)
-			free(var->path_south);
-		if (var->ceiling_color != NULL)
-			free(var->ceiling_color);
+		if (data->map->ceiling_color != NULL)
+			free(data->map->ceiling_color);
+		if (data->map->floor_color != NULL)
+			free(data->map->floor_color);
+		if (data->map->path_east != NULL)
+			free(data->map->path_east);
+		if (data->map->path_north != NULL)
+			free(data->map->path_north);
+		if (data->map->path_west != NULL)
+			free(data->map->path_west);
+		if (data->map->path_south != NULL)
+			free(data->map->path_south);
+		if (data->map->ceiling_color != NULL)
+			free(data->map->ceiling_color);
 	}
 }
 

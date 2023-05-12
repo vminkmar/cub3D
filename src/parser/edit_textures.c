@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 char	*trim_spaces_utils(char *str, char *content, int new, int flag)
 {

@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 void	create_linked_list_for_textures(t_tex_list **tex)
 {

@@ -155,7 +155,7 @@ void init_player(t_player *player, mlx_t *mlx, mlx_image_t *img)
 	player->angle = 90;
 	player->fov = 60;
 	player->mlx = mlx;
-	player ->img = img;
+	player->img = img;
 }
 
 int32_t	main(void)

@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 void	ft_lstadd_back_tex(t_tex_list **lst, t_tex_list *new)
 {	

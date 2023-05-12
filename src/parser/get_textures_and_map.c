@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 void	get_textures(char *line, t_tex_list *tex)
 {
@@ -15,7 +15,7 @@ void	get_textures(char *line, t_tex_list *tex)
 	tex->counter ++;
 }
 
-void	get_map(char *line, t_map_list *map, t_var *var)
+void	get_map(char *line, t_map_list *map, t_data *data)
 {
 	check_for_empty_line(line, map);
 	if (map->empty_line == 1 && is_begin_of_map(line) == 0)
@@ -24,11 +24,11 @@ void	get_map(char *line, t_map_list *map, t_var *var)
 		exit(1);
 	}
 	add_node_to_map(line, &map);
-	var->map.height++;
+	data->map->height++;
 }
 
 void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
-			t_var *var)
+			t_data *data)
 {
 	int		fd;
 	char	*line;
@@ -51,7 +51,7 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 		else
 		{
 			begin_of_map = 1;
-			get_map(line, map, var);
+			get_map(line, map, data);
 		}
 	}
 	close (fd);

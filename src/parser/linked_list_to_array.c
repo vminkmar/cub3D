@@ -1,26 +1,26 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
-void get_start_point(t_var *var, char c, int line, int character)
+void get_start_point(t_data *data, char c, int line, int character)
 {
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
-		var->map.player.start.y = line;
-		var->map.player.start.x = character;
-		var->map.player.start_points ++;
+		data->player->p_start.y = line;
+		data->player->p_start.x = character;
+		data->player->counter_p_start ++;
 	}	
 }
 
-void check_for_startpoint(t_var *var)
+void check_for_startpoint(t_data *data)
 {
-	if(var->map.player.start_points < 1)
+	if(data->player->counter_p_start < 1)
 		print_error("There is no start point on the map");
-	if(var->map.player.start_points > 1)
+	if(data->player->counter_p_start > 1)
 		print_error("There are too many startpoints on the map");
 	// free
 	exit (1);
 }
 
-char	*get_map_types(const char *s1, int line, t_var *var)
+char	*get_map_types(const char *s1, int line, t_data *data)
 {
 	char	*new;
 	size_t	character;
@@ -33,7 +33,7 @@ char	*get_map_types(const char *s1, int line, t_var *var)
 	character = 0;
 	while (character < ft_strlen(s1) + 1)
 	{	
-		get_start_point(var, s1[character], line, character);
+		get_start_point(data, s1[character], line, character);
 		if(s1[character] == '1')
 			new[character] = WALL;
 		else if(s1[character] == '0')
@@ -45,20 +45,20 @@ char	*get_map_types(const char *s1, int line, t_var *var)
 	return (new);
 }
 
-char	**transfer_map_to_array(t_map_list *map, t_var *var)
+char	**transfer_map_to_array(t_map_list *map, t_data *data)
 {
 	char	**map_data;
 	int		line;
 
 	line = 0;
-	map_data = malloc(sizeof(t_type *) *(var->map.height + 1));
+	map_data = malloc(sizeof(t_type *) *(data->map->height + 1));
 	while (map)
 	{
-		map_data[line] = get_map_types(map->content, line, var);
+		map_data[line] = get_map_types(map->content, line, data);
 		line ++;
 		map = map->next;
 	}
 	map_data[line] = NULL;
-	check_for_startpoint(var);
+	check_for_startpoint(data);
 	return (map_data);
 }
