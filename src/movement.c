@@ -2,10 +2,10 @@
 
 int	wall_collision(t_player *player, double x, double y)
 {
-	if(player->map[(int)(y + 0.2)][(int)(x + 0.2)] == 0
-		&& player->map[(int)(y - 0.2)][(int)(x - 0.2)] == 0
-		&& player->map[(int)(y - 0.2)][(int)(x + 0.2)] == 0
-		&& player->map[(int)(y + 0.2)][(int)(x - 0.2)] == 0)
+	if(player->map[(int)(y + 0.1)][(int)(x + 0.1)] == 0
+		&& player->map[(int)(y - 0.1)][(int)(x - 0.1)] == 0
+		&& player->map[(int)(y - 0.1)][(int)(x + 0.1)] == 0
+		&& player->map[(int)(y + 0.1)][(int)(x - 0.1)] == 0)
 		return (0);
 	else
 		return (1);
@@ -100,12 +100,31 @@ void move_player(t_player *player, keys_t key)
 		move_right(player, tmp_x, tmp_y);
 }
 
+void check_mouse_pos(t_player *player)
+{
+	static int x = WIDTH / 2;
+	int new_x;
+	int y;
+
+	y = HEIGHT / 2;
+	mlx_get_mouse_pos(player->mlx, &new_x, &y);
+	if(x > new_x)
+		player->angle -= ROTATION_SPEED;
+	else if(x < new_x)
+		player->angle += ROTATION_SPEED;
+	x = new_x;
+	if(abs(new_x - WIDTH / 2) > MOUSE_SENSITIVITY)
+    {
+        mlx_set_mouse_pos(player->mlx, WIDTH / 2, HEIGHT / 2);
+        x = WIDTH / 2;
+    }
+}
+
 void my_loop_hook(void *param)
 {
 	t_player *player;
 	
 	player = (t_player *)param;
-	//draw_map(player->img, player->map);
 	if(mlx_is_key_down(player->mlx, MLX_KEY_RIGHT))
 	{
 		move_player(player, MLX_KEY_RIGHT);
@@ -132,19 +151,18 @@ void my_loop_hook(void *param)
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_D))
 	{
-		//draw_fov(player);
 		player->angle += ROTATION_SPEED;
 		if(player->angle > 360.0)
 			player->angle -= 360;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_A))
 	{
-		//draw_fov(player);
 		player->angle -= ROTATION_SPEED;
 		if(player->angle < 0)
 			player->angle += 360;
 	}
 	if(mlx_is_key_down(player->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(player->mlx);
+	check_mouse_pos(player);
 	draw_fov(player);
 }

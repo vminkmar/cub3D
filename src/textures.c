@@ -6,14 +6,14 @@ mlx_texture_t *get_tex(t_ray *ray, t_player *player)
 	{
 		if (ray->step.x >= 0)
 			return (player->tex_west);
-		else //if (ray->step.x < 0)
+		else 
 			return (player->tex_east);
 	}
-	else //if (ray->wall_side == 1)
+	else
 	{
 		if(ray->step.y >= 0)
 			return (player->tex_north);
-		else //if (ray->step.x < 0)
+		else
 			return (player->tex_south);
 	}
 	//return(NULL);
@@ -61,7 +61,7 @@ void paint_background(t_player *player, t_ray *ray, int x)
 	int	i;
 
 	i = 0;
-	while(i < HEIGHT)
+	while(i <= HEIGHT)
 	{
 		if(i < ray->wall_start + 1)
 			draw_pixel(player->img, x, i, CEILING);

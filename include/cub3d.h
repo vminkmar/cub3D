@@ -6,7 +6,7 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:13:20 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/11 08:49:25 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/12 10:15:32 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ typedef struct s_var
 # define GRID_WIDTH 6
 # define GRID_HEIGHT 6
 # define PLAYER_SPEED 0.11
-# define ROTATION_SPEED 1.5
+# define ROTATION_SPEED 3
+# define MOUSE_SENSITIVITY 5
 # define EPSILON 1e-6
 
 # define CEILING	0xFF0000FF

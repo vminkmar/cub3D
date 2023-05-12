@@ -55,7 +55,6 @@ void wall_hit(t_player *player, t_ray *ray, double *distance, int *hit)
 		*distance = ray->length.y;
 		ray->length.y += ray->step_size.y;
 	}
-	//printf("map_check: (%d, %d)\n", ray->map_check.x, ray->map_check.y);
 	if((ray->map_check.x >= 0 && ray->map_check.x < GRID_WIDTH) && (ray->map_check.y >= 0 && ray->map_check.y < GRID_HEIGHT))
 	{
 		if(player->map[ray->map_check.y][ray->map_check.x] == 1)
@@ -112,7 +111,6 @@ void cast_ray(t_player *player, double angle, int x)
 	t_ray		*ray;
 	int			hit;
 	float		max_distance;
-	//uint32_t	wall_color;
 	
 	max_distance = sqrt(GRID_HEIGHT * GRID_HEIGHT) + (GRID_WIDTH * GRID_WIDTH);
 	hit = 0;
@@ -127,9 +125,8 @@ void cast_ray(t_player *player, double angle, int x)
 		set_wall(ray, player, angle);
 		paint_background(player, ray, x);
 		paint_texture(player, ray, x);
-		//wall_color = get_wall_color(player, ray);
 	}
-	//free(ray);
+	free(ray);
 }
 
 void	draw_fov(t_player *player)
@@ -151,15 +148,30 @@ void	draw_fov(t_player *player)
 	} 
 }
 
-int32_t	main(void)
+void init_player(t_player *player, mlx_t *mlx, mlx_image_t *img)
 {
-	t_player *player;
-	
-	player = malloc(sizeof(t_player));
 	player->p_start.x = GRID_WIDTH / 2;
 	player->p_start.y = GRID_HEIGHT / 2;
 	player->angle = 90;
 	player->fov = 60;
+	player->mlx = mlx;
+	player ->img = img;
+}
+
+int32_t	main(void)
+{
+	t_player	*player;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+
+
+    mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
+    if (!mlx)
+		exit(EXIT_FAILURE);
+    img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	player = malloc(sizeof(t_player));
+	init_player(player, mlx, img);
+	mlx_set_cursor_mode(player->mlx, MLX_MOUSE_HIDDEN);
 	int map[6][6] =
 	{ 	{1, 1, 1, 1, 1, 1},
 		{1, 0, 0, 0, 0, 1},
@@ -168,30 +180,16 @@ int32_t	main(void)
 		{1, 0, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1},
 	};
-	
 	ft_memcpy(player->map, map, sizeof(map));
-	
-    // Init mlx with a canvas size of 256x256 and the ability to resize the window.
-    mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
-    if (!mlx) exit(EXIT_FAILURE);
-	player->mlx = mlx;
-
-	
-    // Create a 128x128 image.
-    mlx_image_t* img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	player ->img = img;
-
-    // Set the channels of each pixel in our image to the maximum byte value of 255. 
 	memset(img->pixels, 255, img->width * img->height * BPP);
-
 	player->tex_north = mlx_load_png("./textures/greystone.png");
 	player->tex_south = mlx_load_png("./textures/mossy.png");
 	player->tex_west = mlx_load_png("./textures/redbrick.png");
 	player->tex_east = mlx_load_png("./textures/wood.png");
 	mlx_image_to_window(mlx, img, 0, 0);
-	//draw_map(img, player->map);
 	mlx_loop_hook(mlx, &my_loop_hook, player);
     mlx_loop(mlx);
+	//free(player);
     mlx_terminate(mlx);
 
     return (EXIT_SUCCESS);
