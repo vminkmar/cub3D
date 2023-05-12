@@ -13,7 +13,7 @@ uint32_t	rgb_to_uint(int red, int green, int blue)
 
 void	check_numbers(int red, int green, int blue)
 {
-	if (red > 256 || red < 0 || blue > 256 || blue < 0 || green > 256
+	if (red > 255 || red < 0 || blue > 255 || blue < 0 || green > 255
 		|| green < 0)
 	{
 		print_error("Wrong RGB color");
