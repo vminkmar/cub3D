@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:21:03 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/02 13:05:22 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/12 11:30:15 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 int main(int argc, char **argv)
 {
-	t_var			*var;
-	t_tex_list		*tex;
-	t_map_list		*map;
+	t_player	*player;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
 
 	var = NULL;
 	map = NULL;

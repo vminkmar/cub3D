@@ -1,3 +1,4 @@
+
 #ifndef CUB3D_H
 # define CUB3D_H
 # include <stdio.h>
@@ -8,29 +9,24 @@
 # include "Libft/libft.h"
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
-# include <string.h>
-# define WIDTH 900	
-# define HEIGHT 600
+# include <string.h> 
 # define MAX_WIDTH 5120
 # define MAX_HEIGHT 2880
-# define PLAYER_SPEED 0.11
-# define ROTATION_SPEED 3
-# define MOUSE_SENSITIVITY 5
-# define EPSILON 1e-6
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10000
 # endif
 #define WHITESPACES " \t\r\f\v\n"
 #define WHITESPACES_LESS "\t\r\f\v"
-
+​
 typedef enum e_type
 {
 	WALKABLE,
 	OPEN_DOOR,
 	CLOSED_DOOR,
 	WALL,
+	
 } t_type;
-
+​
 typedef enum e_error
 {
 	ERROR_NORTH,
@@ -43,7 +39,7 @@ typedef enum e_error
 	ERROR_INVALID,
 	
 } t_error;
-
+​
 typedef enum e_error_color
 {
 	ERROR_COMMA_CEILING,
@@ -57,21 +53,20 @@ typedef enum e_error_color
 	NO_ERROR,
 } t_error_color;
 
-typedef struct s_map_list
-{
-	char				*content;
-	int					empty_line;
-	struct s_map_list	*next;
-}	t_map_list;
-
-typedef struct s_tex_list
-{
-	char				*content;
-	int					counter;
-	struct s_tex_list	*next;
-}	t_tex_list;
-
 //draw
+
+# define WIDTH 900	
+# define HEIGHT 600
+# define GRID_WIDTH 6
+# define GRID_HEIGHT 6
+# define PLAYER_SPEED 0.11
+# define ROTATION_SPEED 3
+# define MOUSE_SENSITIVITY 5
+# define EPSILON 1e-6
+
+# define CEILING	0xFF0000FF
+# define WALL		0x00FF00FF
+# define FLOOR		0xFF00FF00
 
 typedef struct s_fvector
 {
@@ -84,14 +79,6 @@ typedef struct s_ivector
 	int x;
 	int y;
 }	t_ivector;
-
-typedef enum e_wall_orientation
-{
-	NORTH,
-	SOUTH,
-	WEST,
-	EAST,
-} t_wall_orientation;
 
 typedef struct s_ray
 {
@@ -114,58 +101,29 @@ typedef struct s_player
 	double			angle;
 	t_fvector		p_start;
 	double			fov;
-} 	t_player;
-
-typedef struct s_map
-{
-	char			**map;
-	int				max_height;
-	int				max_width;
-	char			**start_point;
-	char			*path_north;
-	char			*path_south;
-	char			*path_east;
-	char			*path_west;
+	int				map[GRID_WIDTH][GRID_HEIGHT];
+	mlx_t			*mlx;
+	mlx_image_t		*img;
 	mlx_texture_t	*tex_north;
 	mlx_texture_t	*tex_south;
 	mlx_texture_t	*tex_west;
 	mlx_texture_t	*tex_east;
-	char			*floor_color;
-	char			*ceiling_color;
-	uint32_t		color_floor;
-	uint32_t		color_ceiling;
-	
-}	t_map;
+} 	t_player;
 
-
-typedef struct s_data
+typedef enum e_wall_orientation
 {
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-	t_map			*map;
-	t_player		*player;
-
-} 	t_data;
-
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST,
+} t_wall_orientation;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+typedef enum e_coords
+{
+	double 	x;
+	double	y;
+} 	t_coord;
 
 //linked_list_to_array
 char	**transfer_map_to_array(t_map_list *map);
