@@ -27,9 +27,9 @@ int main(int argc, char **argv)
 	if (!data->player)
 		exit(EXIT_FAILURE);
 	data->map = malloc(sizeof(t_map));
-	init_data(data);
 	parser(argv, data);
-	// init_player(data);
-	// raycaster(data);
+	init_data(data);
+	init_player(data);
+	raycaster(data);
 	return (EXIT_SUCCESS);
 }

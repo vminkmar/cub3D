@@ -1,9 +1,9 @@
-NO ./textures/north.png
-SO ./textures/south.png
-WE ./textures/west.png
-EA ./textures/east.png
+NO ./textures/greystone.png
+SO ./textures/mossy.png
+WE ./textures/redbrick.png
+EA ./textures/wood.png
 
-F 256,100,0
+F 255,100,0
 C 225,30,0
 
 

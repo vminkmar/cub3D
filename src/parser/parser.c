@@ -53,11 +53,18 @@ void	compare_and_check_textures(t_tex_list *tex, t_data *data)
 
 void load_pngs(t_data *data)
 {
-	printf("%s", data->map->path_north);
 	data->map->tex_north = mlx_load_png(data->map->path_north);
+	if (data->map->tex_north == NULL)
+		print_error("north");
 	data->map->tex_south = mlx_load_png(data->map->path_south);
+	if (data->map->tex_south == NULL)
+		print_error("south");
 	data->map->tex_west = mlx_load_png(data->map->path_west);
+	if (data->map->tex_west == NULL)
+		print_error("west");
 	data->map->tex_east = mlx_load_png(data->map->path_east);
+	if (data->map->tex_east == NULL)
+		print_error("east");
 }
 
 void	parser(char **argv, t_data *data)
