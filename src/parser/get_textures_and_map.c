@@ -24,7 +24,7 @@ void	get_map(char *line, t_map_list *map, t_data *data)
 		exit(1);
 	}
 	add_node_to_map(line, &map);
-	data->map->height++;
+	data->map->max_height++;
 }
 
 void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,

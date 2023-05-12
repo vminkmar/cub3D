@@ -10,8 +10,8 @@ void	init_variables(t_data *data, t_map_list *maps, t_tex_list *tex)
 	data->map->ceiling_color = NULL;
 	data->map->color_ceiling = 0;
 	data->map->color_ceiling = 0;
-	data->map->height = 0;
-	data->map->width = 0;
+	data->map->max_height = 0;
+	data->map->max_width = 0;
 	data->map->color_floor = 0;
 	data->player->counter_p_start = 0;
 	data->player->p_start.x = 0;

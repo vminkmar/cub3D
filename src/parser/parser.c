@@ -22,11 +22,9 @@ void	compare_textures(t_tex_list *tex, t_data *data)
 
 void	check_textures(t_tex_list *tex, t_data *data)
 {
-	int		flag;
 	t_error	error;
 
 	error = ERROR_NO;
-	flag = 0;
 	if (data->map->path_east == NULL)
 		error = ERROR_EAST;
 	else if (data->map->path_north == NULL)
@@ -53,6 +51,15 @@ void	compare_and_check_textures(t_tex_list *tex, t_data *data)
 	get_color_ceiling(data);
 }
 
+void load_pngs(t_data *data)
+{
+	printf("%s", data->map->path_north);
+	data->map->tex_north = mlx_load_png(data->map->path_north);
+	data->map->tex_south = mlx_load_png(data->map->path_south);
+	data->map->tex_west = mlx_load_png(data->map->path_west);
+	data->map->tex_east = mlx_load_png(data->map->path_east);
+}
+
 void	parser(char **argv, t_data *data)
 {
 	t_tex_list	*tex;
@@ -67,6 +74,7 @@ void	parser(char **argv, t_data *data)
 	compare_and_check_textures(tex, data);
 	data->map->map = transfer_map_to_array(map, data);
 	check_map(data->map->map, data);
+	load_pngs(data);
 	free_list_textures(&tex);
 	free_list_map(&map);
 }

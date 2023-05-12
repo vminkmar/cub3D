@@ -7,10 +7,6 @@ void init_data(t_data *data)
     if (!data->mlx)
 		exit(EXIT_FAILURE);
     data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	data->player = malloc(sizeof(t_player));
-	if (!data->player)
-		exit(EXIT_FAILURE);
-	init_player(data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 }
 
@@ -21,16 +17,19 @@ int main(int argc, char **argv)
 	data = NULL;
 	if (check_input(argc, argv) == 1)
 		return (EXIT_FAILURE);
-	(void) argv;
-	(void) argc;
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 	{
 		print_error("Allocation of Memory failed");
 		exit (1);
 	}
+	data->player = malloc(sizeof(t_player));
+	if (!data->player)
+		exit(EXIT_FAILURE);
+	data->map = malloc(sizeof(t_map));
 	init_data(data);
 	parser(argv, data);
+	// init_player(data);
 	// raycaster(data);
 	return (EXIT_SUCCESS);
 }

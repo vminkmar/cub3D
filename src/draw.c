@@ -123,8 +123,8 @@ void cast_ray(t_player *player, t_data *data, double angle, int x)
 	if(hit)
 	{
 		set_wall(ray, player, angle);
-		paint_background(player, ray, x);
-		paint_texture(player, ray, x);
+		paint_background(data, ray, x);
+		paint_texture(data, ray, x);
 	}
 	free(ray);
 }
@@ -160,7 +160,7 @@ void raycaster(t_data *data)
 {
 	memset(data->img->pixels, 255, data->img->width * data->img->height * BPP);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
-	mlx_loop_hook(data->mlx, &my_loop_hook, data->player);
+	mlx_loop_hook(data->mlx, &my_loop_hook, data);
     mlx_loop(data->mlx);
     mlx_terminate(data->mlx);
 }

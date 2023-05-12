@@ -11,7 +11,7 @@ CFLAGS			:=	-g -Wall -Wextra -Werror #-fsanitize=address
 VPATH			:=	src/ src/parser
 
 SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free_stuff.c print_errors.c\
-					linked_list.c check_map.c get_textures_and_map.c get_textures_and_map_utils.c textures.c color.c\
+					linked_list.c check_map.c get_textures_and_map.c get_textures_and_map_utils.c edit_textures.c color.c\
 					color_utils.c linked_list_to_array.c draw.c draw_utils.c movement.c textures.c
 
 HEADER			:=	-I./include/
@@ -36,7 +36,7 @@ LIBDIR			:= lib
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
+LFLAGS			:=	$(LFT) $(LMLX) -I include -ldl -lglfw -pthread -lm #-lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
 
 all: libft $(LMLX) $(NAME) #$(NAME_BONUS)
 

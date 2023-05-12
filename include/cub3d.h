@@ -150,6 +150,8 @@ typedef struct s_data
 
 //linked_list_to_array
 char	**transfer_map_to_array(t_map_list *map, t_data *data);
+void get_max_with(char *str, t_data *data);
+
 
 //color_utils
 int	check_for_commas(char *str);

@@ -38,7 +38,7 @@ void	print_wrong_color(t_error_color error)
 	if (error == ERROR_ALPHA_FLOOR)
 		print_error("Check the for Letters in floor color");
 	if (error == ERROR_ALPHA_CEILING)
-		print_error("Check for Letters in floor ceiling");
+		print_error("Check for Letters in ceiling color");
 	// free
 	exit (1);
 }

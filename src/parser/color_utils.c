@@ -45,7 +45,7 @@ int	check_for_alpha(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == ',')
+		if (str[i] == ',' || str[i] == '\n')
 			i ++;
 		if (ft_isalpha(str[i]) == 1)
 			return (1);
