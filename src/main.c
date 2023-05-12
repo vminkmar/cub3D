@@ -6,30 +6,42 @@
 /*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:21:03 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/12 11:30:15 by mgraefen         ###   ########.fr       */
+/*   Updated: 2023/05/12 13:35:30 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
+void init_data(t_data *data)
+{	
+	
+	
+	data->mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
+    if (!data->mlx)
+		exit(EXIT_FAILURE);
+    data->img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	data->player = malloc(sizeof(t_player));
+	if (!data->player)
+		exit(EXIT_FAILURE);
+	init_player(data->player, data->mlx, data->img);
+	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
+}
+
 int main(int argc, char **argv)
 {
-	t_player	*player;
-	mlx_t		*mlx;
-	mlx_image_t	*img;
+	t_data		*data;
 
-	var = NULL;
-	map = NULL;
-	tex = NULL;
+	data = NULL;
 	if (check_input(argc, argv) == 1)
 		return (EXIT_FAILURE);
-	var = malloc(sizeof(t_var));
-	if (var == NULL)
+	data = malloc(sizeof(t_data));
+	if (data == NULL)
 	{
 		print_error("Allocation of Memory failed");
 		exit (1);
 	}
-	parser(argv, var, map, tex);
-	// raycaster();
+	init_data(data);
+	parser(argv, data);
+	raycaster(data);
 	return (EXIT_SUCCESS);
 }
