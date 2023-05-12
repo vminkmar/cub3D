@@ -2,9 +2,9 @@
 
 int main(int argc, char **argv)
 {
-	t_var			*var;
-	t_tex_list		*tex;
-	t_map_list		*map;
+	t_player	*player;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
 
 	var = NULL;
 	map = NULL;
