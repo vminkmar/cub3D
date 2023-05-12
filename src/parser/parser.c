@@ -53,11 +53,14 @@ void	compare_and_check_textures(t_tex_list *tex, t_var *var)
 	get_color_ceiling(var);
 }
 
-void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex)
+void	parser(char **argv, t_data *data)
 {
+	t_tex_list *tex;
+	t_map_list *map;
+
 	create_linked_list_for_textures(&tex);
 	create_linked_list_for_map(&map);
-	init_variables(var, map, tex);
+	init_variables(data, map, tex);
 	get_textures_and_map(argv, map, tex, var);
 	compare_and_check_textures(tex, var);
 	var->map.map = transfer_map_to_array(map, var);

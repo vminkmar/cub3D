@@ -217,7 +217,7 @@ void	check_map(char **map, t_var *var);
 void	init_variables(t_var *var, t_map_list *map, t_tex_list *tex);
 
 //parser
-void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex);
+void	parser(char **argv, t_data *data);
 void 	check_numbers(int red, int green, int blue);
 
 //print_errors
