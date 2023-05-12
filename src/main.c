@@ -1,23 +1,32 @@
-#include "cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/14 17:21:03 by vminkmar          #+#    #+#             */
+/*   Updated: 2023/05/12 13:37:28 by vminkmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/cub3d.h"
 
 int main(int argc, char **argv)
 {
-	t_player	*player;
-	mlx_t		*mlx;
-	mlx_image_t	*img;
+	t_data		*data;
 
-	var = NULL;
-	map = NULL;
-	tex = NULL;
+	data = NULL;
 	if (check_input(argc, argv) == 1)
 		return (EXIT_FAILURE);
-	var = malloc(sizeof(t_var));
-	if (var == NULL)
+	data = malloc(sizeof(t_data));
+	if (data == NULL)
 	{
 		print_error("Allocation of Memory failed");
 		exit (1);
 	}
-	parser(argv, var, map, tex);
-	// raycaster();
+	init_data(data);
+	parser(argv, data);
+	raycaster(data);
 	return (EXIT_SUCCESS);
 }
