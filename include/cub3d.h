@@ -26,9 +26,9 @@
 typedef enum e_type
 {
 	WALKABLE,
+	WALL,
 	OPEN_DOOR,
 	CLOSED_DOOR,
-	WALL,
 } t_type;
 
 typedef enum e_error
@@ -70,8 +70,6 @@ typedef struct s_tex_list
 	int					counter;
 	struct s_tex_list	*next;
 }	t_tex_list;
-
-//draw
 
 typedef struct s_fvector
 {
@@ -134,7 +132,6 @@ typedef struct s_map
 	char			*ceiling_color;
 	uint32_t		color_floor;
 	uint32_t		color_ceiling;
-	
 }	t_map;
 
 
@@ -146,26 +143,6 @@ typedef struct s_data
 	t_player		*player;
 
 } 	t_data;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //linked_list_to_array
 char	**transfer_map_to_array(t_map_list *map);
@@ -239,11 +216,12 @@ void free_list_map(t_map_list **map);
 void free_numbers(char **numbers);
 
 //draw
-int32_t		draw_it(void);
+void		raycaster(t_data *data);
+void		init_player(t_data *data);
 void		draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 void		draw_map(mlx_image_t *img, int map[][6]);
 void		draw_square(mlx_image_t *img, int x, int y, uint32_t color);
-void		draw_fov(t_player *player);
+void		draw_fov(t_player *player, t_data *data);
 
 
 //draw_utils
@@ -253,12 +231,14 @@ t_fvector	angle_to_vector(double angle);
 
 //movement
 void		my_loop_hook(void *param);
+int			wall_collision(char **map, double x, double y);
+
 
 //textures
-mlx_texture_t	*get_tex(t_ray *ray, t_player *player);
+mlx_texture_t	*get_tex(t_data *data, t_ray *ray);
 uint32_t		get_wall_color(t_player *player, t_ray *ray);
-void			paint_background(t_player *player, t_ray *ray, int x);
-void			paint_texture(t_player *player, t_ray *ray, int x);
+void			paint_background(t_data *data, t_ray *ray, int x);
+void			paint_texture(t_data *data, t_ray *ray, int x);
 int				get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
 
 #endif

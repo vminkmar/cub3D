@@ -1,22 +1,21 @@
 #include "../include/cub3d.h"
 
-mlx_texture_t *get_tex(t_ray *ray, t_player *player)
+mlx_texture_t *get_tex(t_data *data, t_ray *ray)
 {
 	if(ray->wall_side == 0)
 	{
 		if (ray->step.x >= 0)
-			return (player->tex_west);
+			return (data->map->tex_west);
 		else 
-			return (player->tex_east);
+			return (data->map->tex_east);
 	}
 	else
 	{
 		if(ray->step.y >= 0)
-			return (player->tex_north);
+			return (data->map->tex_north);
 		else
-			return (player->tex_south);
+			return (data->map->tex_south);
 	}
-	//return(NULL);
 }
 
 int get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex)
@@ -34,7 +33,7 @@ int get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex)
 	return(x_pos);
 }
 
-void paint_texture(t_player *player, t_ray *ray, int x)
+void paint_texture(t_data *data, t_ray *ray, int x)
 {
 	t_ivector		vtex;
 	double			tex_pos;
@@ -42,21 +41,21 @@ void paint_texture(t_player *player, t_ray *ray, int x)
 	mlx_texture_t	*tex;
 	int				i;
 
-	tex = get_tex(ray, player);
-	vtex.x = get_x_pos(player, ray, tex);
+	tex = get_tex(data, ray);
+	vtex.x = get_x_pos(data->player, ray, tex);
 	tex_step = tex->height / ray->proj_wall_height;
 	tex_pos = (ray->wall_start - HEIGHT / 2 + ray->proj_wall_height / 2) * tex_step;
 	i = ray->wall_start - 1;
 	while(i < ray->wall_end)
 	{
 		vtex.y = (int)tex_pos % tex->height;
-		ft_memcpy(&player->img->pixels[(WIDTH * i + x) * 4], &tex->pixels[(tex->width * vtex.y + vtex.x) * 4], 4);
+		ft_memcpy(&data->img->pixels[(WIDTH * i + x) * 4], &tex->pixels[(tex->width * vtex.y + vtex.x) * 4], 4);
 		tex_pos += tex_step;
 		i++;
 	}
 }
 
-void paint_background(t_player *player, t_ray *ray, int x)
+void paint_background(t_data *data, t_ray *ray, int x)
 {
 	int	i;
 
@@ -64,9 +63,9 @@ void paint_background(t_player *player, t_ray *ray, int x)
 	while(i <= HEIGHT)
 	{
 		if(i < ray->wall_start + 1)
-			draw_pixel(player->img, x, i, CEILING);
+			draw_pixel(data->img, x, i, data->map->color_ceiling);
 		else if (i > ray->wall_end - 1)
-			draw_pixel(player->img, x, i, FLOOR);
+			draw_pixel(data->img, x, i, data->map->color_floor);
 		i++;
 	}
 }

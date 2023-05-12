@@ -39,27 +39,27 @@ void get_stepsize(t_ray *ray)
     ray->step_size.y = fabs(1 / ray->dir.y + EPSILON);
 }
 
-void wall_hit(t_player *player, t_ray *ray, double *distance, int *hit)
+void wall_hit(t_data *data, t_ray *ray, int *hit)
 {
 	if(ray->length.x < ray->length.y)
 	{
 		ray->wall_side = 0;
 		ray->map_check.x += ray->step.x;
-		*distance = ray->length.x;
+		ray->distance = ray->length.x;
 		ray->length.x += ray->step_size.x;
 	}
 	else
 	{
 		ray->wall_side = 1;
 		ray->map_check.y += ray->step.y;
-		*distance = ray->length.y;
+		ray->distance = ray->length.y;
 		ray->length.y += ray->step_size.y;
 	}
-	if((ray->map_check.x >= 0 && ray->map_check.x < GRID_WIDTH) && (ray->map_check.y >= 0 && ray->map_check.y < GRID_HEIGHT))
-	{
-		if(player->map[ray->map_check.y][ray->map_check.x] == 1)
+/* 	if((ray->map_check.x >= 0 && ray->map_check.x < GRID_WIDTH) && (ray->map_check.y >= 0 && ray->map_check.y < GRID_HEIGHT))
+	{ */
+	if(data->map->map[ray->map_check.y][ray->map_check.x] == 1)
 			*hit = 1;
-	}
+	/* } */
 }
 
 void init_ray(t_player *player, t_ray *ray, double angle)
@@ -106,20 +106,20 @@ void set_wall(t_ray *ray, t_player *player, double angle)
 		ray->wall_end = HEIGHT - 1;
 }
 
-void cast_ray(t_player *player, double angle, int x)
+void cast_ray(t_player *player, t_data *data, double angle, int x)
 {	
 	t_ray		*ray;
 	int			hit;
 	float		max_distance;
 	
-	max_distance = sqrt(GRID_HEIGHT * GRID_HEIGHT) + (GRID_WIDTH * GRID_WIDTH);
+	max_distance = sqrt(data->map->max_height * data->map->max_height) + (data->map->max_width * data->map->max_width);
 	hit = 0;
 	ray = malloc(sizeof(t_ray));
 	init_ray(player, ray, angle);
 	get_stepsize(ray);
 	get_steps(ray);
 	while(!hit && ray->distance + EPSILON < max_distance)
-		wall_hit(player, ray, &ray->distance, &hit);
+		wall_hit(data, ray, &hit);
 	if(hit)
 	{
 		set_wall(ray, player, angle);
@@ -129,7 +129,7 @@ void cast_ray(t_player *player, double angle, int x)
 	free(ray);
 }
 
-void	draw_fov(t_player *player)
+void	draw_fov(t_player *player, t_data *data)
 {
 	double	current_angle;
 	double	end_angle;
@@ -142,56 +142,26 @@ void	draw_fov(t_player *player)
 	x = 0;
 	while (current_angle < end_angle)
 	{
-		cast_ray(player, current_angle, x);
+		cast_ray(player, data, current_angle, x);
 		x++;
 		current_angle += step;
 	} 
 }
 
-void init_player(t_player *player, mlx_t *mlx, mlx_image_t *img)
+void init_player(t_data *data)
 {
-	player->p_start.x = GRID_WIDTH / 2;
-	player->p_start.y = GRID_HEIGHT / 2;
-	player->angle = 90;
-	player->fov = 60;
-	player->mlx = mlx;
-	player ->img = img;
+	data->player->p_start.x = data->map->max_width / 2;
+	data->player->p_start.y = data->map->max_height / 2;
+	data->player->angle = 90;
+	data->player->fov = 60;
 }
 
-int32_t	main(void)
+void raycaster(t_data *data)
 {
-	t_player	*player;
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-
-
-    mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
-    if (!mlx)
-		exit(EXIT_FAILURE);
-    img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	player = malloc(sizeof(t_player));
-	init_player(player, mlx, img);
-	mlx_set_cursor_mode(player->mlx, MLX_MOUSE_HIDDEN);
-	int map[6][6] =
-	{ 	{1, 1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 1, 1},
-		{1, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 1},
-	};
-	ft_memcpy(player->map, map, sizeof(map));
-	memset(img->pixels, 255, img->width * img->height * BPP);
-	player->tex_north = mlx_load_png("./textures/greystone.png");
-	player->tex_south = mlx_load_png("./textures/mossy.png");
-	player->tex_west = mlx_load_png("./textures/redbrick.png");
-	player->tex_east = mlx_load_png("./textures/wood.png");
-	mlx_image_to_window(mlx, img, 0, 0);
-	mlx_loop_hook(mlx, &my_loop_hook, player);
-    mlx_loop(mlx);
-	//free(player);
-    mlx_terminate(mlx);
-
-    return (EXIT_SUCCESS);
+	memset(data->img->pixels, 255, data->img->width * data->img->height * BPP);
+	mlx_image_to_window(data->mlx, data->img, 0, 0);
+	mlx_loop_hook(data->mlx, &my_loop_hook, data->player);
+    mlx_loop(data->mlx);
+    mlx_terminate(data->mlx);
 }
 
