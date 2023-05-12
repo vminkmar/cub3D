@@ -3,163 +3,193 @@
 // Bytes Per Pixel. Since each pixel is represented as an integer, it will be four bytes for four channels.
 #define BPP sizeof(int32_t)
 
-void draw_square(mlx_image_t *img, int x, int y, uint32_t color)
+void	draw_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 {
-	int new_x = x;
-	int new_y = y;
-	int count_x;
-	int count_y;
-
-	count_y = 0;
-	while(count_y < HEIGHT / 4)
-	{
-		new_x = x;
-		count_x = 0;
-		while(count_x < WIDTH / 4)
-		{
-			mlx_put_pixel(img, new_x, new_y, color);
-			new_x++;
-			count_x++;
-		}
-		new_y++;
-		count_y++;
-	}
-}
-
-void	draw_line(mlx_image_t *img, double x, double y, uint32_t color)
-{
-	double	dx;
-	double	dy;
-	double	pix_x;
-	double	pix_y;
-	int		put_pix;
-
-	dx = 0;
-	dy = y + 10 - y;
-	put_pix = sqrt((dx * dx) + (dy * dy));
-	dx /= put_pix;
-	dy /= put_pix;
-	pix_x = x;
-	pix_y = y;
-	while (put_pix)
-	{
+	if (x < WIDTH && x > 0 && y < HEIGHT && y > 0)
 		mlx_put_pixel(img, x, y, color);
-		pix_x = pix_x + dx;
-		pix_y = pix_y + dy;
-		put_pix--;
-	}
 }
 
-void thickenize_pixel(mlx_image_t *img, double x, double y, uint32_t color)
+void get_steps(t_ray *ray)
 {
-    double i, j;
-
-    i = -3;
-    while (i <= 3)
+    if(ray->dir.x < 0)
     {
-        j = -3;
-        while (j <= 3)
-        {
-            if (i == 0 && j == 0)
-                mlx_put_pixel(img, x + i, y + j, color);
-            else
-                mlx_put_pixel(img, x + i, y + j, color);
-            j++;
-        }
-        i++;
+        ray->step.x = -1;
+        ray->length.x = fabs((ray->start.x - (float)ray->map_check.x) * ray->step_size.x);
     }
-	draw_line(img, x, y, 0xFF0000FF);
+    else
+    {
+        ray->step.x = 1;
+        ray->length.x = fabs(((float)ray->map_check.x + 1 - ray->start.x) * ray->step_size.x);
+    }
+    if(ray->dir.y < 0)
+    {
+        ray->step.y = -1;
+        ray->length.y = fabs((ray->start.y - (float)ray->map_check.y) * ray->step_size.y);
+    }
+    else
+    {
+        ray->step.y = 1;
+        ray->length.y = fabs(((float)ray->map_check.y + 1 - ray->start.y) * ray->step_size.y);
+    }
 }
 
-void my_loop_hook(void *param)
+void get_stepsize(t_ray *ray)
 {
-	t_player *player;
+	ray->step_size.x = fabs(1 / ray->dir.x + EPSILON);
+    ray->step_size.y = fabs(1 / ray->dir.y + EPSILON);
+}
+
+void wall_hit(t_player *player, t_ray *ray, double *distance, int *hit)
+{
+	if(ray->length.x < ray->length.y)
+	{
+		ray->wall_side = 0;
+		ray->map_check.x += ray->step.x;
+		*distance = ray->length.x;
+		ray->length.x += ray->step_size.x;
+	}
+	else
+	{
+		ray->wall_side = 1;
+		ray->map_check.y += ray->step.y;
+		*distance = ray->length.y;
+		ray->length.y += ray->step_size.y;
+	}
+	if((ray->map_check.x >= 0 && ray->map_check.x < GRID_WIDTH) && (ray->map_check.y >= 0 && ray->map_check.y < GRID_HEIGHT))
+	{
+		if(player->map[ray->map_check.y][ray->map_check.x] == 1)
+			*hit = 1;
+	}
+}
+
+void init_ray(t_player *player, t_ray *ray, double angle)
+{
+	ray->length.x = 0;
+	ray->length.y = 0;
+	ray->start.x = player->p_start.x;
+	ray->start.y = player->p_start.y;
+	ray->map_check.x = (int)ray->start.x;
+	ray->map_check.y = (int)ray->start.y;
+	ray->dir = angle_to_vector(angle);
+	ray->distance = 0;
+	ray->proj_wall_height = 0;
+	ray->wall_start = 0;
+	ray->wall_end = 0;
+	ray->wall_side = 0;
+}
+
+double distance_to_plane(double distance, double angle, double player_angle)
+{
+    double diff_angle;
+	double perp_distance;
+
+	diff_angle = (angle * (M_PI / 180.0)) - (player_angle * (M_PI / 180.0));
+	perp_distance = distance * cos(diff_angle);
+    return fabs(perp_distance);
+}
+
+void set_wall(t_ray *ray, t_player *player, double angle)
+{
+	ray->interception.x = ray->start.x + ray->dir.x * ray->distance;
+	ray->interception.y = ray->start.y + ray->dir.y * ray->distance;
+	ray->distance = distance_to_plane(ray->distance, angle, player->angle);
+	ray->proj_wall_height = (int)HEIGHT / ray->distance;
+	if (ray->wall_side == 0)
+    	ray->distance = fabs(ray->length.x - ray->step_size.x);
+	else
+    	ray->distance = fabs(ray->length.y - ray->step_size.y);
+	ray->wall_start = (HEIGHT - ray->proj_wall_height) / 2;
+	if(ray->wall_start < 0)
+		ray->wall_start = 0;
+	ray->wall_end = ray->wall_start + ray->proj_wall_height;
+	if(ray->wall_end >= HEIGHT)
+		ray->wall_end = HEIGHT - 1;
+}
+
+void cast_ray(t_player *player, double angle, int x)
+{	
+	t_ray		*ray;
+	int			hit;
+	float		max_distance;
 	
-	player = (t_player *)param;
-	if(mlx_is_key_down(player->mlx, MLX_KEY_RIGHT))
+	max_distance = sqrt(GRID_HEIGHT * GRID_HEIGHT) + (GRID_WIDTH * GRID_WIDTH);
+	hit = 0;
+	ray = malloc(sizeof(t_ray));
+	init_ray(player, ray, angle);
+	get_stepsize(ray);
+	get_steps(ray);
+	while(!hit && ray->distance + EPSILON < max_distance)
+		wall_hit(player, ray, &ray->distance, &hit);
+	if(hit)
 	{
-		thickenize_pixel(player->img, player->x, player->y, 0xFFFFFFFF);
-		player->x += 5;
+		set_wall(ray, player, angle);
+		paint_background(player, ray, x);
+		paint_texture(player, ray, x);
 	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_LEFT))
-	{
-		thickenize_pixel(player->img, player->x, player->y, 0xFFFFFFFF);
-		player->x -= 5;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_DOWN))
-	{
-		thickenize_pixel(player->img, player->x, player->y, 0xFFFFFFFF);
-		player->y += 5;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_UP))
-	{
-		thickenize_pixel(player->img, player->x, player->y, 0xFFFFFFFF);
-		player->y -= 5;
-	}
-	if(mlx_is_key_down(player->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(player->mlx);
-	thickenize_pixel(player->img, player->x, player->y, 0x00FF0000);
+	free(ray);
 }
 
-void draw_map(mlx_image_t *img, int map[][4])
+void	draw_fov(t_player *player)
 {
-	int x = 0;
-	int y = 0;
-	int	i;
-	int	j;
-	j = 0;
-	i = 0;
-	while(i < 4)
+	double	current_angle;
+	double	end_angle;
+	double	step;
+	int		x;
+	
+	current_angle = player->angle - (player->fov / 2);
+	end_angle = player->angle + (player->fov / 2);
+	step = player->fov / WIDTH;
+	x = 0;
+	while (current_angle < end_angle)
 	{
-		j = 0;
-		x = 0;
-		while(j < 4)
-		{
-			if(map[i][j])
-				draw_square(img, x, y, 0xFF000000);
-			j++;
-			x += WIDTH / 4;
-		}
-		y += HEIGHT / 4;
-		i++;
-	}
+		cast_ray(player, current_angle, x);
+		x++;
+		current_angle += step;
+	} 
+}
+
+void init_player(t_player *player, mlx_t *mlx, mlx_image_t *img)
+{
+	player->p_start.x = GRID_WIDTH / 2;
+	player->p_start.y = GRID_HEIGHT / 2;
+	player->angle = 90;
+	player->fov = 60;
+	player->mlx = mlx;
+	player ->img = img;
 }
 
 int32_t	main(void)
 {
-	int map[4][4] =
-	{ 	{0, 0, 0, 1},
-		{1, 1, 0, 1},
-		{1, 0, 1, 0},
-		{1, 0, 1, 0}
-	};
-	
-	t_player *player;
-	
+	t_player	*player;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+
+
+    mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
+    if (!mlx)
+		exit(EXIT_FAILURE);
+    img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	player = malloc(sizeof(t_player));
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
-	
-	
-    // Init mlx with a canvas size of 256x256 and the ability to resize the window.
-    mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
-    if (!mlx) exit(EXIT_FAILURE);
-	player->mlx = mlx;
-
-	
-    // Create a 128x128 image.
-    mlx_image_t* img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	player ->img = img;
-
-    // Set the channels of each pixel in our image to the maximum byte value of 255. 
-    memset(img->pixels, 255, img->width * img->height * BPP);
-
-    // Draw the image at coordinate (0, 0).
-	mlx_image_to_window(mlx, img, 0, 0);	
-	draw_map(img, map);
+	init_player(player, mlx, img);
+	mlx_set_cursor_mode(player->mlx, MLX_MOUSE_HIDDEN);
+	int map[6][6] =
+	{ 	{1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1, 1},
+		{1, 0, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1, 1},
+	};
+	ft_memcpy(player->map, map, sizeof(map));
+	memset(img->pixels, 255, img->width * img->height * BPP);
+	player->tex_north = mlx_load_png("./textures/greystone.png");
+	player->tex_south = mlx_load_png("./textures/mossy.png");
+	player->tex_west = mlx_load_png("./textures/redbrick.png");
+	player->tex_east = mlx_load_png("./textures/wood.png");
+	mlx_image_to_window(mlx, img, 0, 0);
 	mlx_loop_hook(mlx, &my_loop_hook, player);
-    // Run the main loop and terminate on quit.  
     mlx_loop(mlx);
+	//free(player);
     mlx_terminate(mlx);
 
     return (EXIT_SUCCESS);

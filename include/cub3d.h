@@ -88,18 +88,71 @@ typedef struct s_var
 
 //draw
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 900	
+# define HEIGHT 600
+# define GRID_WIDTH 6
+# define GRID_HEIGHT 6
+# define PLAYER_SPEED 0.11
+# define ROTATION_SPEED 3
+# define MOUSE_SENSITIVITY 5
+# define EPSILON 1e-6
+
+# define CEILING	0xFF0000FF
+# define WALL		0x00FF00FF
+# define FLOOR		0xFF00FF00
+
+typedef struct s_fvector
+{
+	double x;
+	double y;
+}	t_fvector;
+
+typedef struct s_ivector
+{
+	int x;
+	int y;
+}	t_ivector;
+
+typedef struct s_ray
+{
+	t_fvector	start;
+    t_fvector	dir;
+	t_fvector	step_size;
+	t_ivector	map_check;
+	t_fvector	length;
+	t_ivector	step;
+	t_fvector	interception;
+	double		distance;
+	double		proj_wall_height;
+	int			wall_start;
+	int			wall_end;
+	int			wall_side;
+} t_ray;
 
 typedef struct s_player
 {
-	double 	x;
-	double	y;
-	mlx_image_t *img;
-	mlx_t *mlx;
+	double			angle;
+	t_fvector		p_start;
+	double			fov;
+	int				map[GRID_WIDTH][GRID_HEIGHT];
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	mlx_texture_t	*tex_north;
+	mlx_texture_t	*tex_south;
+	mlx_texture_t	*tex_west;
+	mlx_texture_t	*tex_east;
 } 	t_player;
 
-typedef struct s_coord
+typedef enum e_wall_orientation
+{
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST,
+} t_wall_orientation;
+
+
+typedef enum e_coords
 {
 	double 	x;
 	double	y;
@@ -177,6 +230,29 @@ void free_list_map(t_map_list **map);
 void free_numbers(char **numbers);
 
 //draw
-int32_t	draw_it(void);
+int32_t		draw_it(void);
+void		draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
+void		draw_map(mlx_image_t *img, int map[][6]);
+void		draw_square(mlx_image_t *img, int x, int y, uint32_t color);
+void		draw_fov(t_player *player);
+
+
+//draw_utils
+int			grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
+double		pixel_to_grid(int pixel_coordinate, int tile_size);
+t_fvector	angle_to_vector(double angle);
+
+//movement
+void		my_loop_hook(void *param);
+
+//textures
+mlx_texture_t	*get_tex(t_ray *ray, t_player *player);
+uint32_t		get_wall_color(t_player *player, t_ray *ray);
+void			paint_background(t_player *player, t_ray *ray, int x);
+void			paint_texture(t_player *player, t_ray *ray, int x);
+int				get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
+
+
+
 
 #endif

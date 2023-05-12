@@ -3,5 +3,9 @@ obj
 .vscode
 *.dSYM
 cub3D
-/include/Libft/*.o
-/include/Libft/*.a
+/include/libft/*.o
+*.o
+*.a
+.vscode/
+a.out
+.DS_Store
