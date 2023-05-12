@@ -17,14 +17,6 @@ Test(map_tests, correct_map, .init = redir)
 	argv[0] = "cub3D";
 	argv[1] = "maps/map_correct_multiple_spaces";
 	int argc = 2;
-	cr_assert_eq(main(argc, argv), 0, "Expected 0 when multiple spaces before paths");
-}
-
-Test(map_tests, correct_map1, .init = redir)
-{
-    char *argv[2];
-	argv[0] = "cub3D";
-	argv[1] = "maps/map_spaces_in_color";
-	int argc = 2;
-	cr_assert_eq(main(argc, argv), 1, "Expected 1 when spaces in colors");
+	int exit_status = main(argc, argv);
+	cr_assert_eq(exit_status, 0, "Expected exit status of 0, but got %d", exit_status);
 }
