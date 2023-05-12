@@ -1,35 +1,64 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
-int	count_lines(t_map_list *map)
-{	
-	t_map_list	*tmp;
-	int			counter;
-
-	counter = 0;
-	tmp = map;
-	while (tmp != NULL)
+void get_start_point(t_data *data, char c, int line, int character)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
-		counter ++;
-		tmp = tmp->next;
-	}
-	return (counter);
+		data->player->p_start.y = line;
+		data->player->p_start.x = character;
+		data->player->counter_p_start ++;
+	}	
 }
 
-char	**transfer_map_to_array(t_map_list *map)
+void check_for_startpoint(t_data *data)
 {
-	int		line_counter;
-	char	**map_data;
-	int		i;
+	if(data->player->counter_p_start < 1)
+		print_error("There is no start point on the map");
+	if(data->player->counter_p_start > 1)
+		print_error("There are too many startpoints on the map");
+	// free
+	exit (1);
+}
 
-	i = 0;
-	line_counter = count_lines(map);
-	map_data = malloc(sizeof(char *) *(line_counter + 1));
+char	*get_map_types(const char *s1, int line, t_data *data)
+{
+	char	*new;
+	size_t	character;
+
+	if (s1 == NULL)
+		return (NULL);
+	new = malloc(sizeof(t_type *) * (ft_strlen(s1) + 1));
+	if (new == NULL)
+		return (NULL);
+	character = 0;
+	while (character < ft_strlen(s1) + 1)
+	{	
+		get_start_point(data, s1[character], line, character);
+		if(s1[character] == '1')
+			new[character] = WALL;
+		else if(s1[character] == '0')
+			new[character] = WALKABLE;
+		else
+			new[character] = s1[character];
+		character++;
+	}
+	return (new);
+}
+
+char	**transfer_map_to_array(t_map_list *map, t_data *data)
+{
+	char	**map_data;
+	int		line;
+
+	line = 0;
+	map_data = malloc(sizeof(t_type *) *(data->map->height + 1));
 	while (map)
 	{
-		map_data[i] = ft_strdup(map->content);
-		i ++;
+		map_data[line] = get_map_types(map->content, line, data);
+		line ++;
 		map = map->next;
 	}
-	map_data[i] = NULL;
+	map_data[line] = NULL;
+	check_for_startpoint(data);
 	return (map_data);
 }

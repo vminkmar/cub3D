@@ -1,5 +1,6 @@
 #include "../include/cub3d.h"
 
+
 void init_data(t_data *data)
 {	
 	data->mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
@@ -30,6 +31,6 @@ int main(int argc, char **argv)
 	}
 	init_data(data);
 	parser(argv, data);
-	raycaster(data);
+	// raycaster(data);
 	return (EXIT_SUCCESS);
 }

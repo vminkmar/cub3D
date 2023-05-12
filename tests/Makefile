@@ -1,5 +1,5 @@
 CC				:=	cc
-FILES			:=	valid_map_tests.c
+FILES			:=	valid_input_tests.c map_tests.c
 RM				:=	rm -f
 LDFLAGS			:=  -lcriterion -L.. -L "/Users/vminkmar/.brew/lib" ../lib/libtest.a
 TESTS			:=	$(FILES:%.c=%.o)

@@ -6,15 +6,13 @@ CC				:=	cc
 
 RM				:=	rm -f
 
-CFLAGS			:=	-g -Wall -Wextra -Werror -fsanitize=address
+CFLAGS			:=	-g -Wall -Wextra -Werror #-fsanitize=address
 
 VPATH			:=	src/ src/parser
 
-#SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free_stuff.c print_errors.c\
+SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free_stuff.c print_errors.c\
 					linked_list.c check_map.c get_textures_and_map.c get_textures_and_map_utils.c textures.c color.c\
 					color_utils.c linked_list_to_array.c draw.c draw_utils.c movement.c textures.c
-
-SRC_FILES		:=	main.c draw.c draw_utils.c movement.c textures.c
 
 HEADER			:=	-I./include/
 

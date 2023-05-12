@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
 int	ft_whitespaces(char c)
 {
@@ -21,14 +21,14 @@ int	ft_charcmp(char c, char *str)
 	return (0);
 }
 
-void	check_around_zero(char **map, int line, int character, t_var *var)
+void	check_around_zero(char **map, int line, int character, t_data *data)
 {
 	t_error	error;
 
 	error = ERROR_NO;
-	if (map[0][character] == '0' || map[line][0] == '0'
-		|| map[var->map.height - 1][character] == '0'
-		|| map[line][ft_strlen(map[line]) - 1] == '0')
+	if (map[0][character] == WALKABLE || map[line][0] == WALKABLE
+		|| map[data->map->height - 1][character] == WALKABLE
+		|| map[line][ft_strlen(map[line]) - 1] == WALKABLE)
 		error = ERROR_INVALID;
 	else if (ft_charcmp(map[line][character - 1], WHITESPACES) == 1)
 		error = ERROR_INVALID;
@@ -46,7 +46,7 @@ void	check_around_zero(char **map, int line, int character, t_var *var)
 	}
 }
 
-void	check_map(char **map, t_var *var)
+void	check_map(char **map, t_data *data)
 {
 	int	line;
 	int	character;
@@ -58,7 +58,7 @@ void	check_map(char **map, t_var *var)
 		while (map[line][character] != '\n' && map[line][character] != '\0')
 		{	
 			if (map[line][character] == '0')
-				check_around_zero(map, line, character, var);
+				check_around_zero(map, line, character, data);
 			if (ft_whitespaces(map[line][character]) == 1)
 			{
 				print_error("There is a not allowed whitespace in the map");

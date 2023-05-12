@@ -1,67 +1,72 @@
-#include "cub3d.h"
+#include "../../include/cub3d.h"
 
-void	compare_textures(t_tex_list *tex, t_var *var)
+void	compare_textures(t_tex_list *tex, t_data *data)
 {
 	while (tex)
 	{
 		if (ft_strncmp("NO ", tex->content, 3) == 0)
-			var->path_north = get_string_path(tex->content);
+			data->map->path_north = get_string_path(tex->content);
 		else if (ft_strncmp("SO ", tex->content, 3) == 0)
-			var->path_south = get_string_path(tex->content);
+			data->map->path_south = get_string_path(tex->content);
 		else if (ft_strncmp("EA ", tex->content, 3) == 0)
-			var->path_east = get_string_path(tex->content);
+			data->map->path_east = get_string_path(tex->content);
 		else if (ft_strncmp("WE ", tex->content, 3) == 0)
-			var->path_west = get_string_path(tex->content);
+			data->map->path_west = get_string_path(tex->content);
 		else if (ft_strncmp("F ", tex->content, 2) == 0)
-			var->floor_color = get_string_path(tex->content);
+			data->map->floor_color = get_string_path(tex->content);
 		else if (ft_strncmp("C ", tex->content, 2) == 0)
-			var->ceiling_color = get_string_path(tex->content);
+			data->map->ceiling_color = get_string_path(tex->content);
 		tex = tex->next;
 	}
 }
 
-void	check_textures(t_tex_list *tex, t_var *var)
+void	check_textures(t_tex_list *tex, t_data *data)
 {
 	int		flag;
 	t_error	error;
 
 	error = ERROR_NO;
 	flag = 0;
-	if (var->path_east == NULL)
+	if (data->map->path_east == NULL)
 		error = ERROR_EAST;
-	else if (var->path_north == NULL)
+	else if (data->map->path_north == NULL)
 		error = ERROR_NORTH;
-	else if (var->path_south == NULL)
+	else if (data->map->path_south == NULL)
 		error = ERROR_SOUTH;
-	else if (var->path_west == NULL)
+	else if (data->map->path_west == NULL)
 		error = ERROR_WEST;
-	else if (var->floor_color == NULL)
+	else if (data->map->floor_color == NULL)
 		error = ERROR_FLOOR;
-	else if (var->ceiling_color == NULL)
+	else if (data->map->ceiling_color == NULL)
 		error = ERROR_CEILING;
 	else if (error != ERROR_NO)
-		print_wrong_textures(tex, var, error);
+		print_wrong_textures(tex, data, error);
 }
 
-void	compare_and_check_textures(t_tex_list *tex, t_var *var)
+void	compare_and_check_textures(t_tex_list *tex, t_data *data)
 {
 	trim_spaces_textures(tex);
-	compare_textures(tex, var);
-	check_textures(tex, var);
-	check_colors(var);
-	get_color_floor(var);
-	get_color_ceiling(var);
+	compare_textures(tex, data);
+	check_textures(tex, data);
+	check_colors(data);
+	get_color_floor(data);
+	get_color_ceiling(data);
 }
 
-void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex)
+void	parser(char **argv, t_data *data)
 {
+	t_tex_list	*tex;
+	t_map_list	*map;
+
+	map = NULL;
+	tex = NULL;
 	create_linked_list_for_textures(&tex);
 	create_linked_list_for_map(&map);
-	init_variables(var, map, tex);
-	get_textures_and_map(argv, map, tex, var);
-	compare_and_check_textures(tex, var);
-	var->map.map = transfer_map_to_array(map);
-	check_map(var->map.map, var);
+	init_variables(data, map, tex);
+	get_textures_and_map(argv, map, tex, data);
+	compare_and_check_textures(tex, data);
+	data->map->map = transfer_map_to_array(map, data);
+	check_map(data->map->map, data);
 	free_list_textures(&tex);
 	free_list_map(&map);
 }

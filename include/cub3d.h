@@ -29,6 +29,7 @@ typedef enum e_type
 	WALL,
 	OPEN_DOOR,
 	CLOSED_DOOR,
+	
 } t_type;
 
 typedef enum e_error
@@ -56,6 +57,7 @@ typedef enum e_error_color
 	ERROR_SPACES_CEILING,
 	NO_ERROR,
 } t_error_color;
+
 
 typedef struct s_map_list
 {
@@ -109,6 +111,7 @@ typedef struct s_ray
 
 typedef struct s_player
 {
+	int				counter_p_start;
 	double			angle;
 	t_fvector		p_start;
 	double			fov;
@@ -116,10 +119,9 @@ typedef struct s_player
 
 typedef struct s_map
 {
-	char			**map;
 	int				max_height;
 	int				max_width;
-	char			**start_point;
+	char			**map;
 	char			*path_north;
 	char			*path_south;
 	char			*path_east;
@@ -134,6 +136,8 @@ typedef struct s_map
 	uint32_t		color_ceiling;
 }	t_map;
 
+//draw
+
 
 typedef struct s_data
 {
@@ -145,20 +149,21 @@ typedef struct s_data
 } 	t_data;
 
 //linked_list_to_array
-char	**transfer_map_to_array(t_map_list *map);
+char	**transfer_map_to_array(t_map_list *map, t_data *data);
 
 //color_utils
 int	check_for_commas(char *str);
 int	number_counter(char *str);
 int	check_for_alpha(char *str);
+void check_for_spaces(char *str, int flag);	
 
 
 //color
 uint32_t	rgb_to_uint(int red, int green, int blue);
 void	check_numbers(int red, int green, int blue);
-void	get_color_floor(t_var *var);
-void	get_color_ceiling(t_var *var);
-void check_colors(t_var *var);
+void	get_color_floor(t_data *data);
+void	get_color_ceiling(t_data *data);
+void check_colors(t_data *data);
 
 //textures
 char *trim_spaces_string(char *str);
@@ -167,7 +172,7 @@ char *get_string_path(char *str);
 
 //get_textures_and_map
 void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
-			t_var *var);
+			t_data *data);
 
 // get_textures_and_map_utils
 int	is_wall_or_field(char type);
@@ -177,18 +182,18 @@ int	is_begin_of_map(char *line);
 //check_map
 int	ft_whitespaces(char c);
 int ft_charcmp(char c, char *str);
-void check_around_zero(char **map, int line, int character, t_var *var);
-void	check_map(char **map, t_var *var);
+void check_around_zero(char **map, int line, int character, t_data *data);
+void	check_map(char **map, t_data *data);
 
 //init
-void	init_variables(t_var *var, t_map_list *map, t_tex_list *tex);
+void	init_variables(t_data *data, t_map_list *map, t_tex_list *tex);
 
 //parser
-void	parser(char **argv, t_var *var, t_map_list *map, t_tex_list *tex);
+void	parser(char **argv, t_data *data);
 void 	check_numbers(int red, int green, int blue);
 
 //print_errors
-void	print_wrong_textures(t_tex_list *tex, t_var *var, t_error error);
+void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error);
 void	print_wrong_color(t_error_color error);
 void	print_error(char *message);
 
@@ -211,7 +216,7 @@ int		ft_strcmp(char *first, char *second);
 
 //free_stuff
 void free_list_textures(t_tex_list **tex);
-void free_var(t_var *var);
+void free_data(t_data *data);
 void free_list_map(t_map_list **map);
 void free_numbers(char **numbers);
 
