@@ -21,6 +21,8 @@
 typedef enum e_type
 {
 	WALKABLE,
+	OPEN_DOOR,
+	CLOSED_DOOR,
 	WALL,
 	
 } t_type;
@@ -87,9 +89,9 @@ typedef struct s_tex_list
 
 typedef struct s_map
 {
-	int			height;
+	int			max_height;
 	char		**start_point;
-	int			width;
+	int			max_width;
 	t_player	player;
 	char		**map;
 	
@@ -115,6 +117,7 @@ typedef struct s_var
 
 
 
+int main(int argc, char **argv);
 
 
 
