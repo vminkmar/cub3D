@@ -137,8 +137,6 @@ typedef struct s_map
 }	t_map;
 
 //draw
-
-
 typedef struct s_data
 {
 	mlx_t			*mlx;

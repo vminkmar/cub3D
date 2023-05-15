@@ -100,7 +100,7 @@ void move_player(t_data *data, keys_t key)
 		move_right(data, tmp_x, tmp_y);
 }
 
-void check_mouse_pos(t_data *data)
+/* void check_mouse_pos(t_data *data)
 {
 	static int x = WIDTH / 2;
 	int new_x;
@@ -117,6 +117,32 @@ void check_mouse_pos(t_data *data)
     {
         mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
         x = WIDTH / 2;
+    }
+} */
+
+void check_mouse_pos(t_data *data)
+{
+	//static int x = WIDTH / 2;
+	int new_x;
+	int y;
+
+	y = HEIGHT / 2;
+	new_x = WIDTH / 2;
+	mlx_get_mouse_pos(data->mlx, &new_x, &y);
+	printf("%d\n", new_x);
+	if (new_x != WIDTH / 2)
+	{
+
+	if(new_x < WIDTH / 2)
+		data->player->angle -= ROTATION_SPEED;
+	else if(new_x > WIDTH / 2)
+		data->player->angle += ROTATION_SPEED;
+	}
+	//x = new_x;
+	//if(abs(new_x - WIDTH / 2) > MOUSE_SENSITIVITY)
+    {
+        mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
+       // x = WIDTH / 2;
     }
 }
 
