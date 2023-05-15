@@ -57,7 +57,7 @@ void wall_hit(t_data *data, t_ray *ray, int *hit)
 	}
 /* 	if((ray->map_check.x >= 0 && ray->map_check.x < GRID_WIDTH) && (ray->map_check.y >= 0 && ray->map_check.y < GRID_HEIGHT))
 	{ */
-	if(data->map->map[ray->map_check.y][ray->map_check.x] == 1)
+	if(data->map->map[ray->map_check.y][ray->map_check.x] == WALL || data->map->map[ray->map_check.y][ray->map_check.x] == CLOSED_DOOR)
 			*hit = 1;
 	}
 /* } */

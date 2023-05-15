@@ -130,6 +130,7 @@ typedef struct s_map
 	mlx_texture_t	*tex_south;
 	mlx_texture_t	*tex_west;
 	mlx_texture_t	*tex_east;
+	mlx_texture_t	*tex_door;
 	char			*floor_color;
 	char			*ceiling_color;
 	uint32_t		color_floor;
@@ -222,10 +223,16 @@ void			free_numbers(char **numbers);
 //draw
 void			raycaster(t_data *data);
 void			init_player(t_data *data);
+void			init_ray(t_player *player, t_ray *ray, double angle);
 void			draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 void			draw_map(mlx_image_t *img, int map[][6]);
 void			draw_square(mlx_image_t *img, int x, int y, uint32_t color);
 void			draw_fov(t_player *player, t_data *data);
+void			get_stepsize(t_ray *ray);
+double			distance_to_plane(double distance, double angle, double player_angle);
+void			get_steps(t_ray *ray);
+void			wall_hit(t_data *data, t_ray *ray, int *hit);
+
 
 
 //draw_utils
@@ -236,6 +243,8 @@ t_fvector		angle_to_vector(double angle);
 //movement
 void			my_loop_hook(void *param);
 int				wall_collision(char **map, double x, double y);
+void cast_door_ray(t_player *player, t_data *data, double angle);
+
 
 
 //textures
