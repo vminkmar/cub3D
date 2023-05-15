@@ -29,7 +29,7 @@ int get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex)
 		wall_hit = player->p_start.x + ray->distance * ray->dir.x;
 	x_pos = (int)((wall_hit - floor(wall_hit)) * tex->width);
 	if((ray->wall_side == 0 && ray->dir.x > 0) || (ray->wall_side == 1 && ray->dir.y < 0))
-		x_pos = tex->width - x_pos - 1;
+		x_pos = tex->width - x_pos;
 	return(x_pos);
 }
 
@@ -45,7 +45,7 @@ void paint_texture(t_data *data, t_ray *ray, int x)
 	vtex.x = get_x_pos(data->player, ray, tex);
 	tex_step = tex->height / ray->proj_wall_height;
 	tex_pos = (ray->wall_start - HEIGHT / 2 + ray->proj_wall_height / 2) * tex_step;
-	i = ray->wall_start - 1;
+	i = ray->wall_start;
 	while(i < ray->wall_end)
 	{
 		vtex.y = (int)tex_pos % tex->height;
@@ -62,9 +62,9 @@ void paint_background(t_data *data, t_ray *ray, int x)
 	i = 0;
 	while(i <= HEIGHT)
 	{
-		if(i < ray->wall_start + 1)
+		if(i <= ray->wall_start)
 			draw_pixel(data->img, x, i, data->map->color_ceiling);
-		else if (i > ray->wall_end - 1)
+		else if (i >= ray->wall_end)
 			draw_pixel(data->img, x, i, data->map->color_floor);
 		i++;
 	}

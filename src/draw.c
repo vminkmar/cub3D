@@ -5,7 +5,7 @@
 
 void	draw_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 {
-	if (x < WIDTH && x > 0 && y < HEIGHT && y > 0)
+	if (x < WIDTH && x >= 0 && y < HEIGHT && y >= 0)
 		mlx_put_pixel(img, x, y, color);
 }
 
@@ -59,8 +59,8 @@ void wall_hit(t_data *data, t_ray *ray, int *hit)
 	{ */
 	if(data->map->map[ray->map_check.y][ray->map_check.x] == 1)
 			*hit = 1;
-	/* } */
-}
+	}
+/* } */
 
 void init_ray(t_player *player, t_ray *ray, double angle)
 {
@@ -98,12 +98,12 @@ void set_wall(t_ray *ray, t_player *player, double angle)
     	ray->distance = fabs(ray->length.x - ray->step_size.x);
 	else
     	ray->distance = fabs(ray->length.y - ray->step_size.y);
-	ray->wall_start = (HEIGHT - ray->proj_wall_height) / 2;
+	ray->wall_start = ((HEIGHT - ray->proj_wall_height) / 2);
 	if(ray->wall_start < 0)
 		ray->wall_start = 0;
 	ray->wall_end = ray->wall_start + ray->proj_wall_height;
 	if(ray->wall_end >= HEIGHT)
-		ray->wall_end = HEIGHT - 1;
+		ray->wall_end = HEIGHT;
 }
 
 void cast_ray(t_player *player, t_data *data, double angle, int x)
@@ -138,13 +138,15 @@ void	draw_fov(t_player *player, t_data *data)
 	
 	current_angle = player->angle - (player->fov / 2);
 	end_angle = player->angle + (player->fov / 2);
-	step = player->fov / WIDTH;
+	step = player->fov / (double)WIDTH;
 	x = 0;
-	while (current_angle < end_angle)
+	//ft_bzero(data->img->pixels, WIDTH * HEIGHT * 4);
+	data->map->color_floor = 0xFF0000FF;
+	data->map->color_ceiling = 0x00FF00FF;
+	while (x < WIDTH)
 	{
-		cast_ray(player, data, current_angle, x);
+		cast_ray(player, data, current_angle + x * step, x);
 		x++;
-		current_angle += step;
 	} 
 }
 
