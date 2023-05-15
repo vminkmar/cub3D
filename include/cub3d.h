@@ -149,96 +149,95 @@ typedef struct s_data
 } 	t_data;
 
 //linked_list_to_array
-char	**transfer_map_to_array(t_map_list *map, t_data *data);
-void get_max_with(char *str, t_data *data);
+char			**transfer_map_to_array(t_map_list *map, t_data *data);
+void			get_max_with(char *str, t_data *data);
 
 
 //color_utils
-int	check_for_commas(char *str);
-int	number_counter(char *str);
-int	check_for_alpha(char *str);
-void check_for_spaces(char *str, int flag);	
+int				check_for_commas(char *str);
+int				number_counter(char *str);
+int				check_for_alpha(char *str);
+void			check_for_spaces(char *str, int flag);	
 
 
 //color
-uint32_t	rgb_to_uint(int red, int green, int blue);
-void	check_numbers(int red, int green, int blue);
-void	get_color_floor(t_data *data);
-void	get_color_ceiling(t_data *data);
-void check_colors(t_data *data);
+int				rgb_to_uint(int red, int green, int blue, int alpha);
+void			check_numbers(int red, int green, int blue);
+void			get_color_floor(t_data *data);
+void			get_color_ceiling(t_data *data);
+void			check_colors(t_data *data);
 
 //textures
-char *trim_spaces_string(char *str);
-void trim_spaces_textures(t_tex_list *tex);
-char *get_string_path(char *str);
+char			*trim_spaces_string(char *str);
+void			trim_spaces_textures(t_tex_list *tex);
+char			*get_string_path(char *str);
 
 //get_textures_and_map
-void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
-			t_data *data);
+void			get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
+					t_data *data);
 
 // get_textures_and_map_utils
-int	is_wall_or_field(char type);
-void	check_for_empty_line(char *line, t_map_list *map);
-int	is_begin_of_map(char *line);
+int				is_wall_or_field(char type);
+void			check_for_empty_line(char *line, t_map_list *map);
+int				is_begin_of_map(char *line);
 
 //check_map
-int	ft_whitespaces(char c);
-int ft_charcmp(char c, char *str);
-void check_around_zero(char **map, int line, int character, t_data *data);
-void	check_map(char **map, t_data *data);
+int				ft_whitespaces(char c);
+int				ft_charcmp(char c, char *str);
+void			check_around_zero(char **map, int line, int character, t_data *data);
+void			check_map(char **map, t_data *data);
 
 //init
-void	init_variables(t_data *data, t_map_list *map, t_tex_list *tex);
+void			init_variables(t_data *data, t_map_list *map, t_tex_list *tex);
 
 //parser
-void	parser(char **argv, t_data *data);
-void 	check_numbers(int red, int green, int blue);
+void			parser(char **argv, t_data *data);
+void 			check_numbers(int red, int green, int blue);
 
 //print_errors
-void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error);
-void	print_wrong_color(t_error_color error);
-void	print_error(char *message);
+void			print_wrong_textures(t_tex_list *tex, t_data *data, t_error error);
+void			print_wrong_color(t_error_color error);
+void			print_error(char *message);
 
 //parser_linked_list_utils
-void	ft_lstadd_back_tex(t_tex_list **lst, t_tex_list *new);
-void	ft_lstadd_back_map(t_map_list **lst, t_map_list *new);
+void			ft_lstadd_back_tex(t_tex_list **lst, t_tex_list *new);
+void			ft_lstadd_back_map(t_map_list **lst, t_map_list *new);
 
 //parser_linked_list
-void	create_linked_list_for_textures(t_tex_list **tex);
-void	create_linked_list_for_map(t_map_list **map);
-void	add_node_to_map(char *line, t_map_list **map);
-void	add_node_to_tex(char *line, t_tex_list **tex);
-
+void			create_linked_list_for_textures(t_tex_list **tex);
+void			create_linked_list_for_map(t_map_list **map);
+void			add_node_to_map(char *line, t_map_list **map);
+void			add_node_to_tex(char *line, t_tex_list **tex);
 
 // utils
-int		check_input(int argc, char **argv);
-char	*sl_strjoin(char *s1, char *s2);
-int		ft_strcmp(char *first, char *second);
+int				check_input(int argc, char **argv);
+char			*sl_strjoin(char *s1, char *s2);
+int				ft_strcmp(char *first, char *second);
 
 
 //free_stuff
-void free_list_textures(t_tex_list **tex);
-void free_data(t_data *data);
-void free_list_map(t_map_list **map);
-void free_numbers(char **numbers);
+void			free_list_textures(t_tex_list **tex);
+void			free_data(t_data *data);
+void			free_list_map(t_map_list **map);
+void			free_numbers(char **numbers);
 
 //draw
-void		raycaster(t_data *data);
-void		init_player(t_data *data);
-void		draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
-void		draw_map(mlx_image_t *img, int map[][6]);
-void		draw_square(mlx_image_t *img, int x, int y, uint32_t color);
-void		draw_fov(t_player *player, t_data *data);
+void			raycaster(t_data *data);
+void			init_player(t_data *data);
+void			draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
+void			draw_map(mlx_image_t *img, int map[][6]);
+void			draw_square(mlx_image_t *img, int x, int y, uint32_t color);
+void			draw_fov(t_player *player, t_data *data);
 
 
 //draw_utils
-int			grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
-double		pixel_to_grid(int pixel_coordinate, int tile_size);
-t_fvector	angle_to_vector(double angle);
+int				grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
+double			pixel_to_grid(int pixel_coordinate, int tile_size);
+t_fvector		angle_to_vector(double angle);
 
 //movement
-void		my_loop_hook(void *param);
-int			wall_collision(char **map, double x, double y);
+void			my_loop_hook(void *param);
+int				wall_collision(char **map, double x, double y);
 
 
 //textures
