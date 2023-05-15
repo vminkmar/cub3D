@@ -1,14 +1,8 @@
 #include "../../include/cub3d.h"
 
-uint32_t	rgb_to_uint(int red, int green, int blue)
+int	rgb_to_uint(int red, int green, int blue, int alpha)
 {
-	uint32_t	result;
-
-	result = 0;
-	result |= (uint32_t)red << 16;
-	result |= (uint32_t)green << 8;
-	result |= (uint32_t)blue;
-	return (result);
+	return (red << 24 | green << 16 | blue << 8 | alpha);
 }
 
 void	check_numbers(int red, int green, int blue)
@@ -45,7 +39,7 @@ void	get_color_floor(t_data *data)
 	}
 	check_numbers(red, green, blue);
 	free_numbers(numbers_floor);
-	data->map->color_floor = rgb_to_uint(red, green, blue);
+	data->map->color_floor = rgb_to_uint(red, green, blue, 255);
 }
 
 void	get_color_ceiling(t_data *data)
@@ -71,7 +65,7 @@ void	get_color_ceiling(t_data *data)
 	}
 	check_numbers(red, green, blue);
 	free_numbers(numbers_ceiling);
-	data->map->color_ceiling = rgb_to_uint(red, green, blue);
+	data->map->color_ceiling = rgb_to_uint(red, green, blue, 255);
 }
 
 void	check_colors(t_data *data)
