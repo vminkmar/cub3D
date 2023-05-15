@@ -150,8 +150,8 @@ void	draw_fov(t_player *player, t_data *data)
 
 void init_player(t_data *data)
 {
-	data->player->p_start.x = data->map->max_width / 2;
-	data->player->p_start.y = data->map->max_height / 2;
+	data->player->p_start.x = (double)data->map->max_width / 2;
+	data->player->p_start.y = (double)data->map->max_height / 2;
 	data->player->angle = 90;
 	data->player->fov = 60;
 }
@@ -164,4 +164,3 @@ void raycaster(t_data *data)
     mlx_loop(data->mlx);
     mlx_terminate(data->mlx);
 }
-
