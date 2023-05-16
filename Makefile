@@ -6,7 +6,7 @@ CC				:=	cc
 
 RM				:=	rm -f
 
-CFLAGS			:=	-g -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS			:=	-g -Wall -Wextra #-Werror #-fsanitize=address
 
 VPATH			:=	src/ src/parser
 
@@ -36,7 +36,7 @@ LIBDIR			:= lib
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/" #-ldl -lglfw -pthread -lm
+LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/bin/brew/opt/glfw/lib/" #-ldl -lglfw -pthread -lm
 
 all: libft $(LMLX) $(NAME) #$(NAME_BONUS)
 
