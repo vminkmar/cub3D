@@ -1,5 +1,24 @@
 #include "../include/cub3d.h"
 
+void print2d(char **str)
+{
+	int i;
+	int j;
+	i = 0;
+	
+	while(i < 20)
+	{
+		j = 0;
+		while (j < 55)
+		{
+			printf("%i ", str[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+}
+
 void cast_door_ray(t_player *player, t_data *data, double angle)
 {	
 	t_ray		*ray;
@@ -16,14 +35,15 @@ void cast_door_ray(t_player *player, t_data *data, double angle)
 		wall_hit(data, ray, &hit);
 	if(hit)
 	{
-		printf("%f\n", ray->distance);
+		//print2d(data->map->map);
+		//printf("%f\n", ray->distance);
 		ray->interception.x = ray->start.x + ray->dir.x * ray->distance;
 		ray->interception.y = ray->start.y + ray->dir.y * ray->distance;
 		int x_index = (int)round(ray->interception.x);
 		int y_index = (int)round(ray->interception.y);
-		printf("%d\n", y_index);
-		printf("%d\n", x_index);
-		printf("MAPDATA: %c", data->map->map[y_index][x_index]);
+		printf("Y:%d\n", y_index);
+		printf("X:%d\n", x_index);
+		printf("MAPDATA: %i\n", data->map->map[y_index][x_index]);
 		if(data->map->map[y_index][x_index] == CLOSED_DOOR && ray->distance <= 1)
 		{
 			printf("HIT\n");

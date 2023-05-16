@@ -132,12 +132,10 @@ void cast_ray(t_player *player, t_data *data, double angle, int x)
 void	draw_fov(t_player *player, t_data *data)
 {
 	double	current_angle;
-	double	end_angle;
 	double	step;
 	int		x;
 	
 	current_angle = player->angle - (player->fov / 2);
-	end_angle = player->angle + (player->fov / 2);
 	step = player->fov / (double)WIDTH;
 	x = 0;
 	//ft_bzero(data->img->pixels, WIDTH * HEIGHT * 4);

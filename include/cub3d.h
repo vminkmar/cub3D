@@ -25,9 +25,9 @@
 
 typedef enum e_type
 {
+	OPEN_DOOR,
 	WALKABLE,
 	WALL,
-	OPEN_DOOR,
 	CLOSED_DOOR,
 	
 } t_type;
