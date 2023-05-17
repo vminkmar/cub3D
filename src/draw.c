@@ -161,6 +161,7 @@ void raycaster(t_data *data)
 	memset(data->img->pixels, 255, data->img->width * data->img->height * BPP);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_loop_hook(data->mlx, &my_loop_hook, data);
+	mlx_key_hook(data->mlx, interac_hook, data);
     mlx_loop(data->mlx);
     mlx_terminate(data->mlx);
 }

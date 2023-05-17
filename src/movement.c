@@ -120,6 +120,15 @@ void check_mouse_pos(t_data *data)
     }
 }
 
+void interac_hook(mlx_key_data_t keydata, void* param)
+{
+	t_data *data;
+	
+	data = (t_data *)param;
+	if(keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
+		cast_door_ray(data, data->player);
+}
+
 void my_loop_hook(void *param)
 {
 	t_data *data;
@@ -163,9 +172,6 @@ void my_loop_hook(void *param)
 	}
 	if(mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
-	if(mlx_is_key_down(data->mlx, MLX_KEY_W))
-		cast_door_ray(data->player, data, data->player->angle);
-		//door_fov(data->player, data);
 	check_mouse_pos(data);
 	draw_fov(data->player, data);
 }

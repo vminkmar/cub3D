@@ -1,76 +1,28 @@
 #include "../include/cub3d.h"
 
-void print2d(char **str)
+void cast_door_ray(t_data *data, t_player *player)
 {
-	int i;
-	int j;
-	i = 0;
-	
-	while(i < 20)
-	{
-		j = 0;
-		while (j < 55)
-		{
-			if(str[i][j] == 3 || str[i][j] == 0)
-				printf("I:%i, J:%i\n", i, j);
-			//printf("%i ", str[i][j]);
-			j++;
-		}
-		//printf("\n");
-		i++;
-	}
-}
+    t_ray *ray;
 
-/* void	door_fov(t_player *player, t_data *data)
-{
-	double	current_angle;
-	double	step;
-	int		x;
-	
-	current_angle = 30 - (30 / 2);
-	step = 30 / (double)WIDTH;
-	x = 0;
-	data->map->color_floor = 0xFF0000FF;
-	data->map->color_ceiling = 0x00FF00FF;
-	while (x < WIDTH)
-	{
-		cast_door_ray(player, data, current_angle + x * step);
-		x++;
-	} 
-} */
-
-void cast_door_ray(t_player *player, t_data *data, double angle)
-{	
-	t_ray		*ray;
-	int			hit;
-	float		max_distance;
-	
-	max_distance = sqrt(data->map->max_height * data->map->max_height) + (data->map->max_width * data->map->max_width);
-	hit = 0;
 	ray = malloc(sizeof(t_ray));
-	init_ray(player, ray, angle);
-	get_stepsize(ray);
-	get_steps(ray);
-	while(!hit && ray->distance + EPSILON < max_distance)
-		wall_hit(data, ray, &hit);
-	if(hit)
+	init_ray(player, ray, player->angle);
+	ray->start.x = player->p_start.x;
+	ray->start.y = player->p_start.y;
+    while (ray->start.x >= 0 && ray->start.x < data->map->max_width && ray->start.y >= 0 && ray->start.y < data->map->max_height)
 	{
-		print2d(data->map->map);
-		printf("%f\n", ray->distance);
-		ray->interception.x = ray->start.x + ray->dir.x * ray->distance;
-		ray->interception.y = ray->start.y + ray->dir.y * ray->distance;
-		int x_index = (int)round(ray->interception.x);
-		int y_index = (int)round(ray->interception.y);
-		printf("Y:%d\n", y_index - 1);
-		printf("X:%d\n", x_index - 1);
-		printf("MAPDATA: %i\n", data->map->map[y_index][x_index]);
-		if(data->map->map[y_index - 1][x_index - 1] == CLOSED_DOOR /* && ray->distance <= 1 */)
+		int map_x = (int)ray->start.x;
+        int map_y = (int)ray->start.y;
+        if (data->map->map[map_y][map_x] == CLOSED_DOOR || data->map->map[map_y][map_x] == OPEN_DOOR)
 		{
-			printf("HIT\n");
-			data->map->map[y_index - 1][x_index - 1] = OPEN_DOOR;
-		}
-		else if (data->map->map[y_index - 1][x_index - 1] == OPEN_DOOR /* && ray->distance >= 0.1 */)
-			data->map->map[y_index - 1][x_index - 1] = CLOSED_DOOR;
-	}
+			ray->distance = sqrt(pow(ray->start.x - player->p_start.x, 2) + pow(ray->start.y - player->p_start.y, 2));
+			if(data->map->map[map_y][map_x] == CLOSED_DOOR)
+				data->map->map[map_y][map_x] = OPEN_DOOR;
+			else if(data->map->map[map_y][map_x] == OPEN_DOOR && ray->distance >= 0.5)
+				data->map->map[map_y][map_x] = CLOSED_DOOR;
+            break;
+        }
+        ray->start.x += ray->dir.x;
+        ray->start.y += ray->dir.y;
+    }
 	free(ray);
 }
