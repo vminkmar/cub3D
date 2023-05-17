@@ -151,13 +151,11 @@ typedef struct s_data
 char			**transfer_map_to_array(t_map_list *map, t_data *data);
 void			get_max_with(char *str, t_data *data);
 
-
 //color_utils
 int				check_for_commas(char *str);
 int				number_counter(char *str);
 int				check_for_alpha(char *str);
 void			check_for_spaces(char *str, int flag);	
-
 
 //color
 int				rgb_to_uint(int red, int green, int blue, int alpha);
@@ -233,8 +231,6 @@ double			distance_to_plane(double distance, double angle, double player_angle);
 void			get_steps(t_ray *ray);
 void			wall_hit(t_data *data, t_ray *ray, int *hit);
 
-
-
 //draw_utils
 int				grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
 double			pixel_to_grid(int pixel_coordinate, int tile_size);
@@ -247,8 +243,7 @@ void			door_fov(t_player *player, t_data *data);
 /* void			cast_door_ray(t_player *player, t_data *data, double angle); */
 void cast_door_ray(t_data *data, t_player *player);
 void			interac_hook(mlx_key_data_t keydata, void* param);
-
-
+void			free_exit(t_data *data);
 
 
 //textures
