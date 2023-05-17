@@ -82,7 +82,7 @@ char	*get_string_path(char *str)
 		old++;
 	if (str[old] != ' ')
 	{
-		print_error("Check the texture names");
+		print_error("Error\nCheck the texture names");
 		// free
 		exit (1);
 	}

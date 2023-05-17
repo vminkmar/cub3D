@@ -10,7 +10,7 @@ void	check_numbers(int red, int green, int blue)
 	if (red > 255 || red < 0 || blue > 255 || blue < 0 || green > 255
 		|| green < 0)
 	{
-		print_error("Wrong RGB color");
+		print_error("Error\n Wrong RGB color the numbers have to be 0-255");
 		// free
 		exit (1);
 	}

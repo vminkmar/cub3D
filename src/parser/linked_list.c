@@ -5,7 +5,7 @@ void	create_linked_list_for_textures(t_tex_list **tex)
 	*tex = malloc(sizeof(t_tex_list));
 	if (*tex == NULL)
 	{
-		print_error("Allocating Memory failed");
+		print_error("Error\nAllocating Memory failed");
 		exit(1);
 	}
 	(*tex)->next = NULL;
@@ -17,7 +17,7 @@ void	create_linked_list_for_map(t_map_list **map)
 	*map = malloc(sizeof(t_map_list));
 	if (*map == NULL)
 	{
-		print_error("Allocating Memory failed");
+		print_error("Error\nAllocating Memory failed");
 		exit(1);
 	}
 	(*map)->next = NULL;
@@ -35,7 +35,7 @@ void	add_node_to_map(char *line, t_map_list **map)
 		new_map = malloc(sizeof(t_map_list));
 		if (new_map == NULL)
 		{
-			print_error("Allocation of Memory failed");
+			print_error("Error\nAllocation of Memory failed");
 			// free
 			exit (1);
 		}
@@ -57,7 +57,7 @@ void	add_node_to_tex(char *line, t_tex_list **tex)
 		new_tex = malloc(sizeof(t_tex_list));
 		if (new_tex == NULL)
 		{
-			print_error("Allocation of Memory failed");
+			print_error("Error\nAllocation of Memory failed");
 			// free
 			exit (1);
 		}

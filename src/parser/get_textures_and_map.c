@@ -20,7 +20,7 @@ void	get_map(char *line, t_map_list *map, t_data *data)
 	check_for_empty_line(line, map);
 	if (map->empty_line == 1 && is_begin_of_map(line) == 0)
 	{
-		print_error("There is an empty line in the Map");
+		print_error("Error\nThere is an empty line in the Map");
 		exit(1);
 	}
 	add_node_to_map(line, &map);
@@ -38,7 +38,7 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
-		print_error("There is no map with that name or the map is empty");
+		print_error("Error\nThere is no map with that name or the map is empty");
 		exit (1);
 	}
 	while (1)
@@ -56,7 +56,7 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 	}
 	if (begin_of_map == 0)
 	{
-		print_error("There is no Map in that file");
+		print_error("Error\nThere is no Map in that file");
 		// free
 		exit (1);
 	}

@@ -61,7 +61,7 @@ void	check_map(char **map, t_data *data)
 				check_around_zero(map, line, character, data);
 			if (ft_whitespaces(map[line][character]) == 1)
 			{
-				print_error("There is a not allowed whitespace in the map");
+				print_error("Error\nThere is a not allowed whitespace in the map");
 				// free
 				exit (1);
 			}
