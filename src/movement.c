@@ -165,6 +165,7 @@ void my_loop_hook(void *param)
 		mlx_close_window(data->mlx);
 	if(mlx_is_key_down(data->mlx, MLX_KEY_W))
 		cast_door_ray(data->player, data, data->player->angle);
+		//door_fov(data->player, data);
 	check_mouse_pos(data);
 	draw_fov(data->player, data);
 }

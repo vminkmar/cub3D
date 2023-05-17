@@ -243,7 +243,9 @@ t_fvector		angle_to_vector(double angle);
 //movement
 void			my_loop_hook(void *param);
 int				wall_collision(char **map, double x, double y);
-void cast_door_ray(t_player *player, t_data *data, double angle);
+void			door_fov(t_player *player, t_data *data);
+void			cast_door_ray(t_player *player, t_data *data, double angle);
+
 
 
 
