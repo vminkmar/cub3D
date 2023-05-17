@@ -65,7 +65,7 @@ void load_pngs(t_data *data)
 	data->map->tex_east = mlx_load_png(data->map->path_east);
 	if (data->map->tex_east == NULL)
 		print_error("east");
-	data->map->tex_door = mlx_load_png("./textures/purplestone.png");
+	data->map->tex_door = mlx_load_png("./textures/door.png");
 	if (data->map->tex_door == NULL)
 		print_error("door");
 }
