@@ -15,7 +15,7 @@ void cast_door_ray(t_data *data, t_player *player)
         if (data->map->map[map_y][map_x] == CLOSED_DOOR || data->map->map[map_y][map_x] == OPEN_DOOR)
 		{
 			ray->distance = sqrt(pow(ray->start.x - player->p_start.x, 2) + pow(ray->start.y - player->p_start.y, 2));
-			if(data->map->map[map_y][map_x] == CLOSED_DOOR)
+			if(data->map->map[map_y][map_x] == CLOSED_DOOR && ray->distance < 1.5)
 				data->map->map[map_y][map_x] = OPEN_DOOR;
 			else if(data->map->map[map_y][map_x] == OPEN_DOOR && ray->distance >= 0.5)
 				data->map->map[map_y][map_x] = CLOSED_DOOR;
