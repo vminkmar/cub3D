@@ -7,13 +7,13 @@ void get_start_point(t_data *data, char c, int line, int character)
 		data->player->p_start.y = line + 0.5;
 		data->player->p_start.x = character + 0.5;
 		if(c == 'N')
-            data->player->angle = 0;
-		if(c == 'S')
-            data->player->angle = 180;
-        if(c == 'E')
-            data->player->angle = 90;
-        if(c == 'W')
             data->player->angle = 270;
+		if(c == 'S')
+            data->player->angle = 90;
+        if(c == 'E')
+            data->player->angle = 0;
+        if(c == 'W')
+            data->player->angle = 180;
 		data->player->counter_p_start ++;
 	}	
 }
