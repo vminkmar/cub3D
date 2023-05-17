@@ -30,6 +30,7 @@ int main(int argc, char **argv)
 	parser(argv, data);
 	init_data(data);
 	init_player(data);
+	data->map->map[(int)data->player->p_start.y][(int)data->player->p_start.x] = WALKABLE;
     mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
 	raycaster(data);
 	return (EXIT_SUCCESS);

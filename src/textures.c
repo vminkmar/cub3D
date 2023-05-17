@@ -47,6 +47,7 @@ void paint_texture(t_data *data, t_ray *ray, int x)
 	vtex.x = get_x_pos(data->player, ray, tex);
 	tex_step = tex->height / ray->proj_wall_height;
 	tex_pos = (ray->wall_start - HEIGHT / 2 + ray->proj_wall_height / 2) * tex_step;
+	vtex.x = tex->width - vtex.x;
 	i = ray->wall_start;
 	while(i < ray->wall_end)
 	{
