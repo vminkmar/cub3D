@@ -125,7 +125,7 @@ void my_loop_hook(void *param)
 	t_data *data;
 	
 	data = (t_data *)param;
-	if(mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+ 	if(mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
 	{
 		move_player(data, MLX_KEY_RIGHT);
 		if(data->player->p_start.x > data->map->max_width)

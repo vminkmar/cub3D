@@ -13,9 +13,7 @@ void	check_for_empty_line(char *line, t_map_list *map)
 
 	i = 0;
 	if (line[0] == '\n')
-	{
 		map->empty_line = 1;
-	}
 	while (line[i] != '\n' && line[i] != '\0')
 	{
 		if (ft_strcmp(&line[i], WHITESPACES) == 1)

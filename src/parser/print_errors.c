@@ -8,17 +8,17 @@ void	print_error(char *message)
 void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error)
 {
 	if (error == ERROR_EAST)
-		print_error("There is no east texture or you choose the wrong one");
+		print_error("Error\nThere is no east texture");
 	else if (error == ERROR_NORTH)
-		print_error("There is no north texture or you choose the wrong one");
+		print_error("Error\nThere is no north texture");
 	else if (error == ERROR_SOUTH)
-		print_error("There is no south texture or you choose the wrong one");
+		print_error("Error\nThere is no south texture");
 	else if (error == ERROR_WEST)
-		print_error("There is no west texture or you choose the wrong one");
+		print_error("Error\nThere is no west texture");
 	else if (error == ERROR_FLOOR)
-		print_error("There is no floor color or you choose the wrong one");
+		print_error("Error\nThere is no floor color");
 	else if (error == ERROR_CEILING)
-		print_error("There is no ceiling color or you choose the wrong one");
+		print_error("Error\nThere is no ceiling color");
 	free_list_textures(&tex);
 	free_data(data);
 	tex = NULL;
@@ -28,17 +28,21 @@ void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error)
 void	print_wrong_color(t_error_color error)
 {
 	if (error == ERROR_COMMA_CEILING)
-		print_error("Check the number of commas in ceiling color");
+		print_error("Error\nCheck the number of commas in ceiling color");
 	if (error == ERROR_COMMA_FLOOR)
-		print_error("Check the number of commas in floor color");
+		print_error("Error\nCheck the number of commas in floor color");
 	if (error == ERROR_NUMBER_FLOOR)
-		print_error("Check the amount of numbers in floor color");
+		print_error("Error\nCheck the amount of numbers in floor color");
 	if (error == ERROR_NUMBER_CEILING)
-		print_error("Check the amount of numbers in ceiling color");
+		print_error("Error\nCheck the amount of numbers in ceiling color");
 	if (error == ERROR_ALPHA_FLOOR)
-		print_error("Check the for Letters in floor color");
+		print_error("Error\nCheck for Letters in floor color");
 	if (error == ERROR_ALPHA_CEILING)
-		print_error("Check for Letters in ceiling color");
+		print_error("Error\nCheck for Letters in ceiling color");
+	if (error == ERROR_WHITESPACES_FLOOR)
+		print_error("Error\nCheck for whitespaces in floor color");
+	if (error == ERROR_WHITESPACES_CEILING)
+		print_error("Error\nCheck for whitespaces in ceiling color");
 	// free
 	exit (1);
 }

@@ -45,6 +45,13 @@ typedef enum e_error
 	
 } t_error;
 
+typedef enum e_error_syntax
+{
+	ERROR_UPPER,
+	ERROR_SPACES,
+
+} t_error_syntax;
+
 typedef enum e_error_color
 {
 	ERROR_COMMA_CEILING,
@@ -55,7 +62,9 @@ typedef enum e_error_color
 	ERROR_ALPHA_CEILING,
 	ERROR_SPACES_FLOOR,
 	ERROR_SPACES_CEILING,
-	NO_ERROR,
+	ERROR_WHITESPACES_FLOOR,
+	ERROR_WHITESPACES_CEILING,
+	NO_COLOR_ERROR,
 } t_error_color;
 
 
@@ -149,6 +158,14 @@ typedef struct s_data
 //linked_list_to_array
 char			**transfer_map_to_array(t_map_list *map, t_data *data);
 void			get_max_with(char *str, t_data *data);
+
+// syntax_check
+void syntax_textures(t_tex_list *tex);
+
+
+
+//edit_textures
+void	trim_before_and_after(t_tex_list *tex);
 
 
 //color_utils

@@ -1,5 +1,19 @@
 #include "../../include/cub3d.h"
 
+void	trim_before_and_after(t_tex_list *tex)
+{
+	char	*new;
+
+	new = NULL;
+	while (tex != NULL)
+	{
+		new = tex->content;
+		tex->content = ft_strtrim(tex->content, WHITESPACES);
+		free(new);
+		tex = tex->next;
+	}
+}
+
 char	*trim_spaces_utils(char *str, char *content, int new, int flag)
 {
 	int		old;
@@ -56,24 +70,32 @@ void	trim_spaces_textures(t_tex_list *tex)
 char	*get_string_path(char *str)
 {
 	char	*new_str;
-	int		i;
+	int		old;
 	int		flag;
-	int		j;
+	int		new;
 
-	i = 0;
-	j = 0;
+	old = 0;
+	new = 0;
 	flag = 0;
-	new_str = malloc(sizeof(char *) * (ft_strlen(str) + 1));
-	while (str[i] != ' ' && flag == 0 && str[i] != '\0')
-		i++;
-	while (str[i] == ' ' && str[i] != '\0')
-		i++;
-	while (str[i] != '\0')
+	new_str = malloc(sizeof(char) * (ft_strlen(str) + 1));	
+	while (str[old] >= 'A' && str[old] <= 'Z')
+		old++;
+	if (str[old] != ' ')
 	{
-		new_str[j] = str[i];
-		j++;
-		i++;
+		print_error("Check the texture names");
+		// free
+		exit (1);
 	}
-	new_str[i] = '\0';
+	while(str[old] == ' ')
+		old++;
+	while (str[old] != '\0')
+	{
+		if (str[old] == '\n')
+			old ++;
+		new_str[new] = str[old];
+		new++;
+		old++;
+	}
+	new_str[new] = '\0';
 	return (new_str);
 }

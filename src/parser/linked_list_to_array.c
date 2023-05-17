@@ -13,9 +13,17 @@ void get_start_point(t_data *data, char c, int line, int character)
 void check_for_startpoint(t_data *data)
 {
 	if(data->player->counter_p_start < 1)
+	{
 		print_error("There is no start point on the map");
+		// free
+		exit(1);
+	}
 	if(data->player->counter_p_start > 1)
+	{
 		print_error("There are too many startpoints on the map"); // edit
+		// free
+		exit(1);
+	}
 }
 
 char	*get_map_types(const char *s1, int line, t_data *data)
@@ -34,7 +42,9 @@ char	*get_map_types(const char *s1, int line, t_data *data)
 		get_start_point(data, s1[character], line, character);
 		if(s1[character] == '1')
 			new[character] = WALL;
-		else if(s1[character] == '0')
+		else if(s1[character] == '0' || s1[character] == 'N'
+			|| s1[character] == 'S' || s1[character] == 'W'
+			|| s1[character] == 'E')
 			new[character] = WALKABLE;
 		else
 			new[character] = s1[character];
