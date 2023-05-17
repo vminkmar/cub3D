@@ -36,7 +36,7 @@ LIBDIR			:= lib
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/bin/brew/opt/glfw/lib/" #-ldl -lglfw -pthread -lm
+LFLAGS			:=	$(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/" #-ldl -lglfw -pthread -lm
 
 all: libft $(LMLX) $(NAME) #$(NAME_BONUS)
 
@@ -50,7 +50,7 @@ $(LFT):
 $(LMLX): $(LIBMLX)
 	@git submodule init include/MLX42
 	@git submodule update include/MLX42
-	@cd include/MLX42 && cmake -B build && cmake --build build -j4
+	@cd include/MLX42 && pwd && cmake -B build && cmake --build build -j4
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@

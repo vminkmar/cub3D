@@ -3,9 +3,9 @@
 int	wall_collision(char **map, double x, double y)
 {
 	if(map[(int)(y + 0.1)][(int)(x + 0.1)] <= WALKABLE
-		&& map[(int)(y - 0.1)][(int)(x - 0.1)] == WALKABLE
-		&& map[(int)(y - 0.1)][(int)(x + 0.1)] == WALKABLE
-		&& map[(int)(y + 0.1)][(int)(x - 0.1)] == WALKABLE)
+		&& map[(int)(y - 0.1)][(int)(x - 0.1)] <= WALKABLE
+		&& map[(int)(y - 0.1)][(int)(x + 0.1)] <= WALKABLE
+		&& map[(int)(y + 0.1)][(int)(x - 0.1)] <= WALKABLE)
 		return (0);
 	else
 		return (1);
