@@ -44,6 +44,8 @@ char	*get_map_types(const char *s1, int line, t_data *data)
 			new[character] = WALL;
 		else if(s1[character] == '0')
 			new[character] = WALKABLE;
+		else if(s1[character] == 'D')
+			new[character] = CLOSED_DOOR;
 		else
 			new[character] = s1[character];
 		character++;

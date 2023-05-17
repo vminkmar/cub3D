@@ -12,7 +12,7 @@ VPATH			:=	src/ src/parser
 
 SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free_stuff.c print_errors.c\
 					linked_list.c check_map.c get_textures_and_map.c get_textures_and_map_utils.c edit_textures.c color.c\
-					color_utils.c linked_list_to_array.c draw.c draw_utils.c movement.c textures.c
+					color_utils.c linked_list_to_array.c draw.c draw_utils.c movement.c textures.c doors.c
 
 HEADER			:=	-I./include/
 
@@ -22,7 +22,7 @@ LMLX			:=	include/MLX42/build/libmlx42.a
 
 ODIR			:=	obj
 
-LINK_FLAGS		:=
+LINK_FLAGS		:=	
 
 OBJS			:=	$(SRC_FILES:%.c=$(ODIR)/%.o)
 
@@ -50,7 +50,7 @@ $(LFT):
 $(LMLX): $(LIBMLX)
 	@git submodule init include/MLX42
 	@git submodule update include/MLX42
-	@cd include/MLX42 && cmake -B build && cmake --build build -j4
+	@cd include/MLX42 && pwd && cmake -B build && cmake --build build -j4
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@

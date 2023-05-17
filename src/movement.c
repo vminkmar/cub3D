@@ -2,10 +2,10 @@
 
 int	wall_collision(char **map, double x, double y)
 {
-	if(map[(int)(y + 0.1)][(int)(x + 0.1)] == 0
-		&& map[(int)(y - 0.1)][(int)(x - 0.1)] == 0
-		&& map[(int)(y - 0.1)][(int)(x + 0.1)] == 0
-		&& map[(int)(y + 0.1)][(int)(x - 0.1)] == 0)
+	if(map[(int)(y + 0.1)][(int)(x + 0.1)] <= WALKABLE
+		&& map[(int)(y - 0.1)][(int)(x - 0.1)] <= WALKABLE
+		&& map[(int)(y - 0.1)][(int)(x + 0.1)] <= WALKABLE
+		&& map[(int)(y + 0.1)][(int)(x - 0.1)] <= WALKABLE)
 		return (0);
 	else
 		return (1);
@@ -118,6 +118,15 @@ void check_mouse_pos(t_data *data)
         mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
         x = WIDTH / 2;
     }
+}
+
+void interac_hook(mlx_key_data_t keydata, void* param)
+{
+	t_data *data;
+	
+	data = (t_data *)param;
+	if(keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
+		cast_door_ray(data, data->player);
 }
 
 void my_loop_hook(void *param)

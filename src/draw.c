@@ -57,7 +57,7 @@ void wall_hit(t_data *data, t_ray *ray, int *hit)
 	}
 /* 	if((ray->map_check.x >= 0 && ray->map_check.x < GRID_WIDTH) && (ray->map_check.y >= 0 && ray->map_check.y < GRID_HEIGHT))
 	{ */
-	if(data->map->map[ray->map_check.y][ray->map_check.x] == 1)
+	if(data->map->map[ray->map_check.y][ray->map_check.x] == WALL || data->map->map[ray->map_check.y][ray->map_check.x] == CLOSED_DOOR)
 			*hit = 1;
 	}
 /* } */
@@ -132,12 +132,10 @@ void cast_ray(t_player *player, t_data *data, double angle, int x)
 void	draw_fov(t_player *player, t_data *data)
 {
 	double	current_angle;
-	double	end_angle;
 	double	step;
 	int		x;
 	
 	current_angle = player->angle - (player->fov / 2);
-	end_angle = player->angle + (player->fov / 2);
 	step = player->fov / (double)WIDTH;
 	x = 0;
 	//ft_bzero(data->img->pixels, WIDTH * HEIGHT * 4);
@@ -163,6 +161,7 @@ void raycaster(t_data *data)
 	memset(data->img->pixels, 255, data->img->width * data->img->height * BPP);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_loop_hook(data->mlx, &my_loop_hook, data);
+	mlx_key_hook(data->mlx, interac_hook, data);
     mlx_loop(data->mlx);
     mlx_terminate(data->mlx);
 }
