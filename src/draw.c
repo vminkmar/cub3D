@@ -154,7 +154,7 @@ void init_player(t_data *data)
 {
 	data->player->p_start.x = (double)data->map->max_width / 2;
 	data->player->p_start.y = (double)data->map->max_height / 2;
-	data->player->angle = 90;
+	//data->player->angle = 90;
 	data->player->fov = 60;
 }
 
