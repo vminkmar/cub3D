@@ -125,6 +125,20 @@ void	parser(char **argv, t_data *data)
 	get_textures_and_map(argv, map, tex, data);
 	compare_and_check_textures(tex, data);
 	data->map->map = transfer_map_to_array(map, data);
+	// int i = 0;
+	// int j;
+
+	// while(data->map->map[i] != NULL)
+	// {
+	// 	j = 0;
+	// 	while(data->map->map[i][j] != '\0')
+	// 	{
+	// 		printf("%i",data->map->map[i][j]);
+	// 		j++;
+	// 	}
+	// 	printf("\n");
+	// 	i++;
+	// }
 	check_map(data->map->map, data); //detection?
 	load_pngs(data);
 	free_list_textures(&tex);

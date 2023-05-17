@@ -38,7 +38,7 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
-		print_error("There is no map with that name");
+		print_error("There is no map with that name or the map is empty");
 		exit (1);
 	}
 	while (1)
@@ -53,6 +53,12 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 			begin_of_map = 1;
 			get_map(line, map, data);
 		}
+	}
+	if (begin_of_map == 0)
+	{
+		print_error("There is no Map in that file");
+		// free
+		exit (1);
 	}
 	close (fd);
 }

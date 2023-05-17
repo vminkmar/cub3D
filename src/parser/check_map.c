@@ -40,7 +40,7 @@ void	check_around_zero(char **map, int line, int character, t_data *data)
 		error = ERROR_INVALID;
 	if (error == ERROR_INVALID)
 	{
-		print_error("Invalid map");
+		print_error("Error\nMap is not surrounded by walls");
 		// free;
 		exit (1);
 	}
@@ -55,9 +55,9 @@ void	check_map(char **map, t_data *data)
 	while (map[line] != NULL)
 	{
 		character = 0;
-		while (map[line][character] != '\n' && map[line][character] != '\0')
+		while (map[line][character] != '\0')
 		{	
-			if (map[line][character] == '0')
+			if (map[line][character] == WALKABLE)
 				check_around_zero(map, line, character, data);
 			if (ft_whitespaces(map[line][character]) == 1)
 			{

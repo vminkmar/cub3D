@@ -47,9 +47,10 @@ char	*get_map_types(const char *s1, int line, t_data *data)
 			|| s1[character] == 'E')
 			new[character] = WALKABLE;
 		else
-			new[character] = s1[character];
+			new[character] = OTHERS;
 		character++;
 	}
+	new[character] = '\0';
 	return (new);
 }
 
