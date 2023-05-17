@@ -40,7 +40,7 @@ char	*get_map_types(const char *s1, int line, t_data *data)
 	while (character < ft_strlen(s1) + 1)
 	{	
 		get_start_point(data, s1[character], line, character);
-		if(s1[character] == '1')
+		if(s1[character] == '1' || s1[character] == ' ')
 			new[character] = WALL;
 		else if(s1[character] == '0' || s1[character] == 'N'
 			|| s1[character] == 'S' || s1[character] == 'W'
