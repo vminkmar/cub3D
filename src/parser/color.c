@@ -10,13 +10,13 @@ void	check_numbers(int red, int green, int blue)
 	if (red > 255 || red < 0 || blue > 255 || blue < 0 || green > 255
 		|| green < 0)
 	{
-		print_error("Error\n Wrong RGB color the numbers have to be 0-255");
+		print_error("Error\nWrong RGB color the numbers have to be 0-255");
 		// free
 		exit (1);
 	}
 }
 
-void	get_color_floor(t_data *data)
+void	 get_color_floor(t_data *data)
 {
 	char	**numbers_floor;
 	int		i;
@@ -37,6 +37,7 @@ void	get_color_floor(t_data *data)
 			blue = ft_atoi(numbers_floor[i]);
 		i ++;
 	}
+	check_colors(data, i, 1, numbers_floor);
 	check_numbers(red, green, blue);
 	free_numbers(numbers_floor);
 	data->map->color_floor = rgb_to_uint(red, green, blue, 255);
@@ -63,44 +64,59 @@ void	get_color_ceiling(t_data *data)
 			blue = ft_atoi(numbers_ceiling[i]);
 		i ++;
 	}
+	check_colors(data, i, 2, numbers_ceiling);
 	check_numbers(red, green, blue);
 	free_numbers(numbers_ceiling);
 	data->map->color_ceiling = rgb_to_uint(red, green, blue, 255);
 }
 
-int check_for_whitespaces(char *str, char *whitespaces)
+int check_for_whitespaces(char **colors, char *whitespaces)
 {
-	int	i;
-	int	j;
+	int	inner;
+	int outer;
+	int	spaces;
+	int flag;
 
-	i = 0;
-	while(str[i] != '\0')
+	flag = 0;
+	spaces = 0;
+	outer = 0;
+	while(colors[outer] != NULL)
 	{
-		j = 0;
-		while(whitespaces[j] != '\0')
+		inner = 0;
+		flag = 0;
+		while(colors[outer][inner] != '\0')
 		{
-			if (str[i] == whitespaces[j])
+			if ((colors[outer][inner] >= '0' && colors[outer][inner] <= '9') && flag == 1)
 				return (1);
-			j++;
+			if (colors[outer][inner] < '0' || colors[outer][inner] > '9')
+				flag = 1;
+			spaces = 0;
+			while(whitespaces[spaces] != '\0')
+			{
+				if (colors[outer][inner] == whitespaces[spaces])
+					return (1);
+				spaces++;
+			}
+			inner ++;
 		}
-		i++;
+		outer++;
 	}
 	return (0);
 }
 
-void	check_colors(t_data *data)
+void	check_colors(t_data *data, int i, int issue, char **colors)
 {
 	t_error_color	error;
 
 	error = NO_COLOR_ERROR;
-	if (check_for_commas(data->map->floor_color) == 1)
+	if (i != 3 && issue == 1)
 		error = ERROR_COMMA_FLOOR;
-	else if (check_for_commas(data->map->ceiling_color) == 1)
+	else if (i != 3 && issue == 1)
 		error = ERROR_COMMA_CEILING;
-	else if (check_for_whitespaces(data->map->ceiling_color, WHITESPACES_LESS) == 1)
-		error = ERROR_WHITESPACES_CEILING;
-	else if (check_for_whitespaces(data->map->floor_color, WHITESPACES_LESS) == 1)
+	else if (check_for_whitespaces(colors, WHITESPACES_LESS) == 1 && issue == 1)
 		error = ERROR_WHITESPACES_FLOOR;
+	else if (check_for_whitespaces(colors, WHITESPACES_LESS) == 1 && issue == 2)
+		error = ERROR_WHITESPACES_CEILING;
 	else if (number_counter(data->map->ceiling_color) == 1)
 		error = ERROR_NUMBER_CEILING;
 	else if (number_counter(data->map->floor_color) == 1)

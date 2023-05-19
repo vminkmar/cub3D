@@ -87,13 +87,13 @@ void	compare_and_check_textures(t_tex_list *tex, t_data *data)
 {
 	trim_before_and_after(tex);
 	check_for_upper_case(tex);
-	trim_spaces_textures(tex); //problem if spaces in path
+	trim_spaces_textures(tex);
 	syntax_textures(tex);
 	compare_textures(tex, data);
 	check_for_empty_textures(tex, data);
-	check_colors(data); // 256
 	get_color_floor(data);
 	get_color_ceiling(data);
+	
 }
 
 void load_pngs(t_data *data)
@@ -125,20 +125,6 @@ void	parser(char **argv, t_data *data)
 	get_textures_and_map(argv, map, tex, data);
 	compare_and_check_textures(tex, data);
 	data->map->map = transfer_map_to_array(map, data);
-	// int i = 0;
-	// int j;
-
-	// while(data->map->map[i] != NULL)
-	// {
-	// 	j = 0;
-	// 	while(data->map->map[i][j] != '\0')
-	// 	{
-	// 		printf("%i",data->map->map[i][j]);
-	// 		j++;
-	// 	}
-	// 	printf("\n");
-	// 	i++;
-	// }
 	check_map(data->map->map, data); //detection?
 	load_pngs(data);
 	free_list_textures(&tex);

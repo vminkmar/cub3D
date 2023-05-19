@@ -76,7 +76,7 @@ int	compare_strings(char *first, char *second)
 
 void	check_for_spaces(char *str, int flag)
 {
-	if(compare_strings(str, WHITESPACES) == 1)
+	if(compare_strings(str, WHITESPACES_LESS) == 1)
 	{
 		if (flag == 1)
 			print_error("There are whitespaces in the floor color");

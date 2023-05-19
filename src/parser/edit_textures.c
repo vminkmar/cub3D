@@ -17,8 +17,16 @@ void	trim_before_and_after(t_tex_list *tex)
 char	*trim_spaces_utils(char *str, char *content, int new, int flag)
 {
 	int		old;
+	int		flag_for_begin;
 
 	old = 0;
+	flag_for_begin = 0;
+	while(str[old] >= 'A' && str[old] <= 'Z')
+	{
+		content[new] = str[old];
+		old++;
+		new++;
+	}
 	while (str[old] != '\0')
 	{
 		if (str[old] == ' ' && flag == 0)
@@ -26,13 +34,16 @@ char	*trim_spaces_utils(char *str, char *content, int new, int flag)
 			flag = 1;
 			content[new] = str[old];
 		}
-		else if (str[old] == ' ' && flag == 1)
+		else if (str[old] == ' ' && flag == 1 && flag_for_begin != 1)
 		{
 			old++;
 			continue ;
 		}
 		else
+		{
 			content[new] = str[old];
+			flag_for_begin = 1;
+		}
 		old++;
 		new++;
 	}

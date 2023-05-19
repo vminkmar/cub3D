@@ -181,7 +181,7 @@ int				rgb_to_uint(int red, int green, int blue, int alpha);
 void			check_numbers(int red, int green, int blue);
 void			get_color_floor(t_data *data);
 void			get_color_ceiling(t_data *data);
-void			check_colors(t_data *data);
+void			check_colors(t_data *data, int i, int issue, char **colors);
 
 //textures
 char			*trim_spaces_string(char *str);

@@ -1,9 +1,9 @@
-NO                     ./textures/greystone.png
+NO ./textures/greystone.png
 SO ./textures/mossy.png
 WE ./textures/redbrick.png
 EA ./textures/wood.png
 
-F               220,100,0
+F 220      ,100,0
 C 225,30,0
 
 

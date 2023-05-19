@@ -24,14 +24,14 @@
 #!/bin/bash
 
 PROGRAM="./cub3D"
-TEST_MAPS_DIR="maps/"
+TEST_MAPS_DIR="maps"
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
-BLA=$(tput setaf 3)
+YELLOW=$(tput setaf 3)
 NC=$(tput sgr0)
 
 # Check invalid maps
-echo  "\n${BLA}Checking invalid maps:${NC}\n"
+echo  "\n${YELLOW}Checking invalid maps:${NC}\n"
 
 for map_file in $TEST_MAPS_DIR/invalid_*.cub; do
     echo  "\nTesting map: $map_file\n"
@@ -59,6 +59,7 @@ for map_file in $TEST_MAPS_DIR/correct_*.cub; do
     if [ $exit_status -eq 0 ]; then
         echo  "${GREEN}Map is valid.${NC}\n"
     else
+		echo "$output"
         echo  "${RED}Map is not valid.${NC}\n"
     fi
     

@@ -1,10 +1,10 @@
-NO ./textures/greystone.png
+NO ./textures/greys tone.png
 SO ./textures/mossy.png
 WE ./textures/redbrick.png
 EA ./textures/wood.png
 
+C 222,0,0
 F 254,0,0
-C 0,0,0
 
 
 1111111111111111111111111111111111111111111111111111111

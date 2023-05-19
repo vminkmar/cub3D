@@ -14,7 +14,6 @@ int main(int argc, char **argv)
 {
 	t_data		*data;
 
-	data = NULL;
 	if (check_input(argc, argv) == 1)
 		return (EXIT_FAILURE);
 	data = malloc(sizeof(t_data));
