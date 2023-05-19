@@ -1,67 +1,77 @@
-# #!/bin/bash
-
-# PROGRAM="./cub3D"
-# TEST_MAPS_DIR="maps/"
-# RED=$(tput setaf 1)
-# GREEN=$(tput setaf 2)
-# NC=$(tput sgr0)
-
-# for map_file in $TEST_MAPS_DIR*.cub; do
-#     echo -e "\nTesting map: $map_file\n"
-#     $PROGRAM "$map_file"
-    
-#     exit_status=$?
-#     if [ $exit_status -eq 0 ]; then
-#         echo -e "${GREEN}Map is valid.${NC}\n"
-#     else
-#         echo -e "${RED}Map is not valid.${NC}\n"
-#     fi
-    
-#     echo "---------------------"
-# done
-
-
 #!/bin/bash
 
 PROGRAM="./cub3D"
-TEST_MAPS_DIR="maps"
+TEST_MAPS_DIR="test_maps"
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
+BLA=$(tput setaf 4)
 NC=$(tput sgr0)
+invalid_counter=0
+valid_counter=0
+valid_map_counter=0
+invalid_map_counter=0
 
-# Check invalid maps
-echo  "\n${YELLOW}Checking invalid maps:${NC}\n"
 
-for map_file in $TEST_MAPS_DIR/invalid_*.cub; do
-    echo  "\nTesting map: $map_file\n"
+
+echo -e  "\n${YELLOW}Checking invalid maps:${NC}\n"
+
+for map_file in $TEST_MAPS_DIR/invalid_maps/*.cub; do
+    echo -e  "\nTesting invalid map: $map_file\n"
     output=$($PROGRAM "$map_file" 2>&1)
 
     exit_status=$?
     if [ $exit_status -eq 1 ]; then
-		echo "${RED}$output"
-        echo  "${GREEN}Map is invalid.${NC}\n"
+		echo -e "${RED}$output"
+        echo -e  "${GREEN}Map is invalid.${NC}\n"
+		((invalid_counter ++))
     else
-        echo  "${RED}Map is valid.${NC}\n"
+        echo -e  "${RED}Map is valid.${NC}\n"
     fi
-    
-    echo "---------------------"
+    ((invalid_map_counter++))
+    echo -e "---------------------"
 done
 
-# Check correct maps
-echo  "${BLA}Checking correct maps:${NC}\n"
 
-for map_file in $TEST_MAPS_DIR/correct_*.cub; do
-    echo  "\nTesting map: $map_file\n"
+# Check correct maps
+echo -e  "${BLA}Checking correct maps:${NC}\n"
+
+for map_file in $TEST_MAPS_DIR/valid_maps/*.cub; do
+    echo -e  "\nTesting valid map: $map_file\n"
     output=$($PROGRAM "$map_file" 2>&1)
 
     exit_status=$?
     if [ $exit_status -eq 0 ]; then
-        echo  "${GREEN}Map is valid.${NC}\n"
+        echo -e  "${GREEN}Map is valid.${NC}\n"
+		((valid_counter ++))
     else
-		echo "$output"
-        echo  "${RED}Map is not valid.${NC}\n"
+		echo -e "$output"
+        echo -e  "${RED}Map is not valid.${NC}\n"
+
     fi
-    
-    echo "---------------------"
+    ((valid_map_counter++))
+    echo -e "---------------------"
 done
+
+
+echo -e "\n${BLA}Invalid Maps $invalid_counter / $invalid_map_counter\n"
+echo -e "Valid Maps $valid_counter / $valid_map_counter\n"
+
+
+# echo -e  "\n${YELLOW}Checking invalid maps:${NC}\n"
+
+# for map_file in $TEST_MAPS_DIR/maps/*.cub; do
+#     echo -e  "\nTesting invalid map: $map_file\n"
+#     output=$($PROGRAM "$map_file" 2>&1)
+
+#     exit_status=$?
+#     if [ $exit_status -eq 1 ]; then
+# 		echo -e "${RED}$output"
+#         echo -e  "${GREEN}Map is invalid.${NC}\n"
+# 		((invalid_counter ++))
+#     else
+#         echo -e  "${RED}Map is valid.${NC}\n"
+#     fi
+#     ((invalid_map_counter++))
+#     echo -e "---------------------"
+# done

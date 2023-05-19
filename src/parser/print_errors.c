@@ -19,9 +19,31 @@ void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error)
 		print_error("Error\nThere is no floor color");
 	else if (error == ERROR_CEILING)
 		print_error("Error\nThere is no ceiling color");
-	free_list_textures(&tex);
-	free_data(data);
-	tex = NULL;
+	// free_list_textures(&tex);
+	// free_data(data);
+	tex = NULL; // !!!!!!!!!!!!
+	data = NULL; // !!!!!!!!!!!!
+	exit (1);
+}
+
+void	print_multiple_textures(t_tex_list *tex, t_data *data, t_error error)
+{
+	if (error == ERROR_EAST_MULTIPLE)
+		print_error("Error\nThere are too many east texture");
+	else if (error == ERROR_NORTH_MULTIPLE)
+		print_error("Error\nThere are too many north texture");
+	else if (error == ERROR_SOUTH_MULTIPLE)
+		print_error("Error\nThere are too many south texture");
+	else if (error == ERROR_WEST_MULTIPLE)
+		print_error("Error\nThere are too many west texture");
+	else if (error == ERROR_FLOOR_MULTIPLE)
+		print_error("Error\nThere are too many floor color");
+	else if (error == ERROR_CEILING_MULTIPLE)
+		print_error("Error\nThere are too many ceiling color");
+	// free_list_textures(&tex);
+	// free_data(data);
+	tex = NULL; // !!!!!!!!!!!!
+	data = NULL; // !!!!!!!!!!!!
 	exit (1);
 }
 

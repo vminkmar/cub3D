@@ -5,18 +5,38 @@ void	compare_textures(t_tex_list *tex, t_data *data)
 	while (tex)
 	{
 		if (ft_strncmp("NO", tex->content, 2) == 0)
+		{
 			data->map->path_north = get_string_path(tex->content);
+			data->map->path_north_counter++;
+		}
 		else if (ft_strncmp("SO", tex->content, 2) == 0)
+		{
 			data->map->path_south = get_string_path(tex->content);
+			data->map->path_south_counter++;
+		}
 		else if (ft_strncmp("EA", tex->content, 2) == 0)
+		{
 			data->map->path_east = get_string_path(tex->content);
+			data->map->path_east_counter++;
+
+		}
 		else if (ft_strncmp("WE", tex->content, 2) == 0)
+		{
 			data->map->path_west = get_string_path(tex->content);
+			data->map->path_west_counter++;
+		}
 		else if (ft_strncmp("F", tex->content, 1) == 0)
+		{
 			data->map->floor_color = get_string_path(tex->content);
+			data->map->floor_color_counter++;
+		}
 		else if (ft_strncmp("C", tex->content, 1) == 0)
+		{
 			data->map->ceiling_color = get_string_path(tex->content);
+			data->map->ceiling_color_counter++;
+		}
 		tex = tex->next;
+		
 	}
 }
 
@@ -37,8 +57,29 @@ void	check_for_empty_textures(t_tex_list *tex, t_data *data)
 		error = ERROR_FLOOR;
 	else if (data->map->ceiling_color == NULL)
 		error = ERROR_CEILING;
-	else if (error != ERROR_NO)
+	if (error != ERROR_NO)
 		print_wrong_textures(tex, data, error);
+}
+
+void	check_for_mutiple_textures(t_tex_list *tex, t_data *data)
+{
+	t_error	error;
+
+	error = ERROR_NO;
+	if (data->map->path_east_counter > 1)
+		error = ERROR_EAST_MULTIPLE;
+	else if (data->map->path_north_counter > 1)
+		error = ERROR_NORTH_MULTIPLE;
+	else if (data->map->path_south_counter > 1)
+		error = ERROR_SOUTH_MULTIPLE;
+	else if (data->map->path_west_counter > 1)
+		error = ERROR_WEST_MULTIPLE;
+	else if (data->map->floor_color_counter > 1)
+		error = ERROR_FLOOR_MULTIPLE;
+	else if (data->map->ceiling_color_counter > 1)
+		error = ERROR_CEILING_MULTIPLE;
+	if (error != ERROR_NO)
+		print_multiple_textures(tex, data, error);
 }
 
 int	upper_case_check(char *str)
@@ -91,6 +132,7 @@ void	compare_and_check_textures(t_tex_list *tex, t_data *data)
 	syntax_textures(tex);
 	compare_textures(tex, data);
 	check_for_empty_textures(tex, data);
+	check_for_mutiple_textures(tex, data);
 	get_color_floor(data);
 	get_color_ceiling(data);
 	
@@ -100,16 +142,29 @@ void load_pngs(t_data *data)
 {
 	data->map->tex_north = mlx_load_png(data->map->path_north);
 	if (data->map->tex_north == NULL)
+	{
 		print_error("north");
+		exit(1);
+	}
 	data->map->tex_south = mlx_load_png(data->map->path_south);
+	
 	if (data->map->tex_south == NULL)
+	{
 		print_error("south");
+		exit (1);
+	}
 	data->map->tex_west = mlx_load_png(data->map->path_west);
 	if (data->map->tex_west == NULL)
+	{
 		print_error("west");
+		exit(1);
+	}
 	data->map->tex_east = mlx_load_png(data->map->path_east);
 	if (data->map->tex_east == NULL)
+	{	
 		print_error("east");
+		exit(1);
+	}
 }
 
 void	parser(char **argv, t_data *data)
@@ -125,7 +180,7 @@ void	parser(char **argv, t_data *data)
 	get_textures_and_map(argv, map, tex, data);
 	compare_and_check_textures(tex, data);
 	data->map->map = transfer_map_to_array(map, data);
-	check_map(data->map->map, data); //detection?
+	check_map(data->map->map, data);
 	load_pngs(data);
 	free_list_textures(&tex);
 	free_list_map(&map);

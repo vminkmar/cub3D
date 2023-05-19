@@ -34,10 +34,10 @@ int	is_begin_of_map(char *line)
 		return (1);
 	while (line[i] != '\n' && line[i] != '\0')
 	{
+		while (ft_charcmp(line[i], WHITESPACES) == 1)
+			i++;
 		if (is_wall_or_field(line[i]) == 1)
 			return (1);
-		while (ft_strcmp(&line[i], WHITESPACES) == 0)
-			i++;
 		while (is_wall_or_field(line[i]) == 0)
 			i++;
 	}

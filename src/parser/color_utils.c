@@ -38,18 +38,24 @@ int	number_counter(char *str)
 	return (0);
 }
 
-int	check_for_alpha(char *str)
+int	check_for_alpha(char **str)
 {
 	int	i;
+	int outer;
 
+	outer = 0;
 	i = 0;
-	while (str[i] != '\0')
+	while(str[outer] != NULL)
 	{
-		if (str[i] == ',' || str[i] == '\n')
+		while (str[outer][i] != '\0')
+		{
+			if (str[outer][i] == ',' || str[outer][i] == '\n')
+				i ++;
+			if (ft_isalpha(str[outer][i]) == 1)
+				return (1);
 			i ++;
-		if (ft_isalpha(str[i]) == 1)
-			return (1);
-		i ++;
+		}
+		outer++;
 	}
 	return (0);
 }

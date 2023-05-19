@@ -43,6 +43,12 @@ typedef enum e_error
 	ERROR_CEILING,
 	ERROR_NO,
 	ERROR_INVALID,
+	ERROR_NORTH_MULTIPLE,
+	ERROR_WEST_MULTIPLE,
+	ERROR_SOUTH_MULTIPLE,
+	ERROR_EAST_MULTIPLE,
+	ERROR_FLOOR_MULTIPLE,
+	ERROR_CEILING_MULTIPLE,
 	
 } t_error;
 
@@ -144,6 +150,12 @@ typedef struct s_map
 	char			*ceiling_color;
 	uint32_t		color_floor;
 	uint32_t		color_ceiling;
+	int				path_east_counter;
+	int				path_south_counter;
+	int				path_west_counter;
+	int				path_north_counter;
+	int				floor_color_counter;
+	int				ceiling_color_counter;
 }	t_map;
 
 //draw
@@ -172,7 +184,7 @@ void	trim_before_and_after(t_tex_list *tex);
 //color_utils
 int				check_for_commas(char *str);
 int				number_counter(char *str);
-int				check_for_alpha(char *str);
+int				check_for_alpha(char **str);
 void			check_for_spaces(char *str, int flag);	
 
 
@@ -181,7 +193,7 @@ int				rgb_to_uint(int red, int green, int blue, int alpha);
 void			check_numbers(int red, int green, int blue);
 void			get_color_floor(t_data *data);
 void			get_color_ceiling(t_data *data);
-void			check_colors(t_data *data, int i, int issue, char **colors);
+void			check_colors(int i, int issue, char **colors);
 
 //textures
 char			*trim_spaces_string(char *str);
@@ -213,6 +225,7 @@ void 			check_numbers(int red, int green, int blue);
 //print_errors
 void			print_wrong_textures(t_tex_list *tex, t_data *data, t_error error);
 void			print_wrong_color(t_error_color error);
+void			print_multiple_textures(t_tex_list *tex, t_data *data, t_error error);
 void			print_error(char *message);
 
 //parser_linked_list_utils
