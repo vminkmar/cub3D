@@ -31,8 +31,7 @@ typedef enum e_type
 	WALKABLE,
 	WALL,
 	CLOSED_DOOR,
-	
-} t_type;
+}	t_type;
 
 typedef enum e_error
 {
@@ -44,8 +43,7 @@ typedef enum e_error
 	ERROR_CEILING,
 	ERROR_NO,
 	ERROR_INVALID,
-	
-} t_error;
+}	t_error;
 
 typedef enum e_error_color
 {
@@ -58,8 +56,7 @@ typedef enum e_error_color
 	ERROR_SPACES_FLOOR,
 	ERROR_SPACES_CEILING,
 	NO_ERROR,
-} t_error_color;
-
+}	t_error_color;
 
 typedef struct s_map_list
 {
@@ -77,14 +74,14 @@ typedef struct s_tex_list
 
 typedef struct s_fvector
 {
-	double x;
-	double y;
+	double	x;
+	double	y;
 }	t_fvector;
 
 typedef struct s_ivector
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 }	t_ivector;
 
 typedef enum e_wall_orientation
@@ -93,12 +90,12 @@ typedef enum e_wall_orientation
 	SOUTH,
 	WEST,
 	EAST,
-} t_wall_orientation;
+}	t_wall_orientation;
 
 typedef struct s_ray
 {
 	t_fvector	start;
-    t_fvector	dir;
+	t_fvector	dir;
 	t_fvector	step_size;
 	t_ivector	map_check;
 	t_fvector	length;
@@ -109,7 +106,7 @@ typedef struct s_ray
 	int			wall_start;
 	int			wall_end;
 	int			wall_side;
-} t_ray;
+}	t_ray;
 
 typedef struct s_player
 {
@@ -117,7 +114,7 @@ typedef struct s_player
 	double			angle;
 	t_fvector		p_start;
 	double			fov;
-} 	t_player;
+}	t_player;
 
 typedef struct s_map
 {
@@ -137,6 +134,7 @@ typedef struct s_map
 	char			*ceiling_color;
 	uint32_t		color_floor;
 	uint32_t		color_ceiling;
+	int				minimap_dims;
 }	t_map;
 
 //draw
@@ -144,6 +142,7 @@ typedef struct s_data
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
+	mlx_image_t		*minimap_img;
 	t_map			*map;
 	t_player		*player;
 }	t_data;
@@ -183,7 +182,8 @@ int				is_begin_of_map(char *line);
 //check_map
 int				ft_whitespaces(char c);
 int				ft_charcmp(char c, char *str);
-void			check_around_zero(char **map, int line, int character, t_data *data);
+void			check_around_zero(char **map, int line, int character,
+					t_data *data);
 void			check_map(char **map, t_data *data);
 
 //init
@@ -191,10 +191,11 @@ void			init_variables(t_data *data, t_map_list *map, t_tex_list *tex);
 
 //parser
 void			parser(char **argv, t_data *data);
-void 			check_numbers(int red, int green, int blue);
+void			check_numbers(int red, int green, int blue);
 
 //print_errors
-void			print_wrong_textures(t_tex_list *tex, t_data *data, t_error error);
+void			print_wrong_textures(t_tex_list *tex, t_data *data,
+					t_error error);
 void			print_wrong_color(t_error_color error);
 void			print_error(char *message);
 
@@ -255,7 +256,6 @@ void			my_loop_hook(void *param);
 void			check_mouse_pos(t_data *data);
 void			move_player(t_data *data, keys_t key);
 
-
 //directions
 int				wall_collision(char **map, double x, double y);
 void			move_down(t_data *data, double tmp_x, double tmp_y);
@@ -274,5 +274,8 @@ uint32_t		get_wall_color(t_player *player, t_ray *ray);
 void			paint_background(t_data *data, t_ray *ray, int x);
 void			paint_texture(t_data *data, t_ray *ray, int x);
 int				get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
+
+//minimap
+void			draw_minimap(t_data *data);
 
 #endif

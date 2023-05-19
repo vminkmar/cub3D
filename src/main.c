@@ -13,6 +13,7 @@ void	init_data(t_data *data)
 	if (!data->mlx)
 		exit(EXIT_FAILURE);
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	data->minimap_img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 }
 
