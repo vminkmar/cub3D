@@ -71,5 +71,4 @@ void	raycaster(t_data *data)
 	mlx_loop_hook(data->mlx, &my_loop_hook, data);
 	mlx_key_hook(data->mlx, interac_hook, data);
 	mlx_loop(data->mlx);
-	mlx_terminate(data->mlx);
 }
