@@ -146,8 +146,7 @@ typedef struct s_data
 	mlx_image_t		*img;
 	t_map			*map;
 	t_player		*player;
-
-} 	t_data;
+}	t_data;
 
 //linked_list_to_array
 char			**transfer_map_to_array(t_map_list *map, t_data *data);
@@ -172,7 +171,8 @@ void			trim_spaces_textures(t_tex_list *tex);
 char			*get_string_path(char *str);
 
 //get_textures_and_map
-void			get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
+void			get_textures_and_map(char **argv, t_map_list *map,
+					t_tex_list *tex,
 					t_data *data);
 
 // get_textures_and_map_utils
@@ -212,7 +212,6 @@ void			add_node_to_tex(char *line, t_tex_list **tex);
 int				check_input(int argc, char **argv);
 char			*sl_strjoin(char *s1, char *s2);
 int				ft_strcmp(char *first, char *second);
-
 
 //free_stuff
 void			free_list_textures(t_tex_list **tex);
