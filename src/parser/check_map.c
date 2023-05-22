@@ -51,9 +51,9 @@ void	check_around_door(char **map, int line, int character, t_data *data)
 	t_error	error;
 
 	error = ERROR_NO;
-	if (map[0][character] == OTHERS || map[line][0] == OTHERS
-		|| map[data->map->max_height - 1][character] == OTHERS
-		|| map[line][ft_strlen(map[line]) - 1] == OTHERS)
+	if (map[0][character] == CLOSED_DOOR || map[line][0] == CLOSED_DOOR
+		|| map[data->map->max_height - 1][character] == CLOSED_DOOR
+		|| map[line][ft_strlen(map[line]) - 1] == CLOSED_DOOR)
 		error = ERROR_INVALID_DOOR;
 	else if (map[line][character - 1] == OTHERS)
 		error = ERROR_INVALID_DOOR;

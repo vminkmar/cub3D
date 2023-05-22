@@ -92,4 +92,7 @@ void	my_loop_hook(void *param)
 		mlx_close_window(data->mlx);
 	check_mouse_pos(data);
 	draw_fov(data->player, data);
+	data->framecount++;
+	if (data->framecount == LONG_MAX)
+		data->framecount = 1;
 }

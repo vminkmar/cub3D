@@ -33,8 +33,7 @@ typedef enum e_type
 	WALL,
 	OPEN_DOOR,
 	CLOSED_DOOR,
-	
-} t_type;
+}	t_type;
 
 typedef enum e_error
 {
@@ -102,14 +101,14 @@ typedef struct s_tex_list
 
 typedef struct s_fvector
 {
-	double x;
-	double y;
+	double	x;
+	double	y;
 }	t_fvector;
 
 typedef struct s_ivector
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 }	t_ivector;
 
 typedef enum e_wall_orientation
@@ -118,12 +117,12 @@ typedef enum e_wall_orientation
 	SOUTH,
 	WEST,
 	EAST,
-} t_wall_orientation;
+}	t_wall_orientation;
 
 typedef struct s_ray
 {
 	t_fvector	start;
-    t_fvector	dir;
+	t_fvector	dir;
 	t_fvector	step_size;
 	t_ivector	map_check;
 	t_fvector	length;
@@ -134,7 +133,7 @@ typedef struct s_ray
 	int			wall_start;
 	int			wall_end;
 	int			wall_side;
-} t_ray;
+}	t_ray;
 
 typedef struct s_player
 {
@@ -142,7 +141,7 @@ typedef struct s_player
 	double			angle;
 	t_fvector		p_start;
 	double			fov;
-} 	t_player;
+}	t_player;
 
 typedef struct s_map
 {
@@ -157,7 +156,7 @@ typedef struct s_map
 	mlx_texture_t	*tex_south;
 	mlx_texture_t	*tex_west;
 	mlx_texture_t	*tex_east;
-	mlx_texture_t	*tex_door;
+	mlx_texture_t	**tex_door;
 	char			*floor_color;
 	char			*ceiling_color;
 	uint32_t		color_floor;
@@ -177,6 +176,7 @@ typedef struct s_data
 	mlx_image_t		*img;
 	t_map			*map;
 	t_player		*player;
+	long			framecount;
 }	t_data;
 
 //linked_list_to_array
@@ -212,8 +212,7 @@ char			*get_string_path(char *str);
 
 //get_textures_and_map
 void			get_textures_and_map(char **argv, t_map_list *map,
-					t_tex_list *tex,
-					t_data *data);
+					t_tex_list *tex, t_data *data);
 
 // get_textures_and_map_utils
 int				is_wall_or_field(char type);
@@ -223,7 +222,8 @@ int				is_begin_of_map(char *line);
 //check_map
 int				ft_whitespaces(char c);
 int				ft_charcmp(char c, char *str);
-void			check_around_zero(char **map, int line, int character, t_data *data);
+void			check_around_zero(char **map, int line, int character,
+					t_data *data);
 void			check_map(char **map, t_data *data);
 
 //init
@@ -231,10 +231,11 @@ void			init_variables(t_data *data, t_map_list *map, t_tex_list *tex);
 
 //parser
 void			parser(char **argv, t_data *data);
-void 			check_numbers(int red, int green, int blue);
+void			check_numbers(int red, int green, int blue);
 
 //print_errors
-void			print_wrong_textures(t_tex_list *tex, t_data *data, t_error error);
+void			print_wrong_textures(t_tex_list *tex, t_data *data,
+					t_error error);
 void			print_wrong_color(t_error_color error);
 void			print_multiple_textures(t_tex_list *tex, t_data *data, t_error error);
 void			print_error(char *message);
@@ -295,7 +296,6 @@ void			draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 void			my_loop_hook(void *param);
 void			check_mouse_pos(t_data *data);
 void			move_player(t_data *data, keys_t key);
-
 
 //directions
 int				wall_collision(char **map, double x, double y);
