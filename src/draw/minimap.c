@@ -46,8 +46,8 @@ void	draw_minimap(t_data *data)
 		j = 0;
 		while (j < data->map->max_width - 1)
 		{
-			draw_minimap_square(data, j, i, x, y);
-			x += data->map->minimap_dims;
+			draw_minimap_square(data, j, i, coords);
+			coords.x += data->map->minimap_dims;
 			j++;
 		}
 		coords.y += data->map->minimap_dims;
