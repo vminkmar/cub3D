@@ -8,7 +8,7 @@ RM				:=	rm -f
 
 CFLAGS			:=	-g -Wall -Wextra -Werror #-fsanitize=address
 
-VPATH			:=	src/ src/parser
+VPATH			:=	src/ src/parser src/draw src/movement src/raycaster
 
 SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free_stuff.c print_errors.c\
 					linked_list.c check_map.c get_textures_and_map.c get_textures_and_map_utils.c edit_textures.c color.c\
@@ -22,7 +22,7 @@ LMLX			:=	include/MLX42/build/libmlx42.a
 
 ODIR			:=	obj
 
-LINK_FLAGS		:=
+LINK_FLAGS		:=	
 
 OBJS			:=	$(SRC_FILES:%.c=$(ODIR)/%.o)
 
@@ -50,7 +50,7 @@ $(LFT):
 $(LMLX): $(LIBMLX)
 	@git submodule init include/MLX42
 	@git submodule update include/MLX42
-	@cd include/MLX42 && cmake -B build && cmake --build build -j4
+	@cd include/MLX42 && pwd && cmake -B build && cmake --build build -j4
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@

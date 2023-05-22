@@ -49,12 +49,12 @@ int	ft_strcmp(char *first, char *second)
 	int	counter_second;
 
 	counter_first = 0;
-	while(first[counter_first] != '\0')
+	while (first[counter_first] != '\0')
 	{
 		counter_second = 0;
-		while(second[counter_second] != '\0')
+		while (second[counter_second] != '\0')
 		{	
-			if(first[counter_first] != second[counter_second])
+			if (first[counter_first] != second[counter_second])
 				return (1);
 			counter_second++;
 		}

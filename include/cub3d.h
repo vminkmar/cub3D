@@ -13,15 +13,17 @@
 # define HEIGHT 600
 # define MAX_WIDTH 5120
 # define MAX_HEIGHT 2880
+# define BPP sizeof(int32_t)
 # define PLAYER_SPEED 0.11
+# define FIELD_OF_VIEW 60
 # define ROTATION_SPEED 3
 # define MOUSE_SENSITIVITY 5
 # define EPSILON 1e-6
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10000
 # endif
-#define WHITESPACES " \t\r\f\v\n"
-#define WHITESPACES_LESS "\t\r\f\v"
+# define WHITESPACES " \t\r\f\v\n"
+# define WHITESPACES_LESS "\t\r\f\v"
 
 typedef enum e_type
 {
@@ -29,7 +31,6 @@ typedef enum e_type
 	OTHERS,
 	WALKABLE,
 	WALL,
-	OPEN_DOOR,
 	CLOSED_DOOR,
 	
 } t_type;
@@ -155,6 +156,7 @@ typedef struct s_map
 	mlx_texture_t	*tex_south;
 	mlx_texture_t	*tex_west;
 	mlx_texture_t	*tex_east;
+	mlx_texture_t	*tex_door;
 	char			*floor_color;
 	char			*ceiling_color;
 	uint32_t		color_floor;
@@ -174,8 +176,7 @@ typedef struct s_data
 	mlx_image_t		*img;
 	t_map			*map;
 	t_player		*player;
-
-} 	t_data;
+}	t_data;
 
 //linked_list_to_array
 char			**transfer_map_to_array(t_map_list *map, t_data *data);
@@ -196,7 +197,6 @@ int				number_counter(char **str);
 int				check_for_alpha(char **str);
 void			check_for_spaces(char *str, int flag);	
 
-
 //color
 int				rgb_to_uint(int red, int green, int blue, int alpha);
 void			check_numbers(int red, int green, int blue);
@@ -210,7 +210,8 @@ void			trim_spaces_textures(t_tex_list *tex);
 char			*get_string_path(char *str);
 
 //get_textures_and_map
-void			get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
+void			get_textures_and_map(char **argv, t_map_list *map,
+					t_tex_list *tex,
 					t_data *data);
 
 // get_textures_and_map_utils
@@ -252,31 +253,60 @@ int				check_input(int argc, char **argv);
 char			*sl_strjoin(char *s1, char *s2);
 int				ft_strcmp(char *first, char *second);
 
-
 //free_stuff
 void			free_list_textures(t_tex_list **tex);
 void			free_data(t_data *data);
 void			free_list_map(t_map_list **map);
 void			free_numbers(char **numbers);
 
-//draw
-void			raycaster(t_data *data);
+//main
+void			init_data(t_data *data);
 void			init_player(t_data *data);
-void			draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
-void			draw_map(mlx_image_t *img, int map[][6]);
-void			draw_square(mlx_image_t *img, int x, int y, uint32_t color);
-void			draw_fov(t_player *player, t_data *data);
 
+//raycast
+void			raycaster(t_data *data);
+void			draw_fov(t_player *player, t_data *data);
+void			cast_ray(t_player *player, t_data *data, double angle, int x);
+void			init_ray(t_player *player, t_ray *ray, double angle);
+void			get_stepsize(t_ray *ray);
+
+//raycast2
+void			get_steps(t_ray *ray);
+void			set_wall(t_ray *ray, t_player *player, double angle);
+double			distance_to_plane(double distance, double angle,
+					double player_angle);
+void			wall_hit(t_data *data, t_ray *ray, int *hit);
+
+//draw
+void			paint_background(t_data *data, t_ray *ray, int x);
+void			paint_texture(t_data *data, t_ray *ray, int x);
+int				get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
+mlx_texture_t	*get_tex(t_data *data, t_ray *ray);
 
 //draw_utils
-int				grid_to_pixel(double grid_coordinate, int grid_size, int pixel_size);
+int				grid_to_pixel(double grid_coordinate, int grid_size,
+					int pixel_size);
 double			pixel_to_grid(int pixel_coordinate, int tile_size);
 t_fvector		angle_to_vector(double angle);
+void			draw_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 
 //movement
 void			my_loop_hook(void *param);
-int				wall_collision(char **map, double x, double y);
+void			check_mouse_pos(t_data *data);
+void			move_player(t_data *data, keys_t key);
 
+
+//directions
+int				wall_collision(char **map, double x, double y);
+void			move_down(t_data *data, double tmp_x, double tmp_y);
+void			move_up(t_data *data, double tmp_x, double tmp_y);
+void			move_left(t_data *data, double tmp_x, double tmp_y);
+void			move_right(t_data *data, double tmp_x, double tmp_y);
+
+//doors
+void			cast_door_ray(t_data *data, t_player *player);
+void			open_close_door(t_data *data, t_ray *ray, int map_x, int map_y);
+void			interac_hook(mlx_key_data_t keydata, void *param);
 
 //textures
 mlx_texture_t	*get_tex(t_data *data, t_ray *ray);
