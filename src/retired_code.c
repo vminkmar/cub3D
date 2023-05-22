@@ -126,3 +126,28 @@ uint32_t get_wall_color(t_player *player, t_ray *ray)
 		wall_color = 0xF5F327CC;
 	return (wall_color);
 }
+
+void	draw_square(t_data *data, int x, int y, uint32_t color)
+{
+	int	new_x;
+	int	new_y;
+	int	count_x;
+	int	count_y;
+
+	new_x = x;
+	new_y = y;
+	count_y = 0;
+	while (count_y < HEIGHT / data->map->max_height)
+	{
+		new_x = x;
+		count_x = 0;
+		while (count_x < WIDTH / data->map->max_width)
+		{
+			mlx_put_pixel(data->minimap_img, new_x, new_y, color);
+			new_x++;
+			count_x++;
+		}
+		new_y++;
+		count_y++;
+	}
+}

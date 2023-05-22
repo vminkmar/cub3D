@@ -24,9 +24,15 @@
 # endif
 # define WHITESPACES " \t\r\f\v\n"
 # define WHITESPACES_LESS "\t\r\f\v"
+//colors
+# define WHITE 0xFFFFFFFF
+# define BLACK 0x000000FF
+# define RED 0xFF0000FF
+# define GREEN 0x00FF00FF
 
 typedef enum e_type
 {
+	OTHERS,
 	OPEN_DOOR,
 	WALKABLE,
 	WALL,
@@ -277,5 +283,7 @@ int				get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
 
 //minimap
 void			draw_minimap(t_data *data);
+void			draw_minimap_square(t_data *data, int j, int i,
+					t_ivector coords);
 
 #endif

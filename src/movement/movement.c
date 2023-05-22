@@ -92,5 +92,5 @@ void	my_loop_hook(void *param)
 		mlx_close_window(data->mlx);
 	check_mouse_pos(data);
 	draw_fov(data->player, data);
-	draw_minimap(data, data->map->map);
+	draw_minimap(data);
 }
