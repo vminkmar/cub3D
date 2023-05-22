@@ -71,9 +71,10 @@ int	main(int argc, char **argv)
 	if (!data->map)
 		return (free(data->player), free(data), EXIT_FAILURE);
 	parser(argv, data);
-	// init_data(data);
-	// init_player(data);
-    // mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
-	// raycaster(data);
+	init_data(data);
+	init_player(data);
+    mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
+	raycaster(data);
+	free_exit(data);
 	return (EXIT_SUCCESS);
 }
