@@ -135,7 +135,7 @@ typedef struct s_map
 	mlx_texture_t	*tex_south;
 	mlx_texture_t	*tex_west;
 	mlx_texture_t	*tex_east;
-	mlx_texture_t	*tex_door;
+	mlx_texture_t	**tex_door;
 	char			*floor_color;
 	char			*ceiling_color;
 	uint32_t		color_floor;
@@ -151,6 +151,7 @@ typedef struct s_data
 	mlx_image_t		*minimap_img;
 	t_map			*map;
 	t_player		*player;
+	long			framecount;
 }	t_data;
 
 //linked_list_to_array
@@ -177,8 +178,7 @@ char			*get_string_path(char *str);
 
 //get_textures_and_map
 void			get_textures_and_map(char **argv, t_map_list *map,
-					t_tex_list *tex,
-					t_data *data);
+					t_tex_list *tex, t_data *data);
 
 // get_textures_and_map_utils
 int				is_wall_or_field(char type);

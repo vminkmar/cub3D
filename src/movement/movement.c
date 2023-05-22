@@ -93,4 +93,7 @@ void	my_loop_hook(void *param)
 	check_mouse_pos(data);
 	draw_fov(data->player, data);
 	draw_minimap(data);
+	data->framecount++;
+	if (data->framecount == LONG_MAX)
+		data->framecount = 1;
 }

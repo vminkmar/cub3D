@@ -65,9 +65,12 @@ void load_pngs(t_data *data)
 	data->map->tex_east = mlx_load_png(data->map->path_east);
 	if (data->map->tex_east == NULL)
 		print_error("east");
-	data->map->tex_door = mlx_load_png("./textures/door.png");
+	data->map->tex_door[0] = mlx_load_png("./textures/door_green.png");
 	if (data->map->tex_door == NULL)
-		print_error("door");
+		print_error("door0");
+	data->map->tex_door[1] = mlx_load_png("./textures/door_red.png");
+	if (data->map->tex_door == NULL)
+		print_error("door1");
 }
 
 void	parser(char **argv, t_data *data)
