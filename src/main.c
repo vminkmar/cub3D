@@ -14,6 +14,7 @@ void	init_data(t_data *data)
 		exit(EXIT_FAILURE);
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
+	data->framecount = 0;
 }
 
 void	ft_free2d(char **s)
@@ -35,11 +36,13 @@ void	ft_free2d(char **s)
 void	free_exit(t_data *data)
 {
 	free(data->player);
-	mlx_delete_texture(data->map->tex_door);
 	mlx_delete_texture(data->map->tex_north);
 	mlx_delete_texture(data->map->tex_south);
 	mlx_delete_texture(data->map->tex_west);
 	mlx_delete_texture(data->map->tex_east);
+	mlx_delete_texture(data->map->tex_door[0]);
+	mlx_delete_texture(data->map->tex_door[1]);
+	free(data->map->tex_door);
 	free(data->map->path_north);
 	free(data->map->path_south);
 	free(data->map->path_west);
@@ -50,6 +53,17 @@ void	free_exit(t_data *data)
 	free(data->map);
 	mlx_terminate(data->mlx);
 	free(data);
+}
+
+void	init_map(t_data *data)
+{
+	data->map = malloc(sizeof(t_map));
+	if (!data->map)
+		return (free(data->player), free(data), (void)EXIT_FAILURE);
+	data->map->tex_door = malloc(sizeof(mlx_texture_t *) * 2);
+	if (!data->map->tex_door)
+		return (free(data->map), free(data->player), free(data),
+			(void)EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv)
@@ -68,9 +82,7 @@ int	main(int argc, char **argv)
 	data->player = malloc(sizeof(t_player));
 	if (!data->player)
 		return (free(data), EXIT_FAILURE);
-	data->map = malloc(sizeof(t_map));
-	if (!data->map)
-		return (free(data->player), free(data), EXIT_FAILURE);
+	init_map(data);
 	parser(argv, data);
 	init_data(data);
 	init_player(data);

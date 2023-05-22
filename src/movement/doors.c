@@ -5,7 +5,7 @@ void	interac_hook(mlx_key_data_t keydata, void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
+	if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
 		cast_door_ray(data, data->player);
 }
 
