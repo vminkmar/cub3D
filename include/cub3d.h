@@ -25,6 +25,7 @@
 
 typedef enum e_type
 {
+	NOTHING,
 	OTHERS,
 	WALKABLE,
 	WALL,
@@ -43,6 +44,7 @@ typedef enum e_error
 	ERROR_CEILING,
 	ERROR_NO,
 	ERROR_INVALID,
+	ERROR_INVALID_DOOR,
 	ERROR_NORTH_MULTIPLE,
 	ERROR_WEST_MULTIPLE,
 	ERROR_SOUTH_MULTIPLE,
@@ -56,6 +58,19 @@ typedef enum e_error_syntax
 {
 	ERROR_UPPER,
 	ERROR_SPACES,
+	ERROR_SYNTAX,
+	ERROR_SPACES_SOUTH,
+	ERROR_SPACES_EAST,
+	ERROR_SPACES_WEST,
+	ERROR_SPACES_NORTH,
+	ERROR_SPACES_CEI,
+	ERROR_SPACES_FLO,
+	ERROR_SYNTAX_NORTH,
+	ERROR_SYNTAX_EAST,
+	ERROR_SYNTAX_SOUTH,
+	ERROR_SYNTAX_WEST,
+	NO_ERROR_SYNTAX,
+	NO_ERROR,
 
 } t_error_syntax;
 
@@ -183,7 +198,7 @@ void	trim_before_and_after(t_tex_list *tex);
 
 //color_utils
 int				check_for_commas(char *str);
-int				number_counter(char *str);
+int				number_counter(char **str);
 int				check_for_alpha(char **str);
 void			check_for_spaces(char *str, int flag);	
 
@@ -193,7 +208,7 @@ int				rgb_to_uint(int red, int green, int blue, int alpha);
 void			check_numbers(int red, int green, int blue);
 void			get_color_floor(t_data *data);
 void			get_color_ceiling(t_data *data);
-void			check_colors(int i, int issue, char **colors);
+void			check_colors(t_data *data, int i, int issue, char **colors);
 
 //textures
 char			*trim_spaces_string(char *str);

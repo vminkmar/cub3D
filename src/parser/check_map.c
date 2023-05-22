@@ -30,17 +30,42 @@ void	check_around_zero(char **map, int line, int character, t_data *data)
 		|| map[data->map->max_height - 1][character] == WALKABLE
 		|| map[line][ft_strlen(map[line]) - 1] == WALKABLE)
 		error = ERROR_INVALID;
-	else if (ft_charcmp(map[line][character - 1], WHITESPACES) == 1)
+	else if (map[line][character - 1] == OTHERS)
 		error = ERROR_INVALID;
-	else if (ft_charcmp(map[line][character + 1], WHITESPACES) == 1)
+	else if (map[line][character + 1] == OTHERS)
 		error = ERROR_INVALID;
-	else if (ft_charcmp(map[line - 1][character], WHITESPACES) == 1)
+	else if (map[line - 1][character] == OTHERS)
 		error = ERROR_INVALID;
-	else if (ft_charcmp(map[line + 1][character], WHITESPACES) == 1)
+	else if (map[line + 1][character] == OTHERS)
 		error = ERROR_INVALID;
 	if (error == ERROR_INVALID)
 	{
 		print_error("Error\nMap is not surrounded by walls");
+		// free;
+		exit (1);
+	}
+}
+
+void	check_around_door(char **map, int line, int character, t_data *data)
+{
+	t_error	error;
+
+	error = ERROR_NO;
+	if (map[0][character] == OTHERS || map[line][0] == OTHERS
+		|| map[data->map->max_height - 1][character] == OTHERS
+		|| map[line][ft_strlen(map[line]) - 1] == OTHERS)
+		error = ERROR_INVALID_DOOR;
+	else if (map[line][character - 1] == OTHERS)
+		error = ERROR_INVALID_DOOR;
+	else if (map[line][character + 1] == OTHERS)
+		error = ERROR_INVALID_DOOR;
+	else if (map[line - 1][character] == OTHERS)
+		error = ERROR_INVALID_DOOR;
+	else if (map[line + 1][character] == OTHERS)
+		error = ERROR_INVALID_DOOR;
+	if (error == ERROR_INVALID_DOOR)
+	{
+		print_error("Error\nCheck that doors are not in the outside wall");
 		// free;
 		exit (1);
 	}
@@ -59,6 +84,8 @@ void	check_map(char **map, t_data *data)
 		{	
 			if (map[line][character] == WALKABLE)
 				check_around_zero(map, line, character, data);
+			if (map[line][character] == CLOSED_DOOR)
+				check_around_door(map, line, character, data);
 			if (ft_whitespaces(map[line][character]) == 1)
 			{
 				print_error("Error\nThere is a not allowed whitespace in the map");

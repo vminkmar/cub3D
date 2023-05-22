@@ -35,8 +35,7 @@ void	compare_textures(t_tex_list *tex, t_data *data)
 			data->map->ceiling_color = get_string_path(tex->content);
 			data->map->ceiling_color_counter++;
 		}
-		tex = tex->next;
-		
+		tex = tex->next;	
 	}
 }
 

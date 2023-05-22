@@ -20,18 +20,19 @@ int	check_for_commas(char *str)
 	return (0);
 }
 
-int	number_counter(char *str)
+int	number_counter(char **str)
 {
-	int	i;
+	int	inner;
+	int outer;
 	int	counter;
 
-	counter = 1;
-	i = 0;
-	while (str[i] != '\0')
+	counter = 0;
+	inner = 0;
+	outer = 0;
+	while(str[outer] != NULL)
 	{
-		if (str[i] == ',' && str[i + 1] != '\0' && ft_isdigit(str[i + 1]) == 1)
-			counter ++;
-		i ++;
+		counter ++;
+		outer ++;
 	}
 	if (counter != 3)
 		return (1);
