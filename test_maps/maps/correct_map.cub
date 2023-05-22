@@ -1,4 +1,4 @@
-NO ./textures/greys tone.png
+NO    ./textures/greys tone.png
 SO ./textures/mossy.png
 WE ./textures/redbrick.png
 EA ./textures/wood.png

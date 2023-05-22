@@ -2,16 +2,25 @@
 
 void	get_textures(char *line, t_tex_list *tex)
 {
-	char	*new;
+	char	*trimmed;
 
+	if (!line)
+		return ;
 	if (line[0] == '\n')
+	{
+		free (line);
 		return ;
-	new = line;
-	line = ft_strtrim(line, WHITESPACES);
-	free (new);
-	if (line[0] == '\0')
+	}
+	trimmed = ft_strtrim(line, WHITESPACES);
+	free(line);
+	if (!trimmed)
 		return ;
-	add_node_to_tex(line, &tex);
+	if (trimmed[0] == '\0')
+	{
+		free(trimmed);
+		return ;
+	}
+	add_node_to_tex(trimmed, &tex);
 	tex->counter ++;
 }
 
@@ -45,7 +54,10 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 	{
 		line = get_next_line(fd);
 		if (line == NULL || line[0] == '\0')
+		{
+			free(line);
 			break ;
+		}
 		if (is_begin_of_map(line) == 1 && begin_of_map == 0)
 			get_textures(line, tex);
 		else
@@ -53,6 +65,7 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 			begin_of_map = 1;
 			get_map(line, map, data);
 		}
+		// free (line);
 	}
 	if (begin_of_map == 0)
 	{

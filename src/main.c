@@ -67,7 +67,7 @@ void	init_map(t_data *data)
 			(void)EXIT_FAILURE);
 }
 
-int	main(int argc, char **argv)
+int	main2(int argc, char **argv)
 {
 	t_data		*data;
 
@@ -90,4 +90,10 @@ int	main(int argc, char **argv)
 	raycaster(data);
 	free_exit(data);
 	return (EXIT_SUCCESS);
+}
+
+int	main(int argc, char **argv)
+{
+	main2(argc, argv);
+	//system("leaks cub3D");
 }

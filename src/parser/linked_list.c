@@ -29,7 +29,7 @@ void	add_node_to_map(char *line, t_map_list **map)
 	t_map_list	*new_map;
 
 	if ((*map)->content == NULL)
-		(*map)->content = ft_strdup(line);
+		(*map)->content = line;
 	else
 	{
 		new_map = malloc(sizeof(t_map_list));
@@ -40,9 +40,8 @@ void	add_node_to_map(char *line, t_map_list **map)
 			exit (1);
 		}
 		new_map->next = NULL;
-		new_map->content = ft_strdup(line);
+		new_map->content = line;
 		ft_lstadd_back_map(map, new_map);
-		free(line);
 	}
 }
 
@@ -51,7 +50,7 @@ void	add_node_to_tex(char *line, t_tex_list **tex)
 	t_tex_list	*new_tex;
 
 	if ((*tex)->content == NULL)
-		(*tex)->content = ft_strdup(line);
+		(*tex)->content = line;
 	else
 	{
 		new_tex = malloc(sizeof(t_tex_list));
@@ -62,7 +61,7 @@ void	add_node_to_tex(char *line, t_tex_list **tex)
 			exit (1);
 		}
 		new_tex->next = NULL;
-		new_tex->content = ft_strdup(line);
+		new_tex->content = line;
 		ft_lstadd_back_tex(tex, new_tex);
 	}
 }

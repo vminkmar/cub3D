@@ -17,20 +17,34 @@ void	free_list_textures(t_tex_list **tex)
 	}
 }
 
+// void	free_list_map(t_map_list **map)
+// {
+// 	t_map_list	*tmp;
+
+// 	if (map != NULL)
+// 	{
+// 		tmp = (*map);
+// 		while ((*map) != NULL)
+// 		{
+// 			tmp = (*map);
+// 			(*map) = (*map)->next;
+// 			free(tmp->content);
+// 			free(tmp);
+// 		}
+// 	}
+// }
+
 void	free_list_map(t_map_list **map)
 {
+	t_map_list	*head = *map;
 	t_map_list	*tmp;
 
-	if (map != NULL)
+	while (head)
 	{
-		tmp = (*map);
-		while ((*map) != NULL)
-		{
-			tmp = (*map);
-			(*map) = (*map)->next;
-			free(tmp->content);
-			free(tmp);
-		}
+		free(head->content);
+		tmp = head->next;
+		free(head);
+		head = tmp;
 	}
 }
 
