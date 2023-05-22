@@ -22,6 +22,19 @@ void	init_ray(t_player *player, t_ray *ray, double angle)
 	ray->wall_side = 0;
 }
 
+void draw_intersection_on_minimap(t_data *data, t_fvector intersection_point, uint32_t color)
+{
+	t_ivector minimap_point;
+	
+	// Convert the intersection point to minimap grid units
+	minimap_point.x = (int)intersection_point.x / WIDTH * (data->map->minimap_dims * data->map->max_width);
+	minimap_point.y = (int)intersection_point.y / HEIGHT * (data->map->minimap_dims * data->map->max_height);
+
+	// Draw the point onto the minimap
+	draw_pixel(data->minimap_img, minimap_point.x, minimap_point.y, color);
+}
+
+
 void	cast_ray(t_player *player, t_data *data, double angle, int x)
 {	
 	t_ray		*ray;
@@ -42,6 +55,7 @@ void	cast_ray(t_player *player, t_data *data, double angle, int x)
 		set_wall(ray, player, angle);
 		paint_background(data, ray, x);
 		paint_texture(data, ray, x);
+		draw_intersection_on_minimap(data, ray->interception, RED);
 	}
 	free(ray);
 }

@@ -37,7 +37,6 @@ void	draw_minimap(t_data *data)
 	coords.x = 0;
 	coords.y = 0;
 	i = 0;
-	data->map->minimap_dims = (WIDTH / 4) / data->map->max_width;
 	if (data->map->minimap_dims < 1)
 		data->map->minimap_dims = 1;
 	while (i < data->map->max_height)
@@ -53,4 +52,10 @@ void	draw_minimap(t_data *data)
 		coords.y += data->map->minimap_dims;
 		i++;
 	}
+	printf("%i\n", (int)data->player->p_start.x);
+	printf("%i\n", (int)data->player->p_start.y);
+	printf("%i\n", data->map->minimap_dims);
+	int x = (int)data->player->p_start.x / WIDTH * (data->map->minimap_dims * data->map->max_width);
+	int y = (int)data->player->p_start.y / HEIGHT * (data->map->minimap_dims * data->map->max_height);
+	draw_pixel(data->minimap_img, x, y, 0xFFFFFF);
 }

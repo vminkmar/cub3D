@@ -16,6 +16,7 @@ void	init_data(t_data *data)
 	data->minimap_img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	data->framecount = 0;
+	data->map->minimap_dims = (WIDTH / 4) / data->map->max_width;
 }
 
 void	ft_free2d(char **s)
