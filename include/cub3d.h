@@ -42,6 +42,8 @@ typedef enum e_type
 
 typedef enum e_error
 {
+	ERROR_DOOR,
+	ERROR_DOOR_ONE,
 	ERROR_NORTH,
 	ERROR_WEST,
 	ERROR_SOUTH,

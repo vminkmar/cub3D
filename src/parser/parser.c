@@ -137,33 +137,39 @@ void	compare_and_check_textures(t_tex_list *tex, t_data *data)
 	
 }
 
+void print_wrong_pngs(t_data *data, t_error error)
+{
+	if (error != ERROR_NO)
+		print_error("hello");
+	data = NULL; //!!!!!
+	exit(1);
+}
+
 void load_pngs(t_data *data)
 {
+	t_error error;
+
+	error = ERROR_NO;
 	data->map->tex_north = mlx_load_png(data->map->path_north);
 	if (data->map->tex_north == NULL)
-	{
-		print_error("north");
-		exit(1);
-	}
+		error = ERROR_NORTH;
 	data->map->tex_south = mlx_load_png(data->map->path_south);
-	
 	if (data->map->tex_south == NULL)
-	{
-		print_error("south");
-		exit (1);
-	}
+		error = ERROR_SOUTH;
 	data->map->tex_west = mlx_load_png(data->map->path_west);
 	if (data->map->tex_west == NULL)
-	{
-		print_error("west");
-		exit(1);
-	}
+		error = ERROR_WEST;
 	data->map->tex_east = mlx_load_png(data->map->path_east);
 	if (data->map->tex_east == NULL)
-	{	
-		print_error("east");
-		exit(1);
-	}
+		error = ERROR_EAST;
+	data->map->tex_door[0] = mlx_load_png("./textures/door_green.png");
+	if (data->map->tex_door == NULL)
+		error = ERROR_DOOR;
+	data->map->tex_door[1] = mlx_load_png("./textures/door_red.png");
+	if (data->map->tex_door == NULL)
+		error = ERROR_DOOR_ONE;
+	if (error != ERROR_NO)
+		print_wrong_pngs(data, error);
 }
 
 void	parser(char **argv, t_data *data)
