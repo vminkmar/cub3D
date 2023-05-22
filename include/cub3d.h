@@ -24,6 +24,11 @@
 # endif
 # define WHITESPACES " \t\r\f\v\n"
 # define WHITESPACES_LESS "\t\r\f\v"
+//colors
+# define WHITE 0xFFFFFFFF
+# define BLACK 0x000000FF
+# define RED 0xFF0000FF
+# define GREEN 0x00FF00FF
 
 typedef enum e_type
 {
@@ -167,6 +172,7 @@ typedef struct s_map
 	int				path_north_counter;
 	int				floor_color_counter;
 	int				ceiling_color_counter;
+	int				minimap_dims;
 }	t_map;
 
 //draw
@@ -174,6 +180,7 @@ typedef struct s_data
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
+	mlx_image_t		*minimap_img;
 	t_map			*map;
 	t_player		*player;
 	long			framecount;
@@ -315,5 +322,10 @@ uint32_t		get_wall_color(t_player *player, t_ray *ray);
 void			paint_background(t_data *data, t_ray *ray, int x);
 void			paint_texture(t_data *data, t_ray *ray, int x);
 int				get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex);
+
+//minimap
+void			draw_minimap(t_data *data);
+void			draw_minimap_square(t_data *data, int j, int i,
+					t_ivector coords);
 
 #endif

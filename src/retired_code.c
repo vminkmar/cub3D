@@ -50,32 +50,6 @@ void draw_line_to_interception(t_player *player, uint32_t color, t_fvector start
     }
 }
 
-void	draw_one_stripe(t_player *player, t_ray *ray, int x, uint32_t wall_color)
-{
-	int y;
-	uint32_t color;
-
-	y = 0;
-	if(ray->distance <= 0.0)
-		return ;
-	ray->proj_wall_height = ((double)HEIGHT / ray->distance);
-    ray->wall_start = (HEIGHT - ray->proj_wall_height) / 2;
-    ray->wall_end = ray->wall_start + ray->proj_wall_height;
-
-    while (y < HEIGHT)
-    {
-        if (y < ray->wall_start)
-            color = CEILING;
-        else if (y < ray->wall_end)
-            color = wall_color;
-        else
-            color = FLOOR;
-		if(x > 0 && x < WIDTH && (y > 0 && y < HEIGHT))
-        	mlx_put_pixel(player->img, x, y, color);
-		y++;
-    }
-}
-
 void thickenize_pixel(t_player *player, double x, double y, uint32_t color)
 {
     double i;
@@ -151,4 +125,29 @@ uint32_t get_wall_color(t_player *player, t_ray *ray)
 	else if (get_orientation(ray, player) == EAST)
 		wall_color = 0xF5F327CC;
 	return (wall_color);
+}
+
+void	draw_square(t_data *data, int x, int y, uint32_t color)
+{
+	int	new_x;
+	int	new_y;
+	int	count_x;
+	int	count_y;
+
+	new_x = x;
+	new_y = y;
+	count_y = 0;
+	while (count_y < HEIGHT / data->map->max_height)
+	{
+		new_x = x;
+		count_x = 0;
+		while (count_x < WIDTH / data->map->max_width)
+		{
+			mlx_put_pixel(data->minimap_img, new_x, new_y, color);
+			new_x++;
+			count_x++;
+		}
+		new_y++;
+		count_y++;
+	}
 }
