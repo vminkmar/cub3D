@@ -41,7 +41,7 @@ void	check_around_zero(char **map, int line, int character, t_data *data)
 	if (error == ERROR_INVALID)
 	{
 		print_error("Error\nMap is not surrounded by walls");
-		// free;
+		free_all(data);
 		exit (1);
 	}
 }
@@ -66,7 +66,7 @@ void	check_around_door(char **map, int line, int character, t_data *data)
 	if (error == ERROR_INVALID_DOOR)
 	{
 		print_error("Error\nCheck that doors are not in the outside wall");
-		// free;
+		free_all(data);
 		exit (1);
 	}
 }
@@ -89,7 +89,7 @@ void	check_map(char **map, t_data *data)
 			if (ft_whitespaces(map[line][character]) == 1)
 			{
 				print_error("Error\nThere is a not allowed whitespace in the map");
-				// free
+				free_all(data);
 				exit (1);
 			}
 			character ++;

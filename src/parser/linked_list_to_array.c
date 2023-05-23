@@ -23,13 +23,14 @@ void check_for_startpoint(t_data *data)
 	if(data->player->counter_p_start < 1)
 	{
 		print_error("There is no start point on the map");
-		// free
+		free_all(data);
 		exit(1);
 	}
 	if(data->player->counter_p_start > 1)
 	{
-		print_error("There are too many startpoints on the map"); // edit
-		// free
+		print_error("There are too many startpoints on the map");
+		free_all(data);
+		// system("leaks cub3D");
 		exit(1);
 	}
 }
@@ -89,15 +90,14 @@ int check_if_allowed_character(char *str)
 	return (1);
 }
 
-char	**transfer_map_to_array(t_data *data)
+void	transfer_map_to_array(t_data *data)
 {
-	char	**map_data;
 	int		line;
 	t_map_list *tmp;
 
 	tmp = data->m_list;
 	line = 0;
-	map_data = malloc(sizeof(t_type *) *(data->map->max_height + 1));
+	data->map->map = malloc(sizeof(t_type *) *(data->map->max_height + 1));
 	while (tmp)
 	{
 		if (check_if_allowed_character(tmp->content) == 1)
@@ -106,12 +106,11 @@ char	**transfer_map_to_array(t_data *data)
 			free_all(data);
 			exit (1);
 		}
-		map_data[line] = get_map_types(tmp->content, line, data);
-		get_max_width(map_data[line], data);
+		data->map->map[line] = get_map_types(tmp->content, line, data);
+		get_max_width(data->map->map[line], data);
 		line ++;
 		tmp = tmp->next;
 	}
-	map_data[line] = NULL;
+	data->map->map[line] = NULL;
 	check_for_startpoint(data);
-	return (map_data);
 }

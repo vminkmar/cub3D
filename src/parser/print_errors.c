@@ -19,9 +19,7 @@ void	print_wrong_textures(t_data *data, t_error error)
 		print_error("Error\nThere is no floor color");
 	else if (error == ERROR_CEILING)
 		print_error("Error\nThere is no ceiling color");
-	// free_list_textures(&tex);
-	// free_data(data);
-	data = NULL; // !!!!!!!!!!!!
+	free_all(data);
 	exit (1);
 }
 
@@ -39,13 +37,11 @@ void	print_multiple_textures(t_data *data, t_error error)
 		print_error("Error\nThere are too many floor color");
 	else if (error == ERROR_CEILING_MULTIPLE)
 		print_error("Error\nThere are too many ceiling color");
-	// free_list_textures(&tex);
-	// free_data(data);
-	data = NULL; // !!!!!!!!!!!!
+	free_all(data);
 	exit (1);
 }
 
-void	print_wrong_color(t_error_color error)
+void	print_wrong_color(t_error_color error, t_data *data, char **colors)
 {
 	if (error == ERROR_COMMA_CEILING)
 		print_error("Error\nCheck the number of commas in ceiling color");
@@ -63,6 +59,7 @@ void	print_wrong_color(t_error_color error)
 		print_error("Error\nCheck for whitespaces in floor color");
 	if (error == ERROR_WHITESPACES_CEILING)
 		print_error("Error\nCheck for whitespaces in ceiling color");
-	// free
+	free_numbers(colors);
+	free_all(data);
 	exit (1);
 }

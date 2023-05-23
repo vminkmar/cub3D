@@ -176,6 +176,9 @@ typedef struct s_map
 	int				path_north_counter;
 	int				floor_color_counter;
 	int				ceiling_color_counter;
+	int				red;
+	int				green;
+	int				blue;
 	int				minimap_dims;
 }	t_map;
 
@@ -193,7 +196,7 @@ typedef struct s_data
 }	t_data;
 
 //linked_list_to_array
-char			**transfer_map_to_array(t_data *data);
+void			transfer_map_to_array(t_data *data);
 void			get_max_with(char *str, t_data *data);
 
 // syntax_check
@@ -209,11 +212,10 @@ void	trim_before_and_after(t_data *data);
 int				check_for_commas(char *str);
 int				number_counter(char **str);
 int				check_for_alpha(char **str);
-void			check_for_spaces(char *str, int flag);	
+void			check_for_spaces(char *str, int flag, t_data *data);	
 
 //color
 int				rgb_to_uint(int red, int green, int blue, int alpha);
-void			check_numbers(int red, int green, int blue);
 void			get_color_floor(t_data *data);
 void			get_color_ceiling(t_data *data);
 void			check_colors(t_data *data, int issue, char **colors);
@@ -244,11 +246,11 @@ void			init_variables(t_data *data);
 
 //parser
 void			parser(char **argv, t_data *data);
-void			check_numbers(int red, int green, int blue);
+void			check_numbers(t_data *data, char **colors);
 
 //print_errors
 void			print_wrong_textures(t_data *data, t_error error);
-void			print_wrong_color(t_error_color error);
+void			print_wrong_color(t_error_color error, t_data *data, char **colors);
 void			print_multiple_textures(t_data *data, t_error error);
 void			print_error(char *message);
 
@@ -273,6 +275,7 @@ void			free_data(t_data *data);
 void			free_list_map(t_map_list **map);
 void			free_numbers(char **numbers);
 void			free_all(t_data *data);
+void			ft_free2d(char **s);
 
 //main
 void			init_data(t_data *data);

@@ -5,13 +5,15 @@ int	rgb_to_uint(int red, int green, int blue, int alpha)
 	return (red << 24 | green << 16 | blue << 8 | alpha);
 }
 
-void	check_numbers(int red, int green, int blue)
+void	check_numbers(t_data *data, char **colors)
 {
-	if (red > 255 || red < 0 || blue > 255 || blue < 0 || green > 255
-		|| green < 0)
+	if (data->map->red > 255 || data->map->red < 0 || data->map->blue > 255
+		|| data->map->blue < 0 || data->map->green > 255
+		|| data->map->green < 0)
 	{
 		print_error("Error\nWrong RGB color the numbers have to be 0-255");
-		// free
+		free_numbers(colors);
+		free_all(data);
 		exit (1);
 	}
 }
@@ -31,12 +33,14 @@ void	 get_color_floor(t_data *data)
 	if (check_array_length(numbers_floor) == 1)
 	{
 		print_error("You forgot a number or a comma in the floor texture");
+		free_numbers(numbers_floor);
+		free(colors_new);
 		free_all(data);
 		exit (1);
 	}
-	check_for_spaces(numbers_floor[0], 1);
-	check_for_spaces(numbers_floor[1], 1);
-	check_for_spaces(numbers_floor[2], 1);
+	check_for_spaces(numbers_floor[0], 1, data);
+	check_for_spaces(numbers_floor[1], 1, data);
+	check_for_spaces(numbers_floor[2], 1, data);
 	colors_new[0] = ft_strtrim(numbers_floor[0], " ");
 	red = ft_atoi(colors_new[0]);
 	colors_new[1] = ft_strtrim(numbers_floor[1], " ");
@@ -44,9 +48,9 @@ void	 get_color_floor(t_data *data)
 	colors_new[2] = ft_strtrim(numbers_floor[2], " ");
 	blue = ft_atoi(colors_new[2]);	
 	colors_new[3] = NULL;
-	check_colors(data, 1, colors_new);
-	check_numbers(red, green, blue);
 	free_numbers(numbers_floor);
+	check_colors(data, 1, colors_new);
+	check_numbers(data, colors_new);
 	free_numbers(colors_new);
 	data->map->color_floor = rgb_to_uint(red, green, blue, 255);
 }
@@ -68,33 +72,32 @@ void	get_color_ceiling(t_data *data)
 {
 	char	**numbers_floor;
 	char	**colors_new;
-	int		red;
-	int		green;
-	int		blue;
 
 	colors_new = malloc(sizeof(char *) * (4));
 	numbers_floor = ft_split((const char *)data->map->ceiling_color, ',');
 	if (check_array_length(numbers_floor) == 1)
 	{
 		print_error("You forgot a number or a comma in the ceiling texture");
+		free_numbers(numbers_floor);
+		free(colors_new);
 		free_all(data);
 		exit (1);
 	}
-	check_for_spaces(numbers_floor[0], 1);
-	check_for_spaces(numbers_floor[1], 1);
-	check_for_spaces(numbers_floor[2], 1);
+	check_for_spaces(numbers_floor[0], 1, data);
+	check_for_spaces(numbers_floor[1], 1, data);
+	check_for_spaces(numbers_floor[2], 1, data);
 	colors_new[0] = ft_strtrim(numbers_floor[0], " ");
-	red = ft_atoi(colors_new[0]);
+	data->map->red = ft_atoi(colors_new[0]);
 	colors_new[1] = ft_strtrim(numbers_floor[1], " ");
-	green = ft_atoi(colors_new[1]);
+	data->map->green = ft_atoi(colors_new[1]);
 	colors_new[2] = ft_strtrim(numbers_floor[2], " ");
-	blue = ft_atoi(colors_new[2]);	
+	data->map->blue = ft_atoi(colors_new[2]);	
 	colors_new[3] = NULL;
-	check_colors(data, 2, colors_new);
-	check_numbers(red, green, blue);
 	free_numbers(numbers_floor);
+	check_colors(data, 2, colors_new);
+	check_numbers(data, colors_new);
 	free_numbers(colors_new);
-	data->map->color_floor = rgb_to_uint(red, green, blue, 255);
+	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green, data->map->blue, 255);
 }
 int check_for_whitespaces(char **colors, char *whitespaces)
 {
@@ -152,5 +155,5 @@ void	check_colors(t_data *data, int issue, char **colors)
 	else if (check_for_whitespaces(colors, WHITESPACES_LESS) == 1 && issue == 2)
 		error = ERROR_WHITESPACES_CEILING;
 	if (error != NO_COLOR_ERROR)
-		print_wrong_color(error);
+		print_wrong_color(error, data, colors);
 }

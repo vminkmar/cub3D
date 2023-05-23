@@ -84,54 +84,9 @@ void	check_for_mutiple_textures(t_data *data)
 		print_multiple_textures(data, error);
 }
 
-// int	upper_case_check(char *str)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	if (str[i] < 'A' || str[i] > 'Z' )
-// 		return (1);
-// 	while(str[i] >= 'A' && str[i] <= 'Z')
-// 		i++;
-// 		if (ft_charcmp(str[i], WHITESPACES_LESS) == 1)
-// 			return (2);
-// 		if (str[i] != ' ')
-// 			return (1);
-// 	return (0);
-// }
-
-// void check_if_error(int error)
-// {
-// 	if (error == 1)
-// 		print_error("Error\nCheck the syntax of the textures");
-// 	if (error == 2)
-// 		print_error("Error\nCheck for whitespaces in the textures");
-// 	if (error != 0)
-// 	{
-// 		// free
-// 		exit (1);
-// 	}
-// }
-
-// void check_for_upper_case(t_data *data)
-// {
-// 	int error;
-// 	t_tex_list *tmp;
-
-// 	tmp = data->t_list;
-// 	error = 0;
-// 	while(tmp)
-// 	{
-// 		error = upper_case_check(tmp->content);
-// 		check_if_error(error);
-// 		tmp = tmp->next;
-// 	}
-// }
-
 void	compare_and_check_textures(t_data *data)
 {
 	trim_before_and_after(data);
-	// check_for_upper_case(data);
 	trim_spaces_textures(data);
 	syntax_textures(data);
 	compare_textures(data);
@@ -204,7 +159,7 @@ void	parser(char **argv, t_data *data)
 	get_textures_and_map(argv, data);
 	check_number_of_textures(data);
 	compare_and_check_textures(data);
-	data->map->map = transfer_map_to_array(data);
+	transfer_map_to_array(data);
 	check_map(data->map->map, data);
 	load_pngs(data);
 	free_list_textures(&data->t_list);

@@ -8,6 +8,14 @@ void	init_variables(t_data *data)
 	data->map->path_north = NULL;
 	data->map->floor_color = NULL;
 	data->map->ceiling_color = NULL;
+	data->map->tex_door[0] = NULL;
+	data->map->tex_door[1] = NULL;
+	data->map->tex_east = NULL;
+	data->map->tex_west = NULL;
+	data->map->tex_north = NULL;
+	data->map->tex_south = NULL;
+	data->map->map = NULL;
+	data->map->map = NULL;
 	data->map->color_ceiling = 0;
 	data->map->color_ceiling = 0;
 	data->map->color_ceiling = 0;

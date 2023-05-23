@@ -15,12 +15,52 @@ void	free_list_textures(t_tex_list **tex)
 			free(tmp);
 		}
 	}
+	*tex = NULL;
+}
+
+void free_data(t_data *data)
+{
+	free(data->map->tex_door);
+	free(data->map->path_north);
+	free(data->map->path_south);
+	free(data->map->path_west);
+	free(data->map->path_east);
+	free(data->map->floor_color);
+	free(data->map->ceiling_color);
+}
+
+
+void free_textures(t_data *data)
+{
+	if (data->map->tex_north == NULL || data->map->tex_east == NULL
+		|| data->map->tex_west == NULL || data->map->tex_south == NULL
+		|| data->map->tex_door[0] == NULL || data->map->tex_door[1] == NULL)
+	{
+		if (data->map->tex_north != NULL)
+			mlx_delete_texture(data->map->tex_north);
+		if (data->map->tex_south != NULL)
+			mlx_delete_texture(data->map->tex_south);
+		if (data->map->tex_west != NULL)
+			mlx_delete_texture(data->map->tex_west);
+		if (data->map->tex_east != NULL)
+			mlx_delete_texture(data->map->tex_east);
+		if (data->map->tex_door[0] != NULL)
+			mlx_delete_texture(data->map->tex_door[0]);
+		if (data->map->tex_door[1] != NULL)
+			mlx_delete_texture(data->map->tex_door[1]);
+	}
 }
 
 void free_all(t_data *data)
 {
 	free_list_map(&data->m_list);
 	free_list_textures(&data->t_list);
+	free_textures(data);
+	free_data(data);
+	ft_free2d(data->map->map);
+	free(data->player);
+	free(data->map);
+	free(data);
 }
 
 void	free_list_map(t_map_list **map)
@@ -35,27 +75,7 @@ void	free_list_map(t_map_list **map)
 		free(head);
 		head = tmp;
 	}
-}
-
-void	free_data(t_data *data)
-{
-	if (data != NULL)
-	{
-		if (data->map->ceiling_color != NULL)
-			free(data->map->ceiling_color);
-		if (data->map->floor_color != NULL)
-			free(data->map->floor_color);
-		if (data->map->path_east != NULL)
-			free(data->map->path_east);
-		if (data->map->path_north != NULL)
-			free(data->map->path_north);
-		if (data->map->path_west != NULL)
-			free(data->map->path_west);
-		if (data->map->path_south != NULL)
-			free(data->map->path_south);
-		if (data->map->ceiling_color != NULL)
-			free(data->map->ceiling_color);
-	}
+	*map = NULL;
 }
 
 void	free_numbers(char **numbers)
@@ -69,4 +89,5 @@ void	free_numbers(char **numbers)
 		i ++;
 	}
 	free(numbers);
+	numbers = NULL;
 }

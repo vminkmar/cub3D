@@ -85,7 +85,7 @@ int	compare_strings(char *first, char *second)
 	return (0);
 }
 
-void	check_for_spaces(char *str, int flag)
+void	check_for_spaces(char *str, int flag, t_data *data)
 {
 	if(compare_strings(str, WHITESPACES_LESS) == 1)
 	{
@@ -93,7 +93,7 @@ void	check_for_spaces(char *str, int flag)
 			print_error("There are whitespaces in the floor color");
 		if (flag == 2)
 			print_error("There are whitespaces in the ceiling color");
-		// free
+		free_all(data);
 		exit (1);
 	}
 }
