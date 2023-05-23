@@ -17,22 +17,11 @@ void	free_list_textures(t_tex_list **tex)
 	}
 }
 
-// void	free_list_map(t_map_list **map)
-// {
-// 	t_map_list	*tmp;
-
-// 	if (map != NULL)
-// 	{
-// 		tmp = (*map);
-// 		while ((*map) != NULL)
-// 		{
-// 			tmp = (*map);
-// 			(*map) = (*map)->next;
-// 			free(tmp->content);
-// 			free(tmp);
-// 		}
-// 	}
-// }
+void free_all(t_data *data)
+{
+	free_list_map(&data->m_list);
+	free_list_textures(&data->t_list);
+}
 
 void	free_list_map(t_map_list **map)
 {

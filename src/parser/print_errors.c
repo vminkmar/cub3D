@@ -5,7 +5,7 @@ void	print_error(char *message)
 	ft_putendl_fd(message, 2);
 }
 
-void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error)
+void	print_wrong_textures(t_data *data, t_error error)
 {
 	if (error == ERROR_EAST)
 		print_error("Error\nThere is no east texture");
@@ -21,12 +21,11 @@ void	print_wrong_textures(t_tex_list *tex, t_data *data, t_error error)
 		print_error("Error\nThere is no ceiling color");
 	// free_list_textures(&tex);
 	// free_data(data);
-	tex = NULL; // !!!!!!!!!!!!
 	data = NULL; // !!!!!!!!!!!!
 	exit (1);
 }
 
-void	print_multiple_textures(t_tex_list *tex, t_data *data, t_error error)
+void	print_multiple_textures(t_data *data, t_error error)
 {
 	if (error == ERROR_EAST_MULTIPLE)
 		print_error("Error\nThere are too many east texture");
@@ -42,7 +41,6 @@ void	print_multiple_textures(t_tex_list *tex, t_data *data, t_error error)
 		print_error("Error\nThere are too many ceiling color");
 	// free_list_textures(&tex);
 	// free_data(data);
-	tex = NULL; // !!!!!!!!!!!!
 	data = NULL; // !!!!!!!!!!!!
 	exit (1);
 }

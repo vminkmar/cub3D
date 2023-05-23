@@ -1,6 +1,6 @@
 #include "../../include/cub3d.h"
 
-void	get_textures(char *line, t_tex_list *tex)
+void	get_textures(char *line, t_data *data)
 {
 	char	*trimmed;
 
@@ -20,24 +20,23 @@ void	get_textures(char *line, t_tex_list *tex)
 		free(trimmed);
 		return ;
 	}
-	add_node_to_tex(trimmed, &tex);
-	tex->counter ++;
+	add_node_to_tex(trimmed, &data);
+	data->t_list->counter ++;
 }
 
-void	get_map(char *line, t_map_list *map, t_data *data)
+void	get_map(char *line, t_data *data)
 {
-	check_for_empty_line(line, map);
-	if (map->empty_line == 1 && is_begin_of_map(line) == 0)
+	check_for_empty_line(line, data);
+	if (data->m_list->empty_line == 1 && is_begin_of_map(line) == 0)
 	{
 		print_error("Error\nThere is an empty line in the Map");
 		exit(1);
 	}
-	add_node_to_map(line, &map);
+	add_node_to_map(line, &data);
 	data->map->max_height++;
 }
 
-void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
-			t_data *data)
+void	get_textures_and_map(char **argv, t_data *data)
 {
 	int		fd;
 	char	*line;
@@ -48,6 +47,7 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 	if (fd == -1)
 	{
 		print_error("Error\nThere is no map with that name or the map is empty");
+		free_all(data);
 		exit (1);
 	}
 	while (1)
@@ -59,18 +59,17 @@ void	get_textures_and_map(char **argv, t_map_list *map, t_tex_list *tex,
 			break ;
 		}
 		if (is_begin_of_map(line) == 1 && begin_of_map == 0)
-			get_textures(line, tex);
+			get_textures(line, data);
 		else
 		{
 			begin_of_map = 1;
-			get_map(line, map, data);
+			get_map(line, data);
 		}
-		// free (line);
 	}
 	if (begin_of_map == 0)
 	{
 		print_error("Error\nThere is no Map in that file");
-		// free
+		free_all(data);
 		exit (1);
 	}
 	close (fd);

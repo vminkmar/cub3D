@@ -1,16 +1,18 @@
 #include "../../include/cub3d.h"
 
-void	trim_before_and_after(t_tex_list *tex)
+void	trim_before_and_after(t_data *data)
 {
 	char	*new;
+	t_tex_list	*tmp;
 
+	tmp = data->t_list;
 	new = NULL;
-	while (tex != NULL)
+	while (tmp != NULL)
 	{
-		new = tex->content;
-		tex->content = ft_strtrim(tex->content, WHITESPACES);
+		new = tmp->content;
+		tmp->content = ft_strtrim(tmp->content, WHITESPACES);
 		free(new);
-		tex = tex->next;
+		tmp = tmp->next;
 	}
 }
 
@@ -64,21 +66,23 @@ char	*trim_spaces_string(char *str)
 	return (content);
 }
 
-void	trim_spaces_textures(t_tex_list *tex)
+void	trim_spaces_textures(t_data *data)
 {
 	char	*new;
+	t_tex_list	*tmp;
 
+	tmp = data->t_list;
 	new = NULL;
-	while (tex != NULL)
+	while (tmp != NULL)
 	{
-		new = tex->content;
-		tex->content = trim_spaces_string(tex->content);
+		new = tmp->content;
+		tmp->content = trim_spaces_string(tmp->content);
 		free(new);
-		tex = tex->next;
+		tmp = tmp->next;
 	}
 }
 
-char	*get_string_path(char *str)
+char	*get_string_path(char *str, t_data *data)
 {
 	char	*new_str;
 	int		old;
@@ -94,7 +98,7 @@ char	*get_string_path(char *str)
 	if (str[old] != ' ')
 	{
 		print_error("Error\nCheck the texture names");
-		// free
+		free_all(data);
 		exit (1);
 	}
 	while(str[old] == ' ')

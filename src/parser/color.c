@@ -28,68 +28,69 @@ void	 get_color_floor(t_data *data)
 	i = 0;
 	colors_new = malloc(sizeof(char *) * (4));
 	numbers_floor = ft_split((const char *)data->map->floor_color, ',');
-	while (numbers_floor[i] != NULL)
+	if (check_array_length(numbers_floor) == 1)
 	{
-		check_for_spaces(numbers_floor[i], 1);
-		if (i == 0)
-		{
-			colors_new[i] = ft_strtrim(numbers_floor[i], " ");
-			red = ft_atoi(colors_new[i]);
-		}
-		if (i == 1)
-		{
-			colors_new[i] = ft_strtrim(numbers_floor[i], " ");
-			green = ft_atoi(colors_new[i]);
-		}
-		if (i == 2)
-		{
-			colors_new[i] = ft_strtrim(numbers_floor[i], " ");
-			blue = ft_atoi(colors_new[i]);
-		}
-		i ++;
+		print_error("You forgot a number or a comma in the floor texture");
+		free_all(data);
+		exit (1);
 	}
-	colors_new[i] = NULL;
-	check_colors(data, i, 1, colors_new);
+	check_for_spaces(numbers_floor[0], 1);
+	check_for_spaces(numbers_floor[1], 1);
+	check_for_spaces(numbers_floor[2], 1);
+	colors_new[0] = ft_strtrim(numbers_floor[0], " ");
+	red = ft_atoi(colors_new[0]);
+	colors_new[1] = ft_strtrim(numbers_floor[1], " ");
+	green = ft_atoi(colors_new[1]);
+	colors_new[2] = ft_strtrim(numbers_floor[2], " ");
+	blue = ft_atoi(colors_new[2]);	
+	colors_new[3] = NULL;
+	check_colors(data, 1, colors_new);
 	check_numbers(red, green, blue);
 	free_numbers(numbers_floor);
 	free_numbers(colors_new);
 	data->map->color_floor = rgb_to_uint(red, green, blue, 255);
 }
 
+int check_array_length(char **str)
+{
+	int i;
+	int j;
+
+	j = 0;
+	i = 0;
+	while(str[i] != NULL)
+		i++;
+	if (i != 3)
+		return (1);
+	return (0);
+}
 void	get_color_ceiling(t_data *data)
 {
 	char	**numbers_floor;
 	char	**colors_new;
-	int		i;
 	int		red;
 	int		green;
 	int		blue;
 
-	i = 0;
 	colors_new = malloc(sizeof(char *) * (4));
 	numbers_floor = ft_split((const char *)data->map->ceiling_color, ',');
-	while (numbers_floor[i] != NULL)
+	if (check_array_length(numbers_floor) == 1)
 	{
-		check_for_spaces(numbers_floor[i], 1);
-		if (i == 0)
-		{
-			colors_new[i] = ft_strtrim(numbers_floor[i], " ");
-			red = ft_atoi(colors_new[i]);
-		}
-		if (i == 1)
-		{
-			colors_new[i] = ft_strtrim(numbers_floor[i], " ");
-			green = ft_atoi(colors_new[i]);
-		}
-		if (i == 2)
-		{
-			colors_new[i] = ft_strtrim(numbers_floor[i], " ");
-			blue = ft_atoi(colors_new[i]);
-		}
-		i ++;
+		print_error("You forgot a number or a comma in the ceiling texture");
+		free_all(data);
+		exit (1);
 	}
-	colors_new[i] = NULL;
-	check_colors(data, i, 2, colors_new);
+	check_for_spaces(numbers_floor[0], 1);
+	check_for_spaces(numbers_floor[1], 1);
+	check_for_spaces(numbers_floor[2], 1);
+	colors_new[0] = ft_strtrim(numbers_floor[0], " ");
+	red = ft_atoi(colors_new[0]);
+	colors_new[1] = ft_strtrim(numbers_floor[1], " ");
+	green = ft_atoi(colors_new[1]);
+	colors_new[2] = ft_strtrim(numbers_floor[2], " ");
+	blue = ft_atoi(colors_new[2]);	
+	colors_new[3] = NULL;
+	check_colors(data, 2, colors_new);
 	check_numbers(red, green, blue);
 	free_numbers(numbers_floor);
 	free_numbers(colors_new);
@@ -109,14 +110,14 @@ int check_for_whitespaces(char **colors, char *whitespaces)
 	{
 		inner = 0;
 		flag = 0;
-		while(colors[outer][inner] != '\0')
+		while(colors[outer] && colors[outer][inner] != '\0')
 		{
 			if ((colors[outer][inner] >= '0' && colors[outer][inner] <= '9') && flag == 1)
 				return (1);
-			if ((colors[outer][inner] < '0' || colors[outer][inner] > '9') && colors[outer][inner] != '-')
+			if (ft_isdigit(colors[outer][inner]) == 0 && colors[outer][inner] != '-')
 				flag = 1;
 			spaces = 0;
-			while(whitespaces[spaces] != '\0')
+			while(whitespaces && whitespaces[spaces] != '\0')
 			{
 				if (colors[outer][inner] == whitespaces[spaces])
 					return (1);
@@ -129,19 +130,15 @@ int check_for_whitespaces(char **colors, char *whitespaces)
 	return (0);
 }
 
-void	check_colors(t_data *data, int i, int issue, char **colors)
+void	check_colors(t_data *data, int issue, char **colors)
 {
 	t_error_color	error;
 
 	error = NO_COLOR_ERROR;
-	if (i != 3 && issue == 1)
-		error = ERROR_COMMA_FLOOR;
-	else if (i != 3 && issue == 2)
+	if (check_for_commas(data->map->ceiling_color) == 1)
 		error = ERROR_COMMA_CEILING;
-	else if (check_for_whitespaces(colors, WHITESPACES_LESS) == 1 && issue == 1)
-		error = ERROR_WHITESPACES_FLOOR;
-	else if (check_for_whitespaces(colors, WHITESPACES_LESS) == 1 && issue == 2)
-		error = ERROR_WHITESPACES_CEILING;
+	else if (check_for_commas(data->map->floor_color) == 1)
+		error = ERROR_COMMA_FLOOR;
 	else if (number_counter(colors) == 1)
 		error = ERROR_NUMBER_CEILING;
 	else if (number_counter(colors) == 1)
@@ -150,10 +147,10 @@ void	check_colors(t_data *data, int i, int issue, char **colors)
 		error = ERROR_ALPHA_CEILING;
 	else if (check_for_alpha(colors) == 1 && issue == 1)
 		error = ERROR_ALPHA_FLOOR;
-	else if (check_for_commas(data->map->ceiling_color) == 1)
-		error = ERROR_COMMA_CEILING;
-	else if (check_for_commas(data->map->floor_color) == 1)
-		error = ERROR_COMMA_FLOOR;
+	else if (check_for_whitespaces(colors, WHITESPACES_LESS) == 1 && issue == 1)
+		error = ERROR_WHITESPACES_FLOOR;
+	else if (check_for_whitespaces(colors, WHITESPACES_LESS) == 1 && issue == 2)
+		error = ERROR_WHITESPACES_CEILING;
 	if (error != NO_COLOR_ERROR)
 		print_wrong_color(error);
 }

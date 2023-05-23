@@ -67,7 +67,7 @@ void	init_map(t_data *data)
 			(void)EXIT_FAILURE);
 }
 
-int	main2(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_data		*data;
 
@@ -84,16 +84,10 @@ int	main2(int argc, char **argv)
 		return (free(data), EXIT_FAILURE);
 	init_map(data);
 	parser(argv, data);
-	init_data(data);
-	init_player(data);
-    mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
-	raycaster(data);
-	free_exit(data);
+	// init_data(data);
+	// init_player(data);
+    // mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
+	// raycaster(data);
+	// free_exit(data);
 	return (EXIT_SUCCESS);
-}
-
-int	main(int argc, char **argv)
-{
-	main2(argc, argv);
-	//system("leaks cub3D");
 }

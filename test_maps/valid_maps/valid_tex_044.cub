@@ -4,7 +4,6 @@ SO ./wolftex/redbrick.png
 F 122,122,122
 NO ./wolftex/greystone.png
 EA ./wolftex/wood.png
-DO ../textures/door/wolf_door.png
 
 C 255,200,160
 11111111111111111

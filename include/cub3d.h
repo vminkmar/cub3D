@@ -71,6 +71,8 @@ typedef enum e_error_syntax
 	ERROR_SYNTAX_EAST,
 	ERROR_SYNTAX_SOUTH,
 	ERROR_SYNTAX_WEST,
+	ERROR_SYNTAX_CEILING,
+	ERROR_SYNTAX_FLOOR,
 	NO_ERROR_SYNTAX,
 	NO_ERROR,
 
@@ -183,22 +185,24 @@ typedef struct s_data
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	mlx_image_t		*minimap_img;
+	t_map_list		*m_list;
+	t_tex_list		*t_list;
 	t_map			*map;
 	t_player		*player;
 	long			framecount;
 }	t_data;
 
 //linked_list_to_array
-char			**transfer_map_to_array(t_map_list *map, t_data *data);
+char			**transfer_map_to_array(t_data *data);
 void			get_max_with(char *str, t_data *data);
 
 // syntax_check
-void syntax_textures(t_tex_list *tex);
+void			syntax_textures(t_data *data);
 
 
 
 //edit_textures
-void	trim_before_and_after(t_tex_list *tex);
+void	trim_before_and_after(t_data *data);
 
 
 //color_utils
@@ -212,20 +216,20 @@ int				rgb_to_uint(int red, int green, int blue, int alpha);
 void			check_numbers(int red, int green, int blue);
 void			get_color_floor(t_data *data);
 void			get_color_ceiling(t_data *data);
-void			check_colors(t_data *data, int i, int issue, char **colors);
+void			check_colors(t_data *data, int issue, char **colors);
+int				check_array_length(char **str);
 
 //textures
 char			*trim_spaces_string(char *str);
-void			trim_spaces_textures(t_tex_list *tex);
-char			*get_string_path(char *str);
+void			trim_spaces_textures(t_data *data);
+char			*get_string_path(char *str, t_data *data);
 
 //get_textures_and_map
-void			get_textures_and_map(char **argv, t_map_list *map,
-					t_tex_list *tex, t_data *data);
+void			get_textures_and_map(char **argv, t_data *data);
 
 // get_textures_and_map_utils
 int				is_wall_or_field(char type);
-void			check_for_empty_line(char *line, t_map_list *map);
+void			check_for_empty_line(char *line, t_data *data);
 int				is_begin_of_map(char *line);
 
 //check_map
@@ -236,17 +240,16 @@ void			check_around_zero(char **map, int line, int character,
 void			check_map(char **map, t_data *data);
 
 //init
-void			init_variables(t_data *data, t_map_list *map, t_tex_list *tex);
+void			init_variables(t_data *data);
 
 //parser
 void			parser(char **argv, t_data *data);
 void			check_numbers(int red, int green, int blue);
 
 //print_errors
-void			print_wrong_textures(t_tex_list *tex, t_data *data,
-					t_error error);
+void			print_wrong_textures(t_data *data, t_error error);
 void			print_wrong_color(t_error_color error);
-void			print_multiple_textures(t_tex_list *tex, t_data *data, t_error error);
+void			print_multiple_textures(t_data *data, t_error error);
 void			print_error(char *message);
 
 //parser_linked_list_utils
@@ -254,10 +257,10 @@ void			ft_lstadd_back_tex(t_tex_list **lst, t_tex_list *new);
 void			ft_lstadd_back_map(t_map_list **lst, t_map_list *new);
 
 //parser_linked_list
-void			create_linked_list_for_textures(t_tex_list **tex);
-void			create_linked_list_for_map(t_map_list **map);
-void			add_node_to_map(char *line, t_map_list **map);
-void			add_node_to_tex(char *line, t_tex_list **tex);
+void			create_linked_list_for_textures(t_data **data);
+void			create_linked_list_for_map(t_data **data);
+void			add_node_to_map(char *line, t_data **data);
+void			add_node_to_tex(char *line, t_data **data);
 
 // utils
 int				check_input(int argc, char **argv);
@@ -269,6 +272,7 @@ void			free_list_textures(t_tex_list **tex);
 void			free_data(t_data *data);
 void			free_list_map(t_map_list **map);
 void			free_numbers(char **numbers);
+void			free_all(t_data *data);
 
 //main
 void			init_data(t_data *data);

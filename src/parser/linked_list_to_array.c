@@ -73,19 +73,43 @@ void get_max_width(char *str, t_data *data)
 		data->map->max_width = length;
 }
 
-char	**transfer_map_to_array(t_map_list *map, t_data *data)
+int check_if_allowed_character(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == 'N' || str[i] == 'W' || str[i] == 'D' || str[i] == 'E'
+			|| str[i] == 'S' || str[i] == '1' || str[i] == '0' || str[i] == ' '
+			|| str[i] == '\n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+char	**transfer_map_to_array(t_data *data)
 {
 	char	**map_data;
 	int		line;
+	t_map_list *tmp;
 
+	tmp = data->m_list;
 	line = 0;
 	map_data = malloc(sizeof(t_type *) *(data->map->max_height + 1));
-	while (map)
+	while (tmp)
 	{
-		map_data[line] = get_map_types(map->content, line, data);
+		if (check_if_allowed_character(tmp->content) == 1)
+		{
+			print_error("Error\nNot allowed character in Map");
+			free_all(data);
+			exit (1);
+		}
+		map_data[line] = get_map_types(tmp->content, line, data);
 		get_max_width(map_data[line], data);
 		line ++;
-		map = map->next;
+		tmp = tmp->next;
 	}
 	map_data[line] = NULL;
 	check_for_startpoint(data);

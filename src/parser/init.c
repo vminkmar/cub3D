@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void	init_variables(t_data *data, t_map_list *maps, t_tex_list *tex)
+void	init_variables(t_data *data)
 {
 	data->map->path_east = NULL;
 	data->map->path_south = NULL;
@@ -24,6 +24,6 @@ void	init_variables(t_data *data, t_map_list *maps, t_tex_list *tex)
 	data->player->counter_p_start = 0;
 	data->player->p_start.x = 0;
 	data->player->p_start.y = 0;
-	maps->empty_line = 0;
-	tex->counter = 0;
+	data->m_list->empty_line = 0;
+	data->t_list->counter = 0;
 }

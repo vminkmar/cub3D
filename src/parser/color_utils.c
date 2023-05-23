@@ -13,10 +13,10 @@ int	check_for_commas(char *str)
 			comma_counter++;
 		if (str[i] == ',' && str[i + 1] == ',')
 			return (1);
-		if (comma_counter > 2)
-			return (1);
 		i ++;
 	}
+	if (comma_counter != 2)
+		return (1);
 	return (0);
 }
 
@@ -67,6 +67,10 @@ int	compare_strings(char *first, char *second)
 	int	j;
 
 	i = 0;
+	if (!first)
+	{
+		exit(1);
+	}
 	while(first[i] != '\0')
 	{
 		j = 0;
