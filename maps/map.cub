@@ -3,8 +3,8 @@ SO ./textures/mossy.png
 WE ./textures/redbrick.png
 EA ./textures/wood.png
 
-F 254,0,0
-C 0,0,0
+F 255,100,0
+C 0,255,150
 
 
 1111111111111111111111111111111111111111111111111111111

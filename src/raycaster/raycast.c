@@ -55,8 +55,6 @@ void	draw_fov(t_player *player, t_data *data)
 	current_angle = player->angle - (player->fov / 2);
 	step = player->fov / (double)WIDTH;
 	x = 0;
-	data->map->color_floor = 0xFF0000FF;
-	data->map->color_ceiling = 0x00FF00FF;
 	while (x < WIDTH)
 	{
 		cast_ray(player, data, current_angle + x * step, x);
