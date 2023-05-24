@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROGRAM="./cub3D"
-TEST_MAPS_DIR="test_maps"
+TEST_MAPS_DIR="maps"
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
@@ -16,7 +16,7 @@ invalid_map_counter=0
 
 echo -e  "\n${YELLOW}Checking invalid maps:${NC}\n"
 
-for map_file in $TEST_MAPS_DIR/invalid_maps/*.cub; do
+for map_file in $TEST_MAPS_DIR/*.cub; do
     echo -e  "\nTesting invalid map: $map_file\n"
     output=$($PROGRAM "$map_file" 2>&1)
 
