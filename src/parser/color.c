@@ -18,41 +18,41 @@ void	check_numbers(t_data *data, char **colors)
 	}
 }
 
-void	 get_color_floor(t_data *data)
+void check_the_array(char **numbers_floor, char **colors_new, t_data *data)
 {
-	char	**numbers_floor;
-	char	**colors_new;
-	int		i;
-	int		red;
-	int		green;
-	int		blue;
-
-	i = 0;
-	colors_new = malloc(sizeof(char *) * (4));
-	numbers_floor = ft_split((const char *)data->map->floor_color, ',');
 	if (check_array_length(numbers_floor) == 1)
 	{
-		print_error("You forgot a number or a comma in the floor texture");
+		print_error("You forgot a number or a comma in the ceiling texture");
 		free_numbers(numbers_floor);
 		free(colors_new);
 		free_all(data);
 		exit (1);
 	}
+}
+
+void	get_color_floor(t_data *data)
+{
+	char	**numbers_floor;
+	char	**colors_new;
+
+	colors_new = malloc(sizeof(char *) * (4));
+	numbers_floor = ft_split((const char *)data->map->floor_color, ',');
+	check_the_array(numbers_floor, colors_new, data);
 	check_for_spaces(numbers_floor[0], 1, data);
 	check_for_spaces(numbers_floor[1], 1, data);
 	check_for_spaces(numbers_floor[2], 1, data);
 	colors_new[0] = ft_strtrim(numbers_floor[0], " ");
-	red = ft_atoi(colors_new[0]);
+	data->map->red = ft_atoi(colors_new[0]);
 	colors_new[1] = ft_strtrim(numbers_floor[1], " ");
-	green = ft_atoi(colors_new[1]);
+	data->map->green = ft_atoi(colors_new[1]);
 	colors_new[2] = ft_strtrim(numbers_floor[2], " ");
-	blue = ft_atoi(colors_new[2]);	
+	data->map->blue = ft_atoi(colors_new[2]);	
 	colors_new[3] = NULL;
 	free_numbers(numbers_floor);
 	check_colors(data, 1, colors_new);
 	check_numbers(data, colors_new);
 	free_numbers(colors_new);
-	data->map->color_floor = rgb_to_uint(red, green, blue, 255);
+	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green, data->map->blue, 255);
 }
 
 int check_array_length(char **str)
@@ -68,6 +68,7 @@ int check_array_length(char **str)
 		return (1);
 	return (0);
 }
+
 void	get_color_ceiling(t_data *data)
 {
 	char	**numbers_floor;
@@ -75,14 +76,7 @@ void	get_color_ceiling(t_data *data)
 
 	colors_new = malloc(sizeof(char *) * (4));
 	numbers_floor = ft_split((const char *)data->map->ceiling_color, ',');
-	if (check_array_length(numbers_floor) == 1)
-	{
-		print_error("You forgot a number or a comma in the ceiling texture");
-		free_numbers(numbers_floor);
-		free(colors_new);
-		free_all(data);
-		exit (1);
-	}
+	check_the_array(numbers_floor, colors_new, data);
 	check_for_spaces(numbers_floor[0], 1, data);
 	check_for_spaces(numbers_floor[1], 1, data);
 	check_for_spaces(numbers_floor[2], 1, data);
