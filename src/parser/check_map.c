@@ -88,7 +88,7 @@ void	check_map(char **map, t_data *data)
 				check_around_door(map, line, character, data);
 			if (ft_whitespaces(map[line][character]) == 1)
 			{
-				print_error("Error\nThere is a not allowed whitespace in the map");
+				print_error("Error\nInvalid whitespace in map");
 				free_all(data);
 				exit (1);
 			}
