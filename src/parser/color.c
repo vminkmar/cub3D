@@ -1,35 +1,5 @@
 #include "../../include/cub3d.h"
 
-int	rgb_to_uint(int red, int green, int blue, int alpha)
-{
-	return (red << 24 | green << 16 | blue << 8 | alpha);
-}
-
-void	check_numbers(t_data *data, char **colors)
-{
-	if (data->map->red > 255 || data->map->red < 0 || data->map->blue > 255
-		|| data->map->blue < 0 || data->map->green > 255
-		|| data->map->green < 0)
-	{
-		print_error("Error\nWrong RGB color the numbers have to be 0-255");
-		free_numbers(colors);
-		free_all(data);
-		exit (1);
-	}
-}
-
-void check_the_array(char **numbers_floor, char **colors_new, t_data *data)
-{
-	if (check_array_length(numbers_floor) == 1)
-	{
-		print_error("You forgot a number or a comma in the ceiling texture");
-		free_numbers(numbers_floor);
-		free(colors_new);
-		free_all(data);
-		exit (1);
-	}
-}
-
 void	get_color_floor(t_data *data)
 {
 	char	**numbers_floor;
@@ -53,20 +23,6 @@ void	get_color_floor(t_data *data)
 	check_numbers(data, colors_new);
 	free_numbers(colors_new);
 	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green, data->map->blue, 255);
-}
-
-int check_array_length(char **str)
-{
-	int i;
-	int j;
-
-	j = 0;
-	i = 0;
-	while(str[i] != NULL)
-		i++;
-	if (i != 3)
-		return (1);
-	return (0);
 }
 
 void	get_color_ceiling(t_data *data)
@@ -93,35 +49,45 @@ void	get_color_ceiling(t_data *data)
 	free_numbers(colors_new);
 	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green, data->map->blue, 255);
 }
-int check_for_whitespaces(char **colors, char *whitespaces)
+
+int	check_for_whitesapces_utils(char **colors, char *whitespaces, int outer)
 {
-	int	inner;
-	int outer;
 	int	spaces;
 	int flag;
+	int	inner;
 
 	flag = 0;
 	spaces = 0;
+	inner = 0;
+	while(colors[outer] && colors[outer][inner] != '\0')
+	{
+		if ((colors[outer][inner] >= '0' && colors[outer][inner] <= '9')
+			&& flag == 1)
+			return (1);
+		if (ft_isdigit(colors[outer][inner]) == 0
+			&& colors[outer][inner] != '-')
+			flag = 1;
+		spaces = 0;
+		while (whitespaces && whitespaces[spaces] != '\0')
+		{
+			if (colors[outer][inner] == whitespaces[spaces])
+				return (1);
+			spaces++;
+		}
+		inner ++;
+	}
+	return (0);
+}
+
+int check_for_whitespaces(char **colors, char *whitespaces)
+{
+	int outer;
+
 	outer = 0;
 	while(colors[outer] != NULL)
 	{
-		inner = 0;
-		flag = 0;
-		while(colors[outer] && colors[outer][inner] != '\0')
-		{
-			if ((colors[outer][inner] >= '0' && colors[outer][inner] <= '9') && flag == 1)
-				return (1);
-			if (ft_isdigit(colors[outer][inner]) == 0 && colors[outer][inner] != '-')
-				flag = 1;
-			spaces = 0;
-			while(whitespaces && whitespaces[spaces] != '\0')
-			{
-				if (colors[outer][inner] == whitespaces[spaces])
-					return (1);
-				spaces++;
-			}
-			inner ++;
-		}
+		if (check_for_whitesapces_utils(colors, whitespaces, outer) == 1)
+			return (1);
 		outer++;
 	}
 	return (0);

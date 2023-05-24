@@ -207,6 +207,8 @@ void			syntax_textures(t_data *data);
 //edit_textures
 void	trim_before_and_after(t_data *data);
 
+//colors_check
+void check_the_array(char **numbers_floor, char **colors_new, t_data *data);
 
 //color_utils
 int				check_for_commas(char *str);
