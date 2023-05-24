@@ -13,7 +13,6 @@
 # define HEIGHT 600
 # define MAX_WIDTH 5120
 # define MAX_HEIGHT 2880
-# define BPP sizeof(int32_t)
 # define PLAYER_SPEED 0.11
 # define FIELD_OF_VIEW 60
 # define ROTATION_SPEED 3

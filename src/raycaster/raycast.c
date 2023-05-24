@@ -66,7 +66,8 @@ void	draw_fov(t_player *player, t_data *data)
 
 void	raycaster(t_data *data)
 {
-	memset(data->img->pixels, 255, data->img->width * data->img->height * BPP);
+	memset(data->img->pixels, 255, data->img->width * data->img->height
+		* sizeof(int32_t));
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_image_to_window(data->mlx, data->minimap_img, 10, 10);
 	mlx_loop_hook(data->mlx, &my_loop_hook, data);
