@@ -59,6 +59,22 @@ void	print_wrong_color(t_error_color error, t_data *data, char **colors)
 	exit (1);
 }
 
+void print_syntax_error_utils(t_error_syntax error, int issue)
+{
+	if (issue == 1 && error == ERROR_SYNTAX)
+		print_error("Error\nCheck the syntax in north texture");
+	else if (issue == 2 && error == ERROR_SYNTAX)
+		print_error("Error\nCheck the syntax in south texture");
+	else if (issue == 3 && error == ERROR_SYNTAX)
+		print_error("Error\nCheck the syntax in east texture");
+	else if (issue == 4 && error == ERROR_SYNTAX)
+		print_error("Error\nCheck the syntax in west texture");
+	else if (issue == 5 && error == ERROR_SYNTAX)
+		print_error("Error\nCheck the syntax in floor color");
+	else if (issue == 6 && error == ERROR_SYNTAX)
+		print_error("Error\nCheck the syntax in ceiling color");
+}
+
 void	print_syntax_error(t_error_syntax error, int issue, t_data *data)
 {
 	if (issue == 1 && error == ERROR_SPACES)
@@ -73,18 +89,7 @@ void	print_syntax_error(t_error_syntax error, int issue, t_data *data)
 		print_error("Error\nNot allowed whitespaces in floor color");
 	else if (issue == 6 && error == ERROR_SPACES)
 		print_error("Error\nNot allowed whitespaces in ceiling color");
-	else if (issue == 1 && error == ERROR_SYNTAX)
-		print_error("Error\nCheck the syntax in north texture");
-	else if (issue == 2 && error == ERROR_SYNTAX)
-		print_error("Error\nCheck the syntax in south texture");
-	else if (issue == 3 && error == ERROR_SYNTAX)
-		print_error("Error\nCheck the syntax in east texture");
-	else if (issue == 4 && error == ERROR_SYNTAX)
-		print_error("Error\nCheck the syntax in west texture");
-	else if (issue == 5 && error == ERROR_SYNTAX)
-		print_error("Error\nCheck the syntax in floor color");
-	else if (issue == 6 && error == ERROR_SYNTAX)
-		print_error("Error\nCheck the syntax in ceiling color");
+	print_syntax_error_utils(error, issue);
 	free_all(data);
 	exit (1);
 }

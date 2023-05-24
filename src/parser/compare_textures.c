@@ -42,7 +42,6 @@ void	check_for_mutiple_textures(t_data *data)
 		print_multiple_textures(data, error);
 }
 
-
 void	compare_textures_utils(t_tex_list *tmp, t_data *data)
 {
 	if (ft_strncmp("WE", tmp->content, 2) == 0)
