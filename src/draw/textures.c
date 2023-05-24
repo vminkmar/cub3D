@@ -2,14 +2,21 @@
 
 mlx_texture_t	*get_tex(t_data *data, t_ray *ray)
 {
-	#define OFFSET 0.00000
 	int	y;
 	int	x;
 
-	y = floor(ray->interception.y);
-	x = floor(ray->interception.x);
+	y = (int)(ray->interception.y);
+	x = (int)(ray->interception.x);
 /* 	y = ray->map_check.y;
 	x = ray->map_check.x; */
+		if (data->map->map[y][x] ==  WALL)
+			printf("WALL\n");
+		if (data->map->map[y][x] ==  CLOSED_DOOR)
+			printf("DOOR\n");
+		printf("INTER Y:%f\n", ray->interception.y);
+		printf("INTER X:%f\n", ray->interception.x);
+/* 		printf("Y:%i\n", y);
+		printf("X:%i\n", x); */
 	if (data->map->map[y][x]
 		== CLOSED_DOOR)
 	{

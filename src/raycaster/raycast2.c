@@ -61,25 +61,25 @@ void	get_steps(t_ray *ray)
 	if (ray->dir.x < 0)
 	{
 		ray->step.x = -1;
-		ray->length.x = fabs((ray->start.x - (float)ray->map_check.x)
+		ray->length.x = fabs((ray->start.x - (double)ray->map_check.x)
 				* ray->step_size.x);
 	}
 	else
 	{
 		ray->step.x = 1;
-		ray->length.x = fabs(((float)ray->map_check.x + 1 - ray->start.x)
+		ray->length.x = fabs(((double)ray->map_check.x + 1 - ray->start.x)
 				* ray->step_size.x);
 	}
 	if (ray->dir.y < 0)
 	{
 		ray->step.y = -1;
-		ray->length.y = fabs((ray->start.y - (float)ray->map_check.y)
+		ray->length.y = fabs((ray->start.y - (double)ray->map_check.y)
 				* ray->step_size.y);
 	}
 	else
 	{
 		ray->step.y = 1;
-		ray->length.y = fabs(((float)ray->map_check.y + 1 - ray->start.y)
+		ray->length.y = fabs(((double)ray->map_check.y + 1 - ray->start.y)
 				* ray->step_size.y);
 	}
 }

@@ -40,14 +40,6 @@ void	cast_ray(t_player *player, t_data *data, double angle, int x)
 	if (hit)
 	{
 		set_wall(ray, player, angle);
-/* 		if (data->map->map[(int)ray->interception.y][(int)ray->interception.x] ==  WALL)
-			printf("WALL\n");
-		if (data->map->map[(int)ray->interception.y][(int)ray->interception.x] ==  CLOSED_DOOR)
-			printf("DOOR\n"); */
-		printf("INTER Y:%f\n", ray->interception.y);
-		printf("INTER X:%f\n", ray->interception.x);
-		printf("INTER I Y:%i\n", (int)ray->interception.y);
-		printf("INTER I X:%i\n", (int)ray->interception.x);
 		paint_background(data, ray, x);
 		paint_texture(data, ray, x);
 	}
