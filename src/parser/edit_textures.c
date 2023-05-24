@@ -2,7 +2,7 @@
 
 void	trim_before_and_after(t_data *data)
 {
-	char	*new;
+	char		*new;
 	t_tex_list	*tmp;
 
 	tmp = data->t_list;
@@ -23,7 +23,7 @@ char	*trim_spaces_utils(char *str, char *content, int new, int flag)
 
 	old = 0;
 	flag_for_begin = 0;
-	while(str[old] >= 'A' && str[old] <= 'Z')
+	while (str[old] >= 'A' && str[old] <= 'Z')
 	{
 		content[new] = str[old];
 		old++;
@@ -68,7 +68,7 @@ char	*trim_spaces_string(char *str)
 
 void	trim_spaces_textures(t_data *data)
 {
-	char	*new;
+	char		*new;
 	t_tex_list	*tmp;
 
 	tmp = data->t_list;
@@ -82,6 +82,18 @@ void	trim_spaces_textures(t_data *data)
 	}
 }
 
+void	get_string_path_utils(char *str, t_data *data, int *old)
+{
+	while (str[*old] >= 'A' && str[*old] <= 'Z')
+		(*old)++;
+	if (str[*old] != ' ')
+	{
+		print_error("Error\nCheck the texture names");
+		free_all(data);
+		exit (1);
+	}
+}
+
 char	*get_string_path(char *str, t_data *data)
 {
 	char	*new_str;
@@ -92,16 +104,9 @@ char	*get_string_path(char *str, t_data *data)
 	old = 0;
 	new = 0;
 	flag = 0;
-	new_str = malloc(sizeof(char) * (ft_strlen(str) + 1));	
-	while (str[old] >= 'A' && str[old] <= 'Z')
-		old++;
-	if (str[old] != ' ')
-	{
-		print_error("Error\nCheck the texture names");
-		free_all(data);
-		exit (1);
-	}
-	while(str[old] == ' ')
+	new_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	get_string_path_utils(str, data, &old);
+	while (str[old] == ' ')
 		old++;
 	while (str[old] != '\0')
 	{

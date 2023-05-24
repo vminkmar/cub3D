@@ -25,8 +25,7 @@ void	check_for_empty_line(char *line, t_data *data)
 	}
 }
 
-
-int is_start_point(char c)
+int	is_start_point(char c)
 {
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		return (0);

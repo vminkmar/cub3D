@@ -202,7 +202,12 @@ void			get_max_with(char *str, t_data *data);
 // syntax_check
 void			syntax_textures(t_data *data);
 
-
+//syntax_check_utils
+int	check_whitespaces(char *str);
+int	check_after_name(char *str, int issue);
+int	check_for_letters(char *str);
+void	check_syntax_textures(char *str, t_data *data, int issue);
+int	check_for_letters_after_name(char *str);
 
 //edit_textures
 void	trim_before_and_after(t_data *data);
@@ -255,6 +260,7 @@ void			print_wrong_textures(t_data *data, t_error error);
 void			print_wrong_color(t_error_color error, t_data *data, char **colors);
 void			print_multiple_textures(t_data *data, t_error error);
 void			print_error(char *message);
+void			print_syntax_error(t_error_syntax error, int issue, t_data *data);
 
 //parser_linked_list_utils
 void			ft_lstadd_back_tex(t_tex_list **lst, t_tex_list *new);
