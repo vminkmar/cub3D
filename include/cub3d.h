@@ -220,6 +220,7 @@ int				check_input(int argc, char **argv);
 char			*sl_strjoin(char *s1, char *s2);
 int				ft_strcmp(char *first, char *second);
 void			ft_free2d(char **s);
+void			free_exit(t_data *data);
 
 //free_stuff
 void			free_list_textures(t_tex_list **tex);

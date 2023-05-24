@@ -5,6 +5,7 @@ void	init_player(t_data *data)
 	data->player->fov = FIELD_OF_VIEW;
 	data->map->map[(int)data->player->p_start.y][(int)data->player->p_start.x]
 		= WALKABLE;
+	mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
 }
 
 void	init_data(t_data *data)
@@ -29,26 +30,22 @@ void	init_map(t_data *data)
 			(void)EXIT_FAILURE);
 }
 
-void	free_exit(t_data *data)
+t_data	*pre_parser_init(t_data *data)
 {
-	free(data->player);
-	mlx_delete_texture(data->map->tex_north);
-	mlx_delete_texture(data->map->tex_south);
-	mlx_delete_texture(data->map->tex_west);
-	mlx_delete_texture(data->map->tex_east);
-	mlx_delete_texture(data->map->tex_door[0]);
-	mlx_delete_texture(data->map->tex_door[1]);
-	free(data->map->tex_door);
-	free(data->map->path_north);
-	free(data->map->path_south);
-	free(data->map->path_west);
-	free(data->map->path_east);
-	free(data->map->floor_color);
-	free(data->map->ceiling_color);
-	ft_free2d(data->map->map);
-	free(data->map);
-	mlx_terminate(data->mlx);
-	free(data);
+	data = malloc(sizeof(t_data));
+	if (!data)
+	{
+		print_error("Allocation of Data Memory failed");
+		return (exit(1), NULL);
+	}
+	data->player = malloc(sizeof(t_player));
+	if (!data->player)
+	{
+		print_error("Allocation of Player Memory failed");
+		free(data);
+		return (exit(1), NULL);
+	}
+	return (data);
 }
 
 int	main(int argc, char **argv)
@@ -58,20 +55,11 @@ int	main(int argc, char **argv)
 	data = NULL;
 	if (check_input(argc, argv) == 1)
 		return (EXIT_FAILURE);
-	data = malloc(sizeof(t_data));
-	if (data == NULL)
-	{
-		print_error("Allocation of Memory failed");
-		exit (1);
-	}
-	data->player = malloc(sizeof(t_player));
-	if (!data->player)
-		return (free(data), EXIT_FAILURE);
+	data = pre_parser_init(data);
 	init_map(data);
 	parser(argv, data);
 	init_data(data);
 	init_player(data);
-	mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
 	raycaster(data);
 	free_exit(data);
 	return (EXIT_SUCCESS);
