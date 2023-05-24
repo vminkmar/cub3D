@@ -3,12 +3,11 @@
 mlx_texture_t	*get_tex(t_data *data, t_ray *ray)
 {
 	#define OFFSET 0.00000
-
 	int	y;
 	int	x;
 
-	y = (int)(ray->interception.y);
-	x = (int)(ray->interception.x);
+	y = floor(ray->interception.y);
+	x = floor(ray->interception.x);
 /* 	y = ray->map_check.y;
 	x = ray->map_check.x; */
 	if (data->map->map[y][x]
