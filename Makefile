@@ -13,7 +13,8 @@ VPATH           :=  src/ src/parser src/draw src/movement src/raycaster
 SRC_FILES		:=	main.c check_input.c parser.c utils.c linked_list_utils.c init.c free.c print_errors.c\
 					linked_list.c check_map.c get_textures_and_map.c get_textures_and_map_utils.c edit_textures.c color.c syntax_check.c\
 					color_utils.c linked_list_to_array.c raycast.c raycast2.c draw_utils.c movement.c directions.c textures.c doors.c\
-					minimap.c colors_check.c free_utils.c syntax_check_utils.c
+					minimap.c colors_check.c free_utils.c syntax_check_utils.c linekd_list_to_array_utils.c load_pngs.c\
+					compare_textures.c
 
 HEADER			:=	-I./include/
 

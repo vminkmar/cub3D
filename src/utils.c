@@ -62,3 +62,8 @@ int	ft_strcmp(char *first, char *second)
 	}
 	return (0);
 }
+
+void	print_error(char *message)
+{
+	ft_putendl_fd(message, 2);
+}

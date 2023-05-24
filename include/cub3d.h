@@ -198,16 +198,17 @@ typedef struct s_data
 //linked_list_to_array
 void			transfer_map_to_array(t_data *data);
 void			get_max_with(char *str, t_data *data);
+int				check_if_allowed_character(char *str);
 
 // syntax_check
 void			syntax_textures(t_data *data);
 
 //syntax_check_utils
-int	check_whitespaces(char *str);
-int	check_after_name(char *str, int issue);
-int	check_for_letters(char *str);
-void	check_syntax_textures(char *str, t_data *data, int issue);
-int	check_for_letters_after_name(char *str);
+int				check_whitespaces(char *str);
+int				check_after_name(char *str, int issue);
+int				check_for_letters(char *str);
+void			check_syntax_textures(char *str, t_data *data, int issue);
+int				check_for_letters_after_name(char *str);
 
 //edit_textures
 void	trim_before_and_after(t_data *data);
@@ -240,6 +241,13 @@ void			get_textures_and_map(char **argv, t_data *data);
 int				is_wall_or_field(char type);
 void			check_for_empty_line(char *line, t_data *data);
 int				is_begin_of_map(char *line);
+
+//compare_textures
+void	compare_and_check_textures(t_data *data);
+
+//load_pngs
+void	load_pngs(t_data *data);
+
 
 //check_map
 int				ft_whitespaces(char c);

@@ -1,10 +1,5 @@
 #include "../../include/cub3d.h"
 
-void	print_error(char *message)
-{
-	ft_putendl_fd(message, 2);
-}
-
 void	print_wrong_textures(t_data *data, t_error error)
 {
 	if (error == ERROR_EAST)
