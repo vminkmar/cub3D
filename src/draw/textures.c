@@ -2,7 +2,7 @@
 
 mlx_texture_t	*get_tex(t_data *data, t_ray *ray)
 {
-	if (data->map->map[(int)ray->interception.y][(int)ray->map_check.x]
+	if (data->map->map[ray->map_check.y][ray->map_check.x]
 		== CLOSED_DOOR)
 	{
 		if ((data->framecount / 30) % 2)

@@ -58,8 +58,7 @@ typedef enum e_error
 	ERROR_EAST_MULTIPLE,
 	ERROR_FLOOR_MULTIPLE,
 	ERROR_CEILING_MULTIPLE,
-	
-} t_error;
+}	t_error;
 
 typedef enum e_error_syntax
 {
@@ -74,8 +73,7 @@ typedef enum e_error_syntax
 	ERROR_SYNTAX_FLOOR,
 	NO_ERROR_SYNTAX,
 	NO_ERROR,
-
-} t_error_syntax;
+}	t_error_syntax;
 
 typedef enum e_error_color
 {
@@ -90,8 +88,7 @@ typedef enum e_error_color
 	ERROR_WHITESPACES_FLOOR,
 	ERROR_WHITESPACES_CEILING,
 	NO_COLOR_ERROR,
-} t_error_color;
-
+}	t_error_color;
 
 typedef struct s_map_list
 {
@@ -197,7 +194,7 @@ typedef struct s_uitls
 {
 	int	old;
 	int	flag_for_begin;
-	int flag;
+	int	flag;
 	int	new;
 }	t_utils;
 
@@ -217,10 +214,11 @@ void			check_syntax_textures(char *str, t_data *data, int issue);
 int				check_for_letters_after_name(char *str);
 
 //edit_textures
-void	trim_before_and_after(t_data *data);
+void			trim_before_and_after(t_data *data);
 
 //colors_check
-void check_the_array(char **numbers_floor, char **colors_new, t_data *data);
+void			check_the_array(char **numbers_floor, char **colors_new,
+					t_data *data);
 
 //color_utils
 int				check_for_commas(char *str);
@@ -249,11 +247,10 @@ void			check_for_empty_line(char *line, t_data *data);
 int				is_begin_of_map(char *line);
 
 //compare_textures
-void	compare_and_check_textures(t_data *data);
+void			compare_and_check_textures(t_data *data);
 
 //load_pngs
-void	load_pngs(t_data *data);
-
+void			load_pngs(t_data *data);
 
 //check_map
 int				ft_whitespaces(char c);
@@ -271,10 +268,12 @@ void			check_numbers(t_data *data, char **colors);
 
 //print_errors
 void			print_wrong_textures(t_data *data, t_error error);
-void			print_wrong_color(t_error_color error, t_data *data, char **colors);
+void			print_wrong_color(t_error_color error, t_data *data,
+					char **colors);
 void			print_multiple_textures(t_data *data, t_error error);
 void			print_error(char *message);
-void			print_syntax_error(t_error_syntax error, int issue, t_data *data);
+void			print_syntax_error(t_error_syntax error, int issue,
+					t_data *data);
 
 //parser_linked_list_utils
 void			ft_lstadd_back_tex(t_tex_list **lst, t_tex_list *new);
