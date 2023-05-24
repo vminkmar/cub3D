@@ -23,13 +23,13 @@ int	check_for_commas(char *str)
 int	number_counter(char **str)
 {
 	int	inner;
-	int outer;
+	int	outer;
 	int	counter;
 
 	counter = 0;
 	inner = 0;
 	outer = 0;
-	while(str[outer] != NULL)
+	while (str[outer] != NULL)
 	{
 		counter ++;
 		outer ++;
@@ -42,11 +42,11 @@ int	number_counter(char **str)
 int	check_for_alpha(char **str)
 {
 	int	i;
-	int outer;
+	int	outer;
 
 	outer = 0;
 	i = 0;
-	while(str[outer] != NULL)
+	while (str[outer] != NULL)
 	{
 		while (str[outer][i] != '\0')
 		{
@@ -71,10 +71,10 @@ int	compare_strings(char *first, char *second)
 	{
 		exit(1);
 	}
-	while(first[i] != '\0')
+	while (first[i] != '\0')
 	{
 		j = 0;
-		while(second[j] != '\0')
+		while (second[j] != '\0')
 		{
 			if (first[i] == second[j])
 				return (1);
@@ -87,7 +87,7 @@ int	compare_strings(char *first, char *second)
 
 void	check_for_spaces(char *str, int flag, t_data *data)
 {
-	if(compare_strings(str, WHITESPACES_LESS) == 1)
+	if (compare_strings(str, WHITESPACES_LESS) == 1)
 	{
 		if (flag == 1)
 			print_error("There are whitespaces in the floor color");

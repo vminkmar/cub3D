@@ -16,13 +16,14 @@ void	get_color_floor(t_data *data)
 	colors_new[1] = ft_strtrim(numbers_floor[1], " ");
 	data->map->green = ft_atoi(colors_new[1]);
 	colors_new[2] = ft_strtrim(numbers_floor[2], " ");
-	data->map->blue = ft_atoi(colors_new[2]);	
+	data->map->blue = ft_atoi(colors_new[2]);
 	colors_new[3] = NULL;
 	free_numbers(numbers_floor);
 	check_colors(data, 1, colors_new);
 	check_numbers(data, colors_new);
 	free_numbers(colors_new);
-	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green, data->map->blue, 255);
+	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green,
+			data->map->blue, 255);
 }
 
 void	get_color_ceiling(t_data *data)
@@ -41,25 +42,26 @@ void	get_color_ceiling(t_data *data)
 	colors_new[1] = ft_strtrim(numbers_floor[1], " ");
 	data->map->green = ft_atoi(colors_new[1]);
 	colors_new[2] = ft_strtrim(numbers_floor[2], " ");
-	data->map->blue = ft_atoi(colors_new[2]);	
+	data->map->blue = ft_atoi(colors_new[2]);
 	colors_new[3] = NULL;
 	free_numbers(numbers_floor);
 	check_colors(data, 2, colors_new);
 	check_numbers(data, colors_new);
 	free_numbers(colors_new);
-	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green, data->map->blue, 255);
+	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green,
+			data->map->blue, 255);
 }
 
 int	check_for_whitesapces_utils(char **colors, char *whitespaces, int outer)
 {
 	int	spaces;
-	int flag;
+	int	flag;
 	int	inner;
 
 	flag = 0;
 	spaces = 0;
 	inner = 0;
-	while(colors[outer] && colors[outer][inner] != '\0')
+	while (colors[outer] && colors[outer][inner] != '\0')
 	{
 		if ((colors[outer][inner] >= '0' && colors[outer][inner] <= '9')
 			&& flag == 1)
@@ -79,12 +81,12 @@ int	check_for_whitesapces_utils(char **colors, char *whitespaces, int outer)
 	return (0);
 }
 
-int check_for_whitespaces(char **colors, char *whitespaces)
+int	check_for_whitespaces(char **colors, char *whitespaces)
 {
-	int outer;
+	int	outer;
 
 	outer = 0;
-	while(colors[outer] != NULL)
+	while (colors[outer] != NULL)
 	{
 		if (check_for_whitesapces_utils(colors, whitespaces, outer) == 1)
 			return (1);

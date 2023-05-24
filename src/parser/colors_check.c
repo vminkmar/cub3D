@@ -18,7 +18,7 @@ void	check_numbers(t_data *data, char **colors)
 	}
 }
 
-void check_the_array(char **numbers_floor, char **colors_new, t_data *data)
+void	check_the_array(char **numbers_floor, char **colors_new, t_data *data)
 {
 	if (check_array_length(numbers_floor) == 1)
 	{
@@ -30,14 +30,14 @@ void check_the_array(char **numbers_floor, char **colors_new, t_data *data)
 	}
 }
 
-int check_array_length(char **str)
+int	check_array_length(char **str)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	j = 0;
 	i = 0;
-	while(str[i] != NULL)
+	while (str[i] != NULL)
 		i++;
 	if (i != 3)
 		return (1);
