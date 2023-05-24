@@ -34,6 +34,26 @@ void	print_error_for_syntax(t_data *data, t_error_syntax error)
 	exit (1);
 }
 
+int	syntax_number_of_letters_utils(t_tex_list *tmp, int error)
+{
+	if (ft_strncmp("S", tmp->content, 1) == 0)
+	{
+		if (check_for_letters(tmp->content) == 1)
+			error = ERROR_SYNTAX_SOUTH;
+	}
+	else if (ft_strncmp("F", tmp->content, 1) == 0)
+	{
+		if (check_for_letters_after_name(tmp->content) == 1)
+			error = ERROR_SYNTAX_FLOOR;
+	}
+	else if (ft_strncmp("C", tmp->content, 1) == 0)
+	{
+		if (check_for_letters_after_name(tmp->content) == 1)
+			error = ERROR_SYNTAX_CEILING;
+	}
+	return (error);
+}
+
 void	syntax_number_of_letters(t_tex_list *tmp, t_data *data)
 {
 	t_error_syntax	error;
@@ -54,21 +74,7 @@ void	syntax_number_of_letters(t_tex_list *tmp, t_data *data)
 		if (check_for_letters(tmp->content) == 1)
 			error = ERROR_SYNTAX_WEST;
 	}	
-	else if (ft_strncmp("S", tmp->content, 1) == 0)
-	{
-		if (check_for_letters(tmp->content) == 1)
-			error = ERROR_SYNTAX_SOUTH;
-	}
-	else if (ft_strncmp("F", tmp->content, 1) == 0)
-	{
-		if (check_for_letters_after_name(tmp->content) == 1)
-			error = ERROR_SYNTAX_FLOOR;
-	}
-	else if (ft_strncmp("C", tmp->content, 1) == 0)
-	{
-		if (check_for_letters_after_name(tmp->content) == 1)
-			error = ERROR_SYNTAX_CEILING;
-	}
+	error = syntax_number_of_letters_utils(tmp, error);
 	if (error != NO_ERROR_SYNTAX)
 		print_error_for_syntax(data, error);
 }

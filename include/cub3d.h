@@ -182,7 +182,6 @@ typedef struct s_map
 	int				minimap_dims;
 }	t_map;
 
-//draw
 typedef struct s_data
 {
 	mlx_t			*mlx;
@@ -194,6 +193,14 @@ typedef struct s_data
 	t_player		*player;
 	long			framecount;
 }	t_data;
+
+typedef struct s_uitls
+{
+	int	old;
+	int	flag_for_begin;
+	int flag;
+	int	new;
+}	t_utils;
 
 //linked_list_to_array
 void			transfer_map_to_array(t_data *data);

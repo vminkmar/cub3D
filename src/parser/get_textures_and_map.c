@@ -36,20 +36,11 @@ void	get_map(char *line, t_data *data)
 	data->map->max_height++;
 }
 
-void	get_textures_and_map(char **argv, t_data *data)
+int	get_textures_and_map_utils(t_data *data, int fd)
 {
-	int		fd;
 	char	*line;
 	int		begin_of_map;
 
-	begin_of_map = 0;
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-	{
-		print_error("Error\nThere is no map with that name or the map is empty");
-		free_all(data);
-		exit (1);
-	}
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -66,6 +57,22 @@ void	get_textures_and_map(char **argv, t_data *data)
 			get_map(line, data);
 		}
 	}
+	return (begin_of_map);
+}
+
+void	get_textures_and_map(char **argv, t_data *data)
+{
+	int		fd;
+	int		begin_of_map;
+
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+	{
+		print_error("Error\nThere is no map with that name or the map is empty");
+		free_all(data);
+		exit (1);
+	}
+		begin_of_map = get_textures_and_map_utils(data, fd);
 	if (begin_of_map == 0)
 	{
 		print_error("Error\nThere is no Map in that file");

@@ -59,7 +59,7 @@ void	print_wrong_color(t_error_color error, t_data *data, char **colors)
 	exit (1);
 }
 
-void print_syntax_error_utils(t_error_syntax error, int issue)
+void	print_syntax_error_utils(t_error_syntax error, int issue)
 {
 	if (issue == 1 && error == ERROR_SYNTAX)
 		print_error("Error\nCheck the syntax in north texture");
