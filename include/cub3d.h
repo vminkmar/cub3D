@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "Libft/libft.h"
+# include "libft/libft.h"
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <string.h>
