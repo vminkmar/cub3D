@@ -2,7 +2,16 @@
 
 mlx_texture_t	*get_tex(t_data *data, t_ray *ray)
 {
-	if (data->map->map[(int)ray->interception.y][(int)ray->map_check.x]
+	#define OFFSET 0.00000
+
+	int	y;
+	int	x;
+
+	y = (int)(ray->interception.y);
+	x = (int)(ray->interception.x);
+/* 	y = ray->map_check.y;
+	x = ray->map_check.x; */
+	if (data->map->map[y][x]
 		== CLOSED_DOOR)
 	{
 		if ((data->framecount / 30) % 2)
@@ -25,6 +34,33 @@ mlx_texture_t	*get_tex(t_data *data, t_ray *ray)
 			return (data->map->tex_south);
 	}
 }
+
+/* mlx_texture_t	*get_tex(t_data *data, t_ray *ray)
+{
+	if (ray->wall_side == 0 && data->map->map[(int)ray->interception.y]
+		[(int)ray->map_check.x] == WALL)
+	{
+		if (ray->step.x >= 0)
+			return (data->map->tex_west);
+		else
+			return (data->map->tex_east);
+	}
+	else if (ray->wall_side == 1 && data->map->map[(int)ray->interception.y]
+		[(int)ray->map_check.x] == WALL)
+	{
+		if (ray->step.y >= 0)
+			return (data->map->tex_north);
+		else
+			return (data->map->tex_south);
+	}
+	else
+	{
+		if ((data->framecount / 30) % 2)
+			return (data->map->tex_door[0]);
+		else
+			return (data->map->tex_door[1]);
+	}
+} */
 
 int	get_x_pos(t_player *player, t_ray *ray, mlx_texture_t *tex)
 {

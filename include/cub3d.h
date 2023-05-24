@@ -9,15 +9,18 @@
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <string.h>
+//-------------------------//
 # define WIDTH 900	
 # define HEIGHT 600
 # define MAX_WIDTH 5120
 # define MAX_HEIGHT 2880
 # define BPP sizeof(int32_t)
+//player & movement
 # define PLAYER_SPEED 0.11
 # define FIELD_OF_VIEW 60
 # define ROTATION_SPEED 3
 # define MOUSE_SENSITIVITY 5
+//
 # define EPSILON 1e-6
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10000

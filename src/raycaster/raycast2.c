@@ -16,9 +16,16 @@ void	wall_hit(t_data *data, t_ray *ray, int *hit)
 		ray->distance = ray->length.y;
 		ray->length.y += ray->step_size.y;
 	}
-	if (data->map->map[ray->map_check.y][ray->map_check.x] == WALL
-		|| data->map->map[ray->map_check.y][ray->map_check.x] == CLOSED_DOOR)
+	if (data->map->map[ray->map_check.y][ray->map_check.x] == WALL)
+	{
 			*hit = 1;
+			//printf("WALL\n");
+	}
+	if (data->map->map[ray->map_check.y][ray->map_check.x] == CLOSED_DOOR)
+	{
+			*hit = 1;
+			//printf("DOOR\n");
+	}
 }
 
 double	distance_to_plane(double distance, double angle, double player_angle)
