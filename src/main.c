@@ -18,20 +18,15 @@ void	init_data(t_data *data)
 	data->framecount = 0;
 }
 
-void	ft_free2d(char **s)
+void	init_map(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	if (!s)
-		return ;
-	while (s[i])
-	{
-		free(s[i]);
-		i++;
-	}
-	if (s)
-		free(s);
+	data->map = malloc(sizeof(t_map));
+	if (!data->map)
+		return (free(data->player), free(data), (void)EXIT_FAILURE);
+	data->map->tex_door = malloc(sizeof(mlx_texture_t *) * 2);
+	if (!data->map->tex_door)
+		return (free(data->map), free(data->player), free(data),
+			(void)EXIT_FAILURE);
 }
 
 void	free_exit(t_data *data)
@@ -54,17 +49,6 @@ void	free_exit(t_data *data)
 	free(data->map);
 	mlx_terminate(data->mlx);
 	free(data);
-}
-
-void	init_map(t_data *data)
-{
-	data->map = malloc(sizeof(t_map));
-	if (!data->map)
-		return (free(data->player), free(data), (void)EXIT_FAILURE);
-	data->map->tex_door = malloc(sizeof(mlx_texture_t *) * 2);
-	if (!data->map->tex_door)
-		return (free(data->map), free(data->player), free(data),
-			(void)EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv)

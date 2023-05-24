@@ -62,3 +62,19 @@ int	ft_strcmp(char *first, char *second)
 	}
 	return (0);
 }
+
+void	ft_free2d(char **s)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		free(s[i]);
+		i++;
+	}
+	if (s)
+		free(s);
+}

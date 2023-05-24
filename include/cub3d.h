@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "Libft/libft.h"
+# include "libft/libft.h"
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <string.h>
@@ -219,6 +219,7 @@ void			add_node_to_tex(char *line, t_tex_list **tex);
 int				check_input(int argc, char **argv);
 char			*sl_strjoin(char *s1, char *s2);
 int				ft_strcmp(char *first, char *second);
+void			ft_free2d(char **s);
 
 //free_stuff
 void			free_list_textures(t_tex_list **tex);
