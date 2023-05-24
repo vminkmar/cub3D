@@ -66,40 +66,4 @@ int	ft_strcmp(char *first, char *second)
 void	print_error(char *message)
 {
 	ft_putendl_fd(message, 2);
-void	ft_free2d(char **s)
-{
-	int	i;
-
-	i = 0;
-	if (!s)
-		return ;
-	while (s[i])
-	{
-		free(s[i]);
-		i++;
-	}
-	if (s)
-		free(s);
-}
-
-void	free_exit(t_data *data)
-{
-	free(data->player);
-	mlx_delete_texture(data->map->tex_north);
-	mlx_delete_texture(data->map->tex_south);
-	mlx_delete_texture(data->map->tex_west);
-	mlx_delete_texture(data->map->tex_east);
-	mlx_delete_texture(data->map->tex_door[0]);
-	mlx_delete_texture(data->map->tex_door[1]);
-	free(data->map->tex_door);
-	free(data->map->path_north);
-	free(data->map->path_south);
-	free(data->map->path_west);
-	free(data->map->path_east);
-	free(data->map->floor_color);
-	free(data->map->ceiling_color);
-	ft_free2d(data->map->map);
-	free(data->map);
-	mlx_terminate(data->mlx);
-	free(data);
 }
