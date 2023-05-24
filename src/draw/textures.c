@@ -5,10 +5,10 @@ mlx_texture_t	*get_tex(t_data *data, t_ray *ray)
 	if (data->map->map[(int)ray->interception.y][(int)ray->map_check.x]
 		== CLOSED_DOOR)
 	{
-		if ((data->framecount / 30 )% 2)
+		if ((data->framecount / 30) % 2)
 			return (data->map->tex_door[0]);
 		else
-			return (data->map->tex_door[1]);	
+			return (data->map->tex_door[1]);
 	}
 	if (ray->wall_side == 0)
 	{

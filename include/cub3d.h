@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "Libft/libft.h"
+# include "libft/libft.h"
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <string.h>
@@ -13,7 +13,6 @@
 # define HEIGHT 600
 # define MAX_WIDTH 5120
 # define MAX_HEIGHT 2880
-# define BPP sizeof(int32_t)
 # define PLAYER_SPEED 0.11
 # define FIELD_OF_VIEW 60
 # define ROTATION_SPEED 3
@@ -291,6 +290,8 @@ void			add_node_to_tex(char *line, t_data **data);
 int				check_input(int argc, char **argv);
 char			*sl_strjoin(char *s1, char *s2);
 int				ft_strcmp(char *first, char *second);
+void			ft_free2d(char **s);
+void			free_exit(t_data *data);
 
 //free_stuff
 void			free_list_textures(t_tex_list **tex);
