@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:09 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:10 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/05/25 12:31:13 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	get_color_ceiling(t_data *data)
 	check_colors(data, 2, colors_new);
 	check_numbers(data, colors_new);
 	free_numbers(colors_new);
-	data->map->color_floor = rgb_to_uint(data->map->red, data->map->green,
+	data->map->color_ceiling = rgb_to_uint(data->map->red, data->map->green,
 			data->map->blue, 255);
 }
 
