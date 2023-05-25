@@ -28,8 +28,6 @@ LINK_FLAGS		:=
 
 OBJS			:=	$(SRC_FILES:%.c=$(ODIR)/%.o)
 
-# BONUS_OBJS		:=	$(BONUS_FILES:%.c=$(ODIR)/%.o)
-
 LIBFT			:=	include/Libft
 
 LFT				:=	include/Libft/libft.a
@@ -38,9 +36,9 @@ LIBDIR			:= lib
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:=	$(LFT) $(LMLX) -I include -ldl -lglfw -pthread -lm
+LFLAGS			:= $(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
 
-all: libft $(LMLX) $(NAME) #$(NAME_BONUS)
+all: libft $(LMLX) $(NAME)
 
 libft: $(LFT)
 
@@ -56,9 +54,6 @@ $(LMLX): $(LIBMLX)
 
 $(NAME): $(LMLX) $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LINK_FLAGS) -o $@
-
-# $(NAME_BONUS): $(BONUS_OBJS) $(LMLX) c $(LFT) 
-# 	$(CC) $(CFLAGS) $(BONUS_OBJS) $(LFLAGS) -o $@
 
 $(ODIR)/%.o: %.c | $(ODIR)
 	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
