@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:22 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:23 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 10:43:06 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,10 @@ void	free_exit(t_data *data)
 	mlx_delete_texture(data->map->tex_south);
 	mlx_delete_texture(data->map->tex_west);
 	mlx_delete_texture(data->map->tex_east);
-	mlx_delete_texture(data->map->tex_door[0]);
-	mlx_delete_texture(data->map->tex_door[1]);
+	if (data->map->tex_door[0] != NULL)
+		mlx_delete_texture(data->map->tex_door[0]);
+	if (data->map->tex_door[1] != NULL)
+		mlx_delete_texture(data->map->tex_door[1]);
 	free(data->map->tex_door);
 	free(data->map->path_north);
 	free(data->map->path_south);

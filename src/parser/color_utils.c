@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:07 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/30 18:00:21 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 10:19:55 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	check_for_alpha(char **str)
 			if (str[outer][i] == ',' || str[outer][i] == '\n')
 				i ++;
 			if (str[outer][i] == '\0')
-				break;
+				break ;
 			if (ft_isalpha(str[outer][i]) == 1)
 				return (1);
 			i ++;

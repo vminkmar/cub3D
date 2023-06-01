@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:39 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:40 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 10:37:05 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	transfer_map_to_array(t_data *data)
 		if (check_if_allowed_character(tmp->content) == 1)
 		{
 			print_error("Error\nNot allowed character in Map");
+			data->map->map[line] = NULL;
 			free_all(data);
 			exit (1);
 		}

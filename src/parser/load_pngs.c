@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:48 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:49 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 10:44:04 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ void	load_pngs(t_data *data)
 	data->map->tex_east = mlx_load_png(data->map->path_east);
 	if (data->map->tex_east == NULL)
 		error = ERROR_EAST;
-	data->map->tex_door[0] = mlx_load_png("./textures/door_green.png");
+	if (data->map->tex_door[0] != NULL)
+		data->map->tex_door[0] = mlx_load_png("./textures/door_green.png");
 	if (data->map->tex_door == NULL)
 		error = ERROR_DOOR;
-	data->map->tex_door[1] = mlx_load_png("./textures/door_red.png");
+	if (data->map->tex_door[1] != NULL)
+		data->map->tex_door[1] = mlx_load_png("./textures/door_red.png");
 	if (data->map->tex_door == NULL)
 		error = ERROR_DOOR_ONE;
 	if (error != ERROR_NO)
