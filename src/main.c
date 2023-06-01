@@ -6,7 +6,7 @@
 /*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:29:07 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:29:08 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 10:12:56 by vminkmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_player(t_data *data)
 
 void	init_data(t_data *data)
 {	
-	data->mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
+	data->mlx = mlx_init(WIDTH, HEIGHT, "MLX42", false);
 	if (!data->mlx)
 		exit(EXIT_FAILURE);
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);

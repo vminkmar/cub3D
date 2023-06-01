@@ -1,7 +1,5 @@
 NAME			:=	cub3D
 
-# NAME_BONUS		:= 	cub3D_bonus
-
 CC				:=	cc
 
 RM				:=	rm -f
@@ -32,8 +30,6 @@ LIBFT			:=	include/Libft
 
 LFT				:=	include/Libft/libft.a
 
-LIBDIR			:= lib
-
 LIB				:= $(LIBDIR)/cub3D.a
 
 LFLAGS			:= $(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
@@ -61,17 +57,12 @@ $(ODIR)/%.o: %.c | $(ODIR)
 $(ODIR):
 	mkdir $(ODIR)
 
-test: $(TEST_FILES)
-	@ar -rcs lib/libtest.a $(OBJS) include/Libft/*.o
-	@cd tests && $(MAKE) run
-
 norm:
 	norminette src/ include/cub3D.h
 
 clean:
 	$(MAKE) -C $(LIBFT) clean
-	$(RM) $(OBJS) $(BONUS_OBJS) $(LIB) lib/libtest.a
-	@cd tests && $(MAKE) clean
+	$(RM) $(OBJS) $(BONUS_OBJS) $(LIB)
 
 
 fclean: clean
