@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_textures_and_map.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:28 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:29 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 13:10:23 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	get_map(char *line, t_data *data)
 	if (data->m_list->empty_line == 1 && is_begin_of_map(line) == 0)
 	{
 		print_error("Error\nThere is an empty line in the Map");
+		free(line);
+		free_all(data);
 		exit(1);
 	}
 	add_node_to_map(line, &data);

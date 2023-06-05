@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   colors_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:12 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:13 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:49:09 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	check_the_array(char **numbers_floor, char **colors_new, t_data *data)
 {
 	if (check_array_length(numbers_floor) == 1)
 	{
-		print_error("You forgot a number or a comma in the ceiling texture");
+		print_error("Error\nYou forgot a number or a comma in ceiling texture");
 		free_numbers(numbers_floor);
 		free(colors_new);
 		free_all(data);

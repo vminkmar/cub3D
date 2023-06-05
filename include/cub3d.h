@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:29:49 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:29:50 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:57:03 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "libft/libft.h"
+# include "Libft/libft.h"
 # include "../include/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <string.h>
@@ -184,6 +184,7 @@ typedef struct s_map
 	int				path_north_counter;
 	int				floor_color_counter;
 	int				ceiling_color_counter;
+	int				counter_textures;
 	int				red;
 	int				green;
 	int				blue;

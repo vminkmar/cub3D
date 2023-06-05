@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vminkmar <vminkmar@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mgraefen <mgraefen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 12:28:50 by vminkmar          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:51 by vminkmar         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:58:56 by mgraefen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ void	check_number_of_textures(t_data *data)
 	if (data->t_list->counter > 6)
 	{
 		print_error("Error\nThere are too many textures");
+		free_all(data);
+		exit (1);
+	}
+	if (data->t_list->counter < 6)
+	{
+		print_error("Error\nThere are too few textures");
 		free_all(data);
 		exit (1);
 	}
