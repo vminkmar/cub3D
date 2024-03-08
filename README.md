@@ -15,6 +15,20 @@ cub3D aims to create a 3D graphical representation of a maze using Ray-Casting p
 - Free all heap-allocated memory appropriately.
 
 ## **Usage**
+
+### **For Mac**
+
+`brew install glfw`
+
+`brew install cmake`
+
+### **For Linux(Ubuntu, Mint, Pop OS...)**
+
+`sudo apt update`
+
+`sudo apt install build-essential libx11-dev libglfw3-dev libglfw3 xorg-dev`
+
+
 To compile and run the program, use the provided Makefile:
 
 `make`
