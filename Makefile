@@ -32,7 +32,18 @@ LFT				:=	include/Libft/libft.a
 
 LIB				:= $(LIBDIR)/cub3D.a
 
-LFLAGS			:= $(LFT) $(LMLX) -I include -lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
+LFLAGS			:= $(LFT) $(LMLX) -I include
+
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Linux)
+    LFLAGS += -ldl -lglfw -pthread -lm
+endif
+
+ifeq ($(UNAME_S),Darwin)
+    LFLAGS += -lglfw -L "$(HOME)/.brew/opt/glfw/lib/"
+endif
+
 
 all: libft $(LMLX) $(NAME)
 
@@ -76,7 +87,6 @@ re: fclean all
 LSAN			=	LeakSanitizer
 LSANLIB			=	/LeakSanitizer/liblsan.a
 
-UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
 #	LINK_FLAGS += -ltinfo
