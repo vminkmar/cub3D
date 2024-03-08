@@ -33,7 +33,7 @@ To compile and run the program, use the provided Makefile:
 
 `make`
 
-`./cub3D maps/choose a map.cub`
+`./cub3D maps/choose_a_map.cub`
 
 ### **User Controls:**
 
